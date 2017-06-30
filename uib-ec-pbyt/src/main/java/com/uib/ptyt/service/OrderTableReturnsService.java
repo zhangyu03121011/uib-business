@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.easypay.common.utils.UUIDGenerator;
+
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.ptyt.constants.WechatConstant;
 import com.uib.ptyt.dao.OrderTableReturnsDao;
 import com.uib.ptyt.entity.OrderTableReturnsDto;

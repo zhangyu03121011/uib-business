@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.entity.Coupon;
 import com.uib.member.entity.CouponCode;
 import com.uib.member.entity.MemMember;

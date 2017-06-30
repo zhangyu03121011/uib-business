@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.navigation.dao.NavigationDao;
 import com.uib.navigation.entity.Navigation;
 

@@ -3,9 +3,7 @@ package com.uib.weixin.web;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +17,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.JacksonUtil;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.enums.IsUsedStates;
+import com.uib.common.utils.JacksonUtil;
 import com.uib.common.utils.StringUtils;
 import com.uib.member.entity.Coupon;
 import com.uib.member.entity.CouponCode;

@@ -2,8 +2,8 @@ package limy_test;
 
 import java.util.HashMap;
 
-import com.easypay.common.web.HttpCall;
-import com.easypay.common.web.HttpCallResult;
+import com.uib.common.web.HttpCall;
+import com.uib.common.web.HttpCallResult;
 
 public class Test001 {
 	public static HashMap<String,String> map = new HashMap<String,String> ();

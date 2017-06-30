@@ -11,7 +11,7 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
-import com.easypay.common.utils.StringUtil;
+import com.uib.common.utils.StringUtil;
 
 public class MyInvocationSecurityMetadataSource implements
 		FilterInvocationSecurityMetadataSource {

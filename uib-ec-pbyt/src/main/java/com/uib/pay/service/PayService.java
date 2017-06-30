@@ -2,7 +2,7 @@ package com.uib.pay.service;
 
 import java.util.Map;
 
-import com.easypay.common.web.B2CReq;
+import com.uib.common.web.B2CReq;
 import com.uib.pay.dto.WeixinPayResDto;
 
 public interface PayService {

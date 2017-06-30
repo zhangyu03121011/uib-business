@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
-import com.easypay.core.exception.GenericException;
+import com.alibaba.dubbo.rpc.service.GenericException;
 import com.uib.cart.dao.CartDao;
 import com.uib.cart.entity.Cart;
+import com.uib.core.dao.MyBatisDao;
 
 @Component
 public class CartDaoImpl extends MyBatisDao<Cart> implements CartDao {

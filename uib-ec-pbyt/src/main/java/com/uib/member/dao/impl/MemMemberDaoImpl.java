@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.common.utils.UUIDGenerator;
-import com.easypay.core.dao.MyBatisDao;
-import com.easypay.core.exception.GenericException;
+import com.uib.common.utils.UUIDGenerator;
+import com.uib.core.dao.MyBatisDao;
+import com.uib.core.exception.GenericException;
 import com.uib.member.dao.MemMemberDao;
 import com.uib.member.entity.MemMember;
 import com.uib.weixin.constant.WxConstant;

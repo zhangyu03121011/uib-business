@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.cms.dao.ArticleDao;
 import com.uib.cms.entity.Article;
+import com.uib.core.dao.MyBatisDao;
 
 @Component
 public class ArticleDaoImpl extends MyBatisDao<Article> implements ArticleDao {

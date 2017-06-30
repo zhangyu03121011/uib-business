@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.cart.entity.Cart;
 import com.uib.cart.entity.CartItem;
 import com.uib.cart.service.CartService;
@@ -30,6 +29,7 @@ import com.uib.common.enums.OrderStatus;
 import com.uib.common.enums.PaymentMethodCodeEnum;
 import com.uib.common.mapper.JsonMapper;
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.dao.CouponCodeDao;
 import com.uib.member.dao.CouponDao;
 import com.uib.member.dao.MemReceiverDao;

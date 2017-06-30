@@ -1,7 +1,7 @@
 package com.uib.common.utils;
 
-import com.easypay.common.web.HttpCall;
-import com.easypay.common.web.HttpCallResult;
+import com.uib.common.web.HttpCall;
+import com.uib.common.web.HttpCallResult;
 
 /**
  * 发送短信API

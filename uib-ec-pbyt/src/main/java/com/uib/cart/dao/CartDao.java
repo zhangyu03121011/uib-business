@@ -2,7 +2,7 @@ package com.uib.cart.dao;
 
 import java.util.Map;
 
-import com.easypay.core.exception.GenericException;
+import com.alibaba.dubbo.rpc.service.GenericException;
 import com.uib.cart.entity.Cart;
 
 public interface CartDao {

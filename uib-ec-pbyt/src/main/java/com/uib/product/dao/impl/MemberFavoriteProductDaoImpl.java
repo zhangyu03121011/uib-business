@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.common.web.Global;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.product.dao.MemberFavoriteProductDao;
 import com.uib.product.entity.MemberFavoriteProduct;
 import com.uib.serviceUtils.Utils;

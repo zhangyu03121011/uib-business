@@ -9,8 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.easypay.core.web.TreeUtils;
-import com.uib.common.mapper.JsonMapper;
+import com.uib.core.web.TreeUtils;
 import com.uib.product.entity.ProductCategory;
 import com.uib.product.service.ProductCategoryService;
 import com.uib.product.service.ProductService;

@@ -4,8 +4,8 @@ package com.uib.member.web;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.easypay.common.utils.RandomUtil;
 import com.uib.base.BaseController;
 import com.uib.common.Principal;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.service.CaptchaService;
 import com.uib.common.utils.MailSenderUtil;
+import com.uib.common.utils.RandomUtil;
 import com.uib.common.utils.WebUtil;
 import com.uib.member.dto.MemberDto;
 import com.uib.member.entity.MemMember;

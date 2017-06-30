@@ -14,16 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.easypay.common.utils.StringUtil;
-import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.StringUtil;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;
 import com.uib.weixin.util.UserSession;
-import com.uib.weixin.util.WeixinUtil;
 
 /**
  * 拦截微信公众号服务

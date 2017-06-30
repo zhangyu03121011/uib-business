@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.easypay.common.utils.DateUtil;
-import com.easypay.common.utils.JacksonUtil;
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.DateUtil;
+import com.uib.common.utils.JacksonUtil;
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.dto.MemberDto;
 import com.uib.member.dto.ValidateCodeInfo;
 import com.uib.member.entity.MemMember;

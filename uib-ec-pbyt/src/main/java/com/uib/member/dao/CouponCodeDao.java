@@ -6,7 +6,7 @@ package com.uib.member.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.easypay.core.exception.GenericException;
+import com.uib.core.exception.GenericException;
 import com.uib.member.entity.CouponCode;
 
 /**

@@ -2,7 +2,7 @@ package com.uib.order.dao.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.order.dao.BalancePayLogDao;
 import com.uib.order.entity.BalancePayLog;
 

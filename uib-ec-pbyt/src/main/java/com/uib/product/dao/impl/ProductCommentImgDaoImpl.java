@@ -1,6 +1,6 @@
 package com.uib.product.dao.impl;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.product.dao.ProductCommentImgDao;
 import com.uib.product.entity.ProductCommentImg;
 

@@ -2,7 +2,7 @@ package com.uib.mobile.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.mobile.dao.CommentDao;
 import com.uib.mobile.dto.CommentDto;
 

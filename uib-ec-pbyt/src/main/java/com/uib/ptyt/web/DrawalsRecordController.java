@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.mobile.dto.ReturnMsg;
 import com.uib.ptyt.constants.WechatConstant;
 import com.uib.ptyt.entity.DrawalsRecordDto;

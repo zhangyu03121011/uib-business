@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.easypay.common.utils.DigestUtil;
 import com.uib.cart.service.CartService;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.utils.Des;
+import com.uib.common.utils.DigestUtil;
 import com.uib.common.utils.FileUploadUtil;
 import com.uib.common.utils.StringUtils;
 import com.uib.member.dto.MemberDto;

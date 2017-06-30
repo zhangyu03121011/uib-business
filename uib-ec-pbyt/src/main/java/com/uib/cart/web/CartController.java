@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.cart.entity.Cart;
 import com.uib.cart.entity.CartItem;
 import com.uib.cart.service.CartItemService;
 import com.uib.cart.service.CartService;
 import com.uib.common.bean.CartItemVo;
 import com.uib.common.bean.ShoppingCartMsg;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.common.utils.WebUtil;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;

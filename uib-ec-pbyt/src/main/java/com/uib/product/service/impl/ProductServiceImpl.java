@@ -20,13 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.easypay.common.utils.StringUtil;
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.cart.dao.CartDao;
 import com.uib.cart.entity.Cart;
 import com.uib.cart.entity.CartItem;
 import com.uib.common.bean.ParamBean;
 import com.uib.common.enums.OperationType;
+import com.uib.common.utils.StringUtil;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.common.web.Global;
 import com.uib.mobile.dto.Page;
 import com.uib.product.dao.ProductCommentDao;

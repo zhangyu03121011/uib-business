@@ -19,9 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.StringUtil;
 import com.uib.base.BaseController;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.StringUtil;
 import com.uib.common.utils.StringUtils;
 import com.uib.common.web.Global;
 import com.uib.mobile.dto.Category4Mobile;

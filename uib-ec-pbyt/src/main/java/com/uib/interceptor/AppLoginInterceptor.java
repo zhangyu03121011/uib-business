@@ -14,11 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.easypay.common.utils.JacksonUtil;
-import com.easypay.common.utils.StringUtil;
 import com.uib.common.enums.ExceptionEnum;
-import com.uib.common.utils.SpringContextHolder;
-import com.uib.member.dao.MemberLoginStatusDao;
+import com.uib.common.utils.JacksonUtil;
+import com.uib.common.utils.StringUtil;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;
 import com.uib.mobile.dto.ReturnMsg;

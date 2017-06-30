@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.ad.dao.AdvertisementDao;
 import com.uib.ad.entity.Advertisement;
+import com.uib.core.dao.MyBatisDao;
 
 @Component
 public class AdvertisementDaoImpl extends MyBatisDao<Advertisement> implements AdvertisementDao{

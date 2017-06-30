@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
-import com.easypay.core.exception.GenericException;
+import com.uib.core.dao.MyBatisDao;
+import com.uib.core.exception.GenericException;
 import com.uib.member.dao.CouponCodeDao;
 import com.uib.member.entity.CouponCode;
 

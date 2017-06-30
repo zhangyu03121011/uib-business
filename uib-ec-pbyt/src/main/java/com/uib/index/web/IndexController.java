@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /*import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.IndexWriter;
@@ -22,13 +21,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.easypay.core.web.TreeUtils;
 import com.uib.ad.entity.Advertisement;
 import com.uib.ad.entity.AdvertisementPosition;
 import com.uib.ad.service.AdvertisementService;
 import com.uib.base.BaseController;
 import com.uib.cms.entity.Article;
 import com.uib.cms.service.ArticleService;
+import com.uib.core.web.TreeUtils;
 import com.uib.navigation.entity.Navigation;
 import com.uib.navigation.service.NavigationService;
 import com.uib.product.entity.ProductCategory;

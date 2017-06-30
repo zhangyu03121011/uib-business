@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.order.dao.OrderCommissionSettleLogDao;
 import com.uib.order.entity.OrderCommissionSettleLog;
 import com.uib.order.entity.OrderTable;

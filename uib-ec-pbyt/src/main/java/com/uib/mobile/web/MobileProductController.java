@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.StringUtil;
 import com.uib.ad.service.AdvertisementService;
 import com.uib.base.BaseController;
 import com.uib.cart.service.CartItemService;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.StringUtil;
 import com.uib.common.web.Global;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;

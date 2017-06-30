@@ -2,9 +2,9 @@ package com.uib.cms.dao.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.cms.dao.ArticleDataDao;
 import com.uib.cms.entity.ArticleData;
+import com.uib.core.dao.MyBatisDao;
 
 /**
  * CMS 内容管理Dao

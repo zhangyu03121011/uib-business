@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.util.Assert;
 
-import com.easypay.common.utils.Exceptions;
-import com.easypay.common.utils.Reflections;
+import com.uib.common.utils.Exceptions;
+import com.uib.common.utils.Reflections;
 import com.uib.common.utils.StringUtils;
 
 /**

@@ -5,7 +5,6 @@ package com.uib.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -18,7 +17,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 
-import com.easypay.common.utils.Encodes;
 import com.google.common.collect.Lists;
 
 /**

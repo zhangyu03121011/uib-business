@@ -5,9 +5,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.easypay.common.utils.DigestUtil;
-import com.easypay.common.utils.UUIDGenerator;
+import com.uib.common.utils.DigestUtil;
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.dao.MemMemberDao;
 import com.uib.member.dto.MemberDto;
 import com.uib.member.entity.MemMember;

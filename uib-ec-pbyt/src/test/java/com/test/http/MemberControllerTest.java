@@ -9,7 +9,7 @@ package com.test.http;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.easypay.common.web.HttpCall;
+import com.uib.common.web.HttpCall;
 
 /**
  * @ClassName: memberControllerTest

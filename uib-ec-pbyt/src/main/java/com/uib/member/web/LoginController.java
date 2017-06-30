@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.easypay.common.utils.DigestUtil;
 import com.uib.base.BaseController;
 import com.uib.common.Principal;
 import com.uib.common.service.CaptchaService;
+import com.uib.common.utils.DigestUtil;
 import com.uib.common.utils.WebUtil;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;

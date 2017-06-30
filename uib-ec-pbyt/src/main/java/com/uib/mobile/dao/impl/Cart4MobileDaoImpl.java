@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.mobile.dao.Cart4MobileDao;
 import com.uib.mobile.dto.CartPojo4Mobile;
 

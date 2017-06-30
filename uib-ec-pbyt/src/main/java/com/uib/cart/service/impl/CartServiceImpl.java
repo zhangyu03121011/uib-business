@@ -16,15 +16,15 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.easypay.common.utils.DateUtils;
-import com.easypay.common.utils.StringUtil;
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.cart.dao.CartDao;
 import com.uib.cart.entity.Cart;
 import com.uib.cart.entity.CartItem;
 import com.uib.cart.service.CartItemService;
 import com.uib.cart.service.CartService;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.DateUtils;
+import com.uib.common.utils.StringUtil;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.common.utils.WebUtil;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;

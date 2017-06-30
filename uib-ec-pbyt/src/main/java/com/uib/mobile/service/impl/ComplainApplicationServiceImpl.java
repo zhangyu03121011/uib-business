@@ -1,27 +1,16 @@
 package com.uib.mobile.service.impl;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.easypay.common.utils.UUIDGenerator;
-import com.uib.common.web.Global;
-import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;
 import com.uib.mobile.dao.ComplainApplicationDao;
-import com.uib.mobile.dao.RecommendProductLogDao;
 import com.uib.mobile.dto.ComplaintApplicationDto;
-import com.uib.mobile.dto.TbAttachment;
-import com.uib.mobile.dto.UserComplaintAttrMap;
 import com.uib.mobile.service.ComplainApplicationService;
-import com.uib.serviceUtils.Utils;
 
 /**
  * @Todo 投诉申请

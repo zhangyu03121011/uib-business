@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.easypay.common.utils.JacksonUtil;
 import com.uib.cart.entity.Cart;
 import com.uib.cart.entity.CartItem;
 import com.uib.cart.service.CartService;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.enums.OrderStatus;
 import com.uib.common.mapper.JsonMapper;
+import com.uib.common.utils.JacksonUtil;
 import com.uib.common.utils.StringUtils;
 import com.uib.member.entity.MemMember;
 import com.uib.member.service.MemMemberService;

@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.easypay.common.utils.DateUtils;
 import com.uib.common.mapper.JsonMapper;
+import com.uib.common.utils.DateUtils;
 
 /**
  * 控制器支持类

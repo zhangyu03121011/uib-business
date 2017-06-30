@@ -51,8 +51,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.easypay.common.utils.RandomUtil;
 import com.uib.common.mapper.JsonMapper;
+import com.uib.common.utils.RandomUtil;
 import com.uib.common.web.Global;
 import com.uib.ptyt.config.entity.AccessToken;
 import com.uib.ptyt.config.entity.JsapiTicket;

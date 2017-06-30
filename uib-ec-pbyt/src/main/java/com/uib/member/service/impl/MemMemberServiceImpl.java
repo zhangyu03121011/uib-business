@@ -16,14 +16,14 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.easypay.common.utils.DigestUtil;
-import com.easypay.common.utils.UUIDGenerator;
-import com.easypay.core.exception.GenericException;
 import com.uib.common.Principal;
 import com.uib.common.bean.MailBean;
 import com.uib.common.enums.PresentType;
+import com.uib.common.utils.DigestUtil;
 import com.uib.common.utils.MailSenderUtil;
 import com.uib.common.utils.PhoneMessageUtil;
+import com.uib.common.utils.UUIDGenerator;
+import com.uib.core.exception.GenericException;
 import com.uib.member.dao.AreaDao;
 import com.uib.member.dao.CouponCodeDao;
 import com.uib.member.dao.CouponDao;

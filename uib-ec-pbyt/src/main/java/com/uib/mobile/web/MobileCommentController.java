@@ -25,14 +25,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.base.BaseController;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.mobile.dto.CommentDto;
 import com.uib.mobile.dto.ReturnMsg;
 import com.uib.mobile.service.CommentService;
-import com.uib.order.entity.OrderTable;
 import com.uib.order.service.OrderService;
 import com.uib.serviceUtils.Utils;
 

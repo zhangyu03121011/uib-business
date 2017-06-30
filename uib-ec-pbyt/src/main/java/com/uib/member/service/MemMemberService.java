@@ -3,7 +3,7 @@ package com.uib.member.service;
 import java.util.List;
 import java.util.Map;
 
-import com.easypay.core.exception.GenericException;
+import com.uib.core.exception.GenericException;
 import com.uib.member.dto.MemberDto;
 import com.uib.member.entity.Area;
 import com.uib.member.entity.Coupon;

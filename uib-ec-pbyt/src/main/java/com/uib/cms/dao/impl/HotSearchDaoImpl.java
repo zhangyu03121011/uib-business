@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.cms.dao.HotSearchDao;
 import com.uib.cms.entity.HotSearch;
+import com.uib.core.dao.MyBatisDao;
 
 @Component
 public class HotSearchDaoImpl extends MyBatisDao<HotSearch> implements HotSearchDao{

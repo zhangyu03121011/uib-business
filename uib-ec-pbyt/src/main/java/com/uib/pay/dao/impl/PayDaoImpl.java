@@ -1,15 +1,8 @@
 package com.uib.pay.dao.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
-import com.uib.member.entity.MemMember;
-import com.uib.order.dao.OrderDao;
-import com.uib.order.entity.OrderTable;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.pay.dao.PayDao;
 import com.uib.pay.dto.WeixinPayResDto;
 

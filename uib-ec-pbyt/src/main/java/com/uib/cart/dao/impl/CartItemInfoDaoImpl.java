@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.cart.dao.CartItemInfoDao;
 import com.uib.cart.entity.CartItemInfo;
+import com.uib.core.dao.MyBatisDao;
 
 @Component
 public class CartItemInfoDaoImpl extends MyBatisDao<CartItemInfo> implements CartItemInfoDao {

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.DateUtil;
-import com.easypay.common.utils.RandomUtil;
+import com.uib.common.utils.DateUtil;
+import com.uib.common.utils.RandomUtil;
 import com.uib.member.dto.ValidateCodeInfo;
 import com.uib.mobile.dto.ReturnMsg;
 import com.uib.serviceUtils.Utils;

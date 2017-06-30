@@ -2,7 +2,7 @@ package com.uib.receiver.dao.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.member.entity.MemReceiver;
 import com.uib.receiver.dao.ReceiverDao;
 

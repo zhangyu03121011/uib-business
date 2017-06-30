@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.stereotype.Component;
 
-import com.easypay.common.utils.StringUtil;
 import com.google.common.collect.Maps;
 import com.uib.common.utils.PropertiesLoader;
+import com.uib.common.utils.StringUtil;
 
 
 @SuppressWarnings("serial")

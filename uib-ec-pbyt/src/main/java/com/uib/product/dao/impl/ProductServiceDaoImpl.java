@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
 import com.uib.common.bean.ParamBean;
 import com.uib.common.enums.OperationType;
 import com.uib.common.web.Global;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.product.dao.ProductServiceDao;
 import com.uib.product.entity.Product;
 import com.uib.serviceUtils.Utils;

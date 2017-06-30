@@ -3,13 +3,10 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.easypay.common.utils.DateUtil;
-import com.easypay.common.web.HttpCall;
-import com.easypay.common.web.HttpCallResult;
 import com.uib.common.enums.ExceptionEnum;
+import com.uib.common.utils.DateUtil;
 import com.uib.common.utils.PhoneMessageUtil;
 import com.uib.member.dto.ValidateCodeInfo;
 import com.uib.mobile.dto.ReturnMsg;

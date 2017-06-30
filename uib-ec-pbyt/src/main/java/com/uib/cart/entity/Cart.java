@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.easypay.common.utils.DateUtils;
+import com.uib.common.utils.DateUtils;
 import com.uib.member.entity.MemMember;
 import com.uib.product.entity.Product;
 

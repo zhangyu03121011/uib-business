@@ -2,8 +2,8 @@ package com.test.http;
 
 import java.util.HashMap;
 
-import com.easypay.common.web.HttpCall;
-import com.easypay.common.web.HttpCallResult;
+import com.uib.common.web.HttpCall;
+import com.uib.common.web.HttpCallResult;
 
 public class TestUser {
 	

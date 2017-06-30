@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.easypay.common.utils.UUIDGenerator;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.order.dao.DeliveryCorporationDao;
 import com.uib.order.dao.OrderShippingRefDao;
 import com.uib.order.dao.OrderTableShippingDao;

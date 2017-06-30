@@ -19,9 +19,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.common.utils.UUIDGenerator;
 import com.uib.common.enums.ExceptionEnum;
 import com.uib.common.utils.StringUtils;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.entity.Area;
 import com.uib.member.entity.MemMember;
 import com.uib.member.entity.MemReceiver;

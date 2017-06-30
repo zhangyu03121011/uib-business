@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.easypay.common.utils.UUIDGenerator;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.service.MemMemberService;
 import com.uib.mobile.dao.RecommendProductLogDao;
 import com.uib.mobile.dto.RecommendProductLog;

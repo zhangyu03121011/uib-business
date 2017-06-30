@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.easypay.core.web.TreeUtils;
+import com.uib.core.web.TreeUtils;
 import com.uib.product.entity.Brand;
 import com.uib.product.entity.ParameterGroup;
 import com.uib.product.entity.Product;

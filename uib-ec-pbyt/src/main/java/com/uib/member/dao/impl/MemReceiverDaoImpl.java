@@ -2,17 +2,10 @@ package com.uib.member.dao.impl;
 
 import java.util.List;
 
-
-
-
-
-
-
-
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
-import com.easypay.core.exception.GenericException;
+import com.uib.core.dao.MyBatisDao;
+import com.uib.core.exception.GenericException;
 import com.uib.member.dao.MemReceiverDao;
 import com.uib.member.entity.MemReceiver;
 

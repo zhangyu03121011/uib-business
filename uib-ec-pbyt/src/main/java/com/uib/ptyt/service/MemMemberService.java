@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easypay.common.utils.UUIDGenerator;
+import com.uib.common.utils.UUIDGenerator;
 import com.uib.member.entity.MemMember;
 import com.uib.mobile.dto.RecommendProductLog;
 import com.uib.order.entity.OrderTable;

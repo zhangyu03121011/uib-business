@@ -3,7 +3,7 @@ package com.uib.serviceUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.easypay.common.utils.RandomUtil;
+import com.uib.common.utils.RandomUtil;
 
 public class OrderNoGenerateUtil {
 	

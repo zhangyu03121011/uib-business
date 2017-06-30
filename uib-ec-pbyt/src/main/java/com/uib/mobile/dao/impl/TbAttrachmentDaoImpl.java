@@ -1,11 +1,8 @@
 package com.uib.mobile.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
-import com.easypay.core.dao.MyBatisDao;
+import com.uib.core.dao.MyBatisDao;
 import com.uib.mobile.dao.TbAttachmentDao;
 import com.uib.mobile.dto.TbAttachment;
 @Component
