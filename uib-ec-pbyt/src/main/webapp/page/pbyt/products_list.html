@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>商品列表</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="js/lib/swiper-3.3.1.change.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <div class="flex-row search">
+                <div class="back">
+                    <a class=" iconfont icon-back" id="backbtn" href="javascript:void(0)"></a>
+                </div>
+                <div class="flex-item form">
+                     <form class="iconfont icon-sousuo" action="#">
+                        <input type="text" name="search" id="searchProduct"  placeholder="搜索商品" />
+                    </form>
+                </div>
+                <div class="search-btn" >
+                    <i class="iconfont icon-icon-search"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部导航结束 -->
+    <!-- 分类搜索开始 -->
+    <div class="body-content">
+        <div class="category">
+            <div class="category-title" id="product-title">
+            	<div class="category-all" >
+            		<a class="" id="product" href='javascript:void(0)' onclick="findProductListBycatagory('','','')" id="allcategory">全部</a>
+            	</div>
+            	<div class="slide-category swiper-catogory">
+            	 	<div class="swiper-wrapper" id="category-title"> 
+<!--                 <div class="category-all"><a class="hover">全部</a></div> -->
+                
+                 
+                	</div>
+                </div>
+                <i class="iconfont icon-arrow-down category-icon" id="categoryShow"></i>
+            </div>
+
+             <div class="category-list">
+                <div class="pure pure-g" id="product-list">
+                    <div class="pure pure-u-1-4" id="category-list"><a href='javascript:void(0)' onclick="findProductListBycatagory('','','')">全部</a></div>
+                </div>
+            </div>
+            <!-- 分类搜索结束 -->      
+             <!-- 产品列表介绍开始 -->
+            <div class="products">
+                <div class="pure pure-g" id="productList">
+                     
+                </div>
+            </div>
+                <li class='scrimg' style="display:none;"><p class='load_tip' align='center'>正在努力加载数据...</p></li>
+            <!-- 产品列表介绍结束 -->
+             <div class="no-data" id="no-data" style="display:none">
+                <div class="no-data-logo">
+                    <span class="iconfont icon-sousuo"></span></div>
+                <p class="no-data-title">没有搜索结果</p>
+                <p class="no-data-title-s">没有找到相关的宝贝</p>
+            </div>
+        </div>
+        <!-- 底部导航开始 -->
+     <footer>
+        <div class='bottom-menu'>
+            <ul class='display-flex align-items-center'>
+                <li class="flex-1 menu-item">
+                    <a href="./index.html">
+                        <i class="menu-icon iconfont icon-youhui"></i>
+                        <div class='text'>优品</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item active">
+                    <a href="./products_list.html">
+                        <i type="tablet" class="menu-icon iconfont icon-shangpin"></i>
+                        <div class='text'>商品</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item">
+                    <a href="./cart.html">
+                        <i class="menu-icon iconfont icon-gouwuche"></i>
+                        <div class='text'>购物车</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item">
+                    <a href="./personal.html">
+                        <i type="user" class="menu-icon iconfont icon-wo"></i>
+                        <div class='text'>我</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+       
+    </footer>
+     <section class='go-top-btn'></section>
+        <!-- 底部导航结束 -->
+        <script src="./js/touch.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery220m.js"></script>
+        <script type="text/javascript" src="js/lib/swiper-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/fixed.js"></script>
+		<script type="text/javascript" src="js/alert.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/encode.js"></script>
+		<script type="text/javascript" src="js/product_list.js"></script>
+</body>
+
+</html>

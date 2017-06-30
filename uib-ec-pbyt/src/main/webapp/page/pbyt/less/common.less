@@ -1,0 +1,679 @@
+@import 'public.less';
+
+/* reset */
+
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+table,
+th,
+td,
+form,
+fieldset,
+legend,
+input,
+textarea,
+button,
+select {
+    margin: 0;
+    padding: 0
+}
+
+img,
+fieldset {
+    border: 0
+}
+
+ul,
+ol {
+    list-style: none
+}
+
+a,
+a:hover {
+    text-decoration: none;
+    color:#333;
+}
+
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    margin: 0
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block
+}
+
+audio,
+canvas,
+progress,
+video {
+    display: inline-block;
+    vertical-align: baseline
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0
+}
+
+[hidden],
+template {
+    display: none
+}
+
+a {
+    background-color: transparent
+}
+
+a:active,
+a:hover {
+    outline: 0
+}
+
+abbr[title] {
+    border-bottom: 1px dotted
+}
+
+b,
+strong {
+    font-weight: 700
+}
+
+dfn {
+    font-style: italic
+}
+
+h1 {
+    font-size: 2em;
+    margin: .67em 0
+}
+
+mark {
+    background: #ff0;
+    color: #000
+}
+
+small {
+    font-size: 80%
+}
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
+}
+
+sup {
+    top: -.5em
+}
+
+sub {
+    bottom: -.25em
+}
+
+img {
+    border: 0
+}
+
+svg:not(:root) {
+    overflow: hidden
+}
+
+figure {
+    margin: 1em 40px
+}
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0
+}
+
+pre {
+    overflow: auto
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0
+}
+
+button {
+    overflow: visible
+}
+
+button,
+select {
+    text-transform: none
+}
+
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer
+}
+
+button[disabled],
+html input[disabled] {
+    cursor: default
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0
+}
+
+input {
+    line-height: normal
+}
+
+input[type=checkbox],
+input[type=radio] {
+    box-sizing: border-box;
+    padding: 0
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    height: auto
+}
+
+input[type=search] {
+    -webkit-appearance: textfield;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box
+}
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+    -webkit-appearance: none
+}
+
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em
+}
+
+legend {
+    border: 0;
+    padding: 0
+}
+
+textarea {
+    overflow: auto
+}
+
+optgroup {
+    font-weight: 700
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+td,
+th {
+    padding: 0
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 50px
+}
+
+body {
+    font-size: 24px;
+    min-width: 320px
+}
+
+@media screen and (min-width:320px) {
+    html {
+        font-size: 21.33px
+    }
+    body {
+        font-size: 12px
+    }
+    input {
+        outline: none;
+    }
+    textarea {
+        outline: none;
+    }
+}
+
+@media screen and (min-width:360px) {
+    html {
+        font-size: 24px
+    }
+    body {
+        font-size: 12px
+    }
+}
+
+@media screen and (min-width:375px) {
+    html {
+        font-size: 25px
+    }
+    body {
+        font-size: 12px
+    }
+}
+
+@media screen and (min-width:384px) {
+    html {
+        font-size: 25.6px
+    }
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width:400px) {
+    html {
+        font-size: 26.67px
+    }
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width:414px) {
+    html {
+        font-size: 27.6px
+    }
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width:424px) {
+    html {
+        font-size: 28.27px
+    }
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width:480px) {
+    html {
+        font-size: 32px
+    }
+    body {
+        font-size: 15.36px
+    }
+}
+
+@media screen and (min-width:540px) {
+    html {
+        font-size: 36px
+    }
+    body {
+        font-size: 17.28px
+    }
+}
+
+@media screen and (min-width:720px) {
+    html {
+        font-size: 48px
+    }
+    body {
+        font-size: 23.04px
+    }
+}
+
+@media screen and (min-width:750px) {
+    html {
+        font-size: 50px
+    }
+    body {
+        font-size: 24px
+    }
+}
+
+body {
+    min-width: 320px;
+    font-family: 'microsoft yahei', '微软雅黑', Verdana, Arial, Helvetica, sans-serif;
+    color: #333;
+    background: #fff
+}
+
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 0;
+    color: #333;
+    .font(42);
+    font-family: 'microsoft yahei', '微软雅黑', Verdana, Arial, Helvetica, sans-serif;
+}
+
+//
+//icon-font
+@font-face {
+    font-family: "iconfont";
+    src: url('font/iconfont.eot?t=1468920364');
+    /* IE9*/
+    src: url('font/iconfont.eot?t=1468920364#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('font/iconfont.woff?t=1468920364') format('woff'), /* chrome, firefox */
+    url('font/iconfont.ttf?t=1468920364') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('font/iconfont.svg?t=1468920364#iconfont') format('svg');
+    /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-gouwuche:before { content: "\e608"; }
+.icon-check:before { content: "\e627"; }
+.icon-shanchu:before { content: "\e61b"; }
+.icon-dingdan:before { content: "\e60f"; }
+.icon-error:before { content: "\e62c"; }
+.icon-iconfontup:before { content: "\e621"; }
+.icon-iconfontdown:before { content: "\e622"; }
+.icon-back:before { content: "\e616"; }
+.icon-youhui:before { content: "\e606"; }
+.icon-fold:before { content: "\e623"; }
+.icon-unfold:before { content: "\e624"; }
+.icon-back1:before { content: "\e625"; }
+.icon-right:before { content: "\e626"; }
+.icon-cuowu:before { content: "\e61c"; }
+.icon-xiaolian:before { content: "\e61a"; }
+.icon-xiangji:before { content: "\e61f"; }
+.icon-gouwuche1:before { content: "\e601"; }
+.icon-dianpu:before { content: "\e610"; }
+.icon-back2:before { content: "\e615"; }
+.icon-sousuo:before { content: "\e605"; }
+.icon-v2:before { content: "\e614"; }
+.icon-jiage:before { content: "\e60e"; }
+.icon-check1:before { content: "\e628"; }
+.icon-tuiguang:before { content: "\e619"; }
+.icon-tianjia:before { content: "\e61d"; }
+.icon-tianjia1:before { content: "\e620"; }
+.icon-check-b:before { content: "\e629"; }
+.icon-11:before { content: "\e61e"; }
+.icon-jiaruchengguo:before { content: "\e603"; }
+.icon-wodedingdan:before { content: "\e611"; }
+.icon-bianji:before { content: "\e60d"; }
+.icon-icon103-copy:before { content: "\e60a"; }
+.icon-shangpin:before { content: "\e607"; }
+.icon-check-copy:before { content: "\e62a"; }
+.icon-wo:before { content: "\e609"; }
+.icon-fenlei:before { content: "\e62d"; }
+.icon-check2:before { content: "\e62b"; }
+.icon-icon-search:before { content: "\e604"; }
+.icon-arrow-down:before { content: "\e617"; }
+.icon-dingwei:before { content: "\e60c"; }
+.icon-tuiguang1:before { content: "\e602"; }
+.icon-arrow-up:before { content: "\e618"; }
+.icon-jilu-copy:before { content: "\e612"; }
+.icon-wubanhua:before { content: "\e600"; }
+.icon-duihao:before { content: "\e60b"; }
+.icon-shouruxiangqing:before { content: "\e613"; }
+
+//工具函数
+//flex布局
+.display-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex(@value) {
+    -webkit-box-flex: @value ;
+    -webkit-flex: @value ;
+    -moz-box-flex: @value ;
+    -moz-flex: @value;
+    -ms-flex: @value;
+    flex: @value ;
+    overflow: hidden;
+}
+
+.flex-1 {
+    .flex(1);
+}
+
+.align-items-center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+}
+
+.align-items-end {
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    box-align: end;
+    -webkit-align-items: flex-end;
+    -moz-align-items: flex-end;
+    align-items: flex-end;
+}
+
+.app-body {
+    padding-top: @header-bar-height;
+    padding-bottom: @menu-bar-height;
+    &.no-menu {
+        padding-bottom: 0;
+    }
+    &.no-header {
+        padding-top: 0;
+    }
+}
+
+// top-bar样式
+.top-bar-container {
+    position: fixed;
+    background-color: @header-bg-cl;
+    width: 100%;
+    z-index: @menu-z;
+    border-bottom: 1px solid #c3c3c3;
+    .top-bar-back {
+        position: absolute;
+        display: block;
+        left: 0;
+        top: 0;
+        color: #333;
+        line-height: @header-bar-height;
+        text-align: center;
+        font-size: @px*64;
+        z-index: 10;
+        height: @header-bar-height;
+        width: @header-bar-height;
+    }
+    .title {
+        line-height: @header-bar-height;
+        .font(48);
+        color: @cl-3;
+        position: relative;
+        text-align: center;
+    }
+    .right-text {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-right: 10px;
+        text-align: right;
+        line-height: @header-bar-height;
+        .font(42);
+    }
+}
+
+//menu样式
+.bottom-menu {
+    position: fixed;
+    z-index: @menu-z;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: @bottom-bg-cl;
+    border-top: 1px solid #c3c3c3;
+    ul {
+        height: @menu-bar-height;
+    }
+    .menu-item {
+        text-align: center;
+        a {
+            color: @cl-9;
+            .menu-icon {
+                .font(72);
+                line-height: 1;
+            }
+            .text {
+                line-height: 1.3;
+                .menu-cl();
+            }
+        }
+        &.active {
+            a {
+                color: @main-cl;
+            }
+        }
+    }
+}
+
+//右边导航
+#right-nav {
+    width: @px*100;
+    position: fixed;
+    z-index: @menu-z;
+    top: 50%;
+    right: @px*50;
+    text-align: center;
+    .circle {
+        display: block;
+        position: absolute;
+        z-index: @menu-z+1;
+        top: -@px*50;
+        width: @px*100;
+        height: @px*100;
+        line-height: @px*100;
+        border-radius: @px*100;
+        border: 1px solid #c3c3c3;
+        background-color: rgba(0, 0, 0, 0.01);
+        .font(48);
+        &.close{
+        	&~.nav-wrap{
+				display: none;
+        	}
+    		i:before{
+				content: "\e62d";
+    		}
+    	}
+    }
+    .nav-wrap {
+        padding-top: @px*75;
+        background-color: rgba(0, 0, 0, 0.01);
+        border: 1px solid #c3c3c3;
+        border-top: none;
+        overflow: hidden;
+        -webkit-transition:all 300ms ease-in-out;
+		transition:all 300ms ease-in-out;
+        a {
+	        .right-nav-icon {
+	            .font(48);
+	            display: block;
+	            color: @cl-9;
+	        }
+	        .title {
+	            .font(24);
+	            color: @cl-9;
+	            line-height: 2;
+	        }
+	    }
+    }
+    
+}
+
+
+.app-checkbox{
+	input{
+		width:60*@px;
+		display:none;
+	}
+	input + label:before{
+		 content: "\e62b";
+		 color:#333;
+	}
+	input:checked + label:before{
+		content: "\e629";
+		color:@main-cl;
+	}
+}

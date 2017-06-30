@@ -1,0 +1,1 @@
+alter table sys_menu modify href varchar2(2000);

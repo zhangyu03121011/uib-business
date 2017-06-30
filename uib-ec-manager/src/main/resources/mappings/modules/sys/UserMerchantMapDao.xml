@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.sys.dao.UserMerchantMapDao">
+    
+	<sql id="userMerchantMapColumns">
+		a.id AS "id",
+		a.mer_code AS "merCode",
+		a.user_id AS "user.id",
+		a.del_flag AS "delFlag",
+		u3.name AS "user.name"
+	</sql>
+	
+	<sql id="userMerchantMapJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="UserMerchantMap">
+		SELECT 
+			<include refid="userMerchantMapColumns"/>
+		FROM user_merchant_map a
+		<include refid="userMerchantMapJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UserMerchantMap">
+		SELECT 
+			<include refid="userMerchantMapColumns"/>
+		FROM user_merchant_map a
+		<include refid="userMerchantMapJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UserMerchantMap">
+		SELECT 
+			<include refid="userMerchantMapColumns"/>
+		FROM user_merchant_map a
+		<include refid="userMerchantMapJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getMapByMerchantNo" parameterType="String" resultType="UserMerchantMap">
+		SELECT 
+			<include refid="userMerchantMapColumns"/>
+		FROM user_merchant_map a
+		<include refid="userMerchantMapJoins"/>
+		WHERE a.mer_code = #{merchantNo}
+	</select>
+		<select id="getMapByUserId" parameterType="String" resultType="UserMerchantMap">
+		SELECT 
+			<include refid="userMerchantMapColumns"/>
+		FROM user_merchant_map a
+		<include refid="userMerchantMapJoins"/>
+		WHERE a.user_id = #{userId}
+	</select>
+	<insert id="insert">
+		INSERT INTO user_merchant_map(
+			id,
+			mer_code,
+			user_id,
+			del_flag
+		) VALUES (
+			#{id},
+			#{merCode},
+			#{user.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE user_merchant_map SET 	
+			mer_code = #{merCode},
+			user_id = #{user.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE user_merchant_map SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

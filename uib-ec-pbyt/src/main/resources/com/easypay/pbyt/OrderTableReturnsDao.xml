@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.OrderTableReturnsDao">
+    
+	<sql id="orderTableReturnsColumns">
+		a.id AS "id",
+		a.return_no AS "returnNo",
+		a.address AS "address",
+		a.area AS "area",
+		a.delivery_corp AS "deliveryCorp",
+		a.freight AS "freight",
+		a.operator AS "operator",
+		a.phone AS "phone",
+		a.shipper AS "shipper",
+		a.tracking_no AS "trackingNo",
+		a.shipping_method AS "shippingMethod",
+		a.zip_code AS "zipCode",
+		a.order_no AS "orderNo",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.return_type AS "returnType",
+		a.return_status AS "returnStatus",
+		a.apply_time AS "applyTime",
+		a.user_name AS "userName",
+		a.product_id AS "productId",
+		a.return_reson AS "returnReson",
+		a.return_sum AS "returnSum",
+		a.return_desc AS "returnDesc"
+	</sql>
+	
+	<sql id="orderTableReturnsJoins">
+	</sql>
+  
+    <select id="queryReturns" resultType="com.uib.ptyt.entity.OrderTableReturnsDto">
+        select 
+			<include refid="orderTableReturnsColumns"></include>
+		from 
+			order_table_returns a
+		where	
+			1=1 
+		<if test="productId !=null  and productId !='' ">
+		    and a.product_id=#{productId}
+		</if>
+		<if test="orderNo !=null  and orderNo !='' ">
+		    and a.order_no=#{orderNo}
+		</if>
+		order by a.update_date DESC
+    </select>
+    
+    <insert id="insert">
+        insert into order_table_returns
+        ( id,
+		  return_no,
+		  address,
+		  area,
+		  delivery_corp,
+		  freight,
+		  operator,
+		  phone,
+		  shipper,
+		  shipping_method,
+		  tracking_no,
+		  zip_code,
+		  order_no,
+		  create_by,
+		  create_date,
+		  update_by,
+		  update_date,
+		  remarks,
+		  del_flag,
+		  return_type,
+		  return_status,
+		  apply_time,
+		  user_name,
+		  product_id,
+		  return_reson,
+		  return_sum,
+		  return_desc,
+		  supplier_id
+        )value(
+          #{id},
+          #{returnNo},
+          #{address},
+          #{area},
+          #{deliveryCorp},
+          #{freight},
+          #{operator},
+          #{phone},
+          #{shipper},
+          #{shippingMethod},
+          #{trackingNo},
+          #{zipCode},
+          #{orderNo},
+          #{createBy},
+          #{createDate},
+          #{updateBy},
+          #{updateDate},
+          #{remarks},
+          #{delFlag},
+          #{returnType},
+          #{returnStatus},
+          #{applyTime},
+          #{userName},
+          #{productId},
+          #{returnReson},
+		  #{returnSum},
+		  #{returnDesc},
+		  #{supplierId}
+        )
+    </insert>
+    
+    <insert id="insertReturnsItem">
+        insert into order_table_returns_item
+        (id,
+         order_table_returns_id,
+         product_no,
+         name,
+         quantity,
+         return_no,
+         create_by,
+         create_date,
+         update_by,
+         update_date,
+         remarks,
+         del_flag,
+         image
+        )value
+        <foreach collection="list" item="item" index="index"  separator=",">
+		(
+		    #{item.id},
+		    #{item.orderTableReturnsId},
+		    #{item.productNo},
+		    #{item.name},
+		    #{item.quantity},
+		    #{item.returnNo},
+		    #{item.createBy},
+		    #{item.createDate},
+		    #{item.updateBy},
+		    #{item.updateDate},
+		    #{item.remarks},
+		    #{item.delFlag},
+		    #{item.image}
+		) 
+		</foreach>
+    </insert>
+</mapper>

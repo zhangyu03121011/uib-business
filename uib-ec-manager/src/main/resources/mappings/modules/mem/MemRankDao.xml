@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.mem.dao.MemRankDao">
+    
+	<sql id="memRankColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.amount AS "amount",
+		<!-- a.is_defult AS "isDefult", -->
+		a.is_special AS "isSpecial",
+		<!-- a.scale AS "scale", -->
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memRankJoins">
+	</sql>
+    
+	<select id="get" resultType="MemRank">
+		SELECT 
+			<include refid="memRankColumns"/>
+		FROM mem_rank a
+		<include refid="memRankJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MemRank">
+		SELECT 
+			<include refid="memRankColumns"/>
+		FROM mem_rank a
+		<include refid="memRankJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemRank">
+		SELECT 
+			<include refid="memRankColumns"/>
+		FROM mem_rank a
+		<include refid="memRankJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 查询每个会员等级下是否存在有会员 -->
+	<select id="findMemberByMemRankId"  resultType="int">
+		SELECT 
+		COUNT(*) AS "count"
+		FROM mem_rank a LEFT JOIN mem_member b ON a.id = b.rank_id
+		WHERE a.del_flag = 0 AND b.del_flag = 0 AND a.id = #{id}
+	</select>	
+	<!-- 根据消费金额查找符合此条件的最高会员等级 -->
+	<select id="findByAmountLike" resultType="MemRank">
+		SELECT
+			a.id,
+			a.name AS "name",
+			a.amount AS "amount"
+		FROM mem_rank a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.is_special = 1 and a.amount &lt;= #{amount} order by a.amount desc
+	</select>
+	<!-- 判断消费金额是否存在 -->
+	<select id="amountExists" resultType="MemRank">
+		SELECT
+			count(*)
+		FROM mem_rank a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.amount = #{amount}
+	</select>
+	<!-- 判断名称是否存在 -->
+	<select id="nameExists" resultType="MemRank">
+		SELECT
+			count(*)
+		FROM mem_rank a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND lower(a.name) = lower(#{name})
+	</select>
+	<!-- 查找默认会员等级-->
+	<select id="findDefault" resultType="MemRank">
+		SELECT
+			a.id,
+			a.name AS "name",
+			a.amount AS "amount"
+		FROM mem_rank a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.isDefault = 0
+	</select>	
+	<insert id="insert">
+		INSERT INTO mem_rank(
+			id,
+			name,
+			amount,
+			<!-- is_defult, -->
+			is_special,
+			<!-- scale, -->
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{amount},
+			<!-- #{isDefult}, -->
+			#{isSpecial},
+			<!-- #{scale}, -->
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mem_rank SET 	
+			name = #{name},
+			amount = #{amount},
+			<!-- is_defult = #{isDefult}, -->
+			is_special = #{isSpecial},
+			<!-- scale = #{scale}, -->
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE mem_rank SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 会员等级表与商品表 -->
+	<resultMap type="MemRank" id="MemRankResultMap">
+		<id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="amount" property="amount"/>
+        <!-- <result column="isDefult" property="isDefult"/> -->
+        <result column="isSpecial" property="isSpecial"/>
+      <!--   <result column="scale" property="scale"/> -->
+              		
+		<collection property="productList" javaType="ArrayList" ofType="com.uib.ecmanager.modules.product.entity.Product">
+			<id column="id" property="id"/>
+	    </collection> 
+	</resultMap>
+</mapper>

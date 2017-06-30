@@ -1,0 +1,777 @@
+@charset "utf-8";
+/* 背景颜色 */
+.main-bg {
+  background: #f2f2f2;
+}
+/* 、红色按钮 */
+.new-address-btn {
+  margin: 0 auto;
+  margin-top: 2.41666512rem;
+  width: 14.1666576rem;
+  font-size: 0.66666624rem;
+  display: block;
+  background-color: #f02b2b;
+  color: #fff;
+  line-height: 1.6666656rem;
+  text-align: center;
+  border-radius: 0.8333328rem;
+}
+button {
+  -webkit-appearance: none;
+  border: 0;
+  background: 0 0;
+}
+.button-box {
+  margin: 0 auto;
+  margin-top: 2.41666512rem;
+  width: 14.1666576rem;
+  font-size: 0.66666624rem;
+  display: block;
+  color: #fff;
+  line-height: 1.6666656rem;
+  text-align: center;
+}
+.button-box .return-btn {
+  background-color: #999999;
+  border-radius: 0.8333328rem;
+  width: 5.555552rem;
+  margin-right: 0.8333328rem;
+}
+.button-box .confirm-btn {
+  background-color: #f02b2b;
+  border-radius: 0.8333328rem;
+  width: 5.555552rem;
+}
+/* 个人中心 */
+.personal-center {
+  width: 100%;
+  background: url(../images/personal-bg.jpg) no-repeat;
+  background-size: cover;
+  overflow: auto;
+  padding: 0.694444rem 0;
+  position: relative;
+}
+.personal-center .authenticate {
+  position: absolute;
+  right: 0.5555552rem;
+}
+.personal-center .authenticate .font(36) a {
+  color: #666666;
+}
+.personal-center .verified {
+  position: absolute;
+  right: 0.5555552rem;
+}
+.personal-center .verified i {
+  font-size: 0.694444rem;
+}
+.personal-center .head-portrait {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+  /* 认证头像 */
+}
+.personal-center .head-portrait img {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+}
+.personal-center .head-portrait .side-ico {
+  width: 0.694444rem;
+  height: 0.7638884rem;
+  position: absolute;
+  right: -0.1388888rem;
+  bottom: 0.4166664rem;
+}
+.personal-center .head-portrait .side-ico img {
+  width: 0.694444rem;
+  height: 0.7638884rem;
+}
+.personal-center .name {
+  text-align: center;
+  color: #ffffff;
+  line-height: 1.6666656rem;
+  font-size: 0.66666624rem;
+}
+.personal-center .member-grade {
+  background: #f02b2b;
+  width: 4.166664rem;
+  border-radius: 0.56944408rem;
+  line-height: 1.15277704rem;
+  color: #ffffff;
+  margin: 0 auto;
+  font-size: 0.49999968rem;
+  text-align: center;
+}
+.personal-center ul {
+  padding-top: 1.388888rem;
+}
+.personal-center ul :last-child {
+  border-right: none;
+}
+.personal-center ul li {
+  width: 33%;
+  float: left;
+  text-align: center;
+  border-right: dashed 1px #ccc;
+  line-height: 1.2rem;
+}
+.personal-center ul li a {
+  display: block;
+  color: #333333;
+}
+.personal-center ul li a p {
+  color: #333333;
+}
+.personal-center ul li .money {
+  font-size: 0.66666624rem;
+}
+.personal-center ul li .types-of {
+  font-size: 0.49999968rem;
+}
+.withdraw {
+  background: #f2f2f2;
+  border-top: solid 1px #e3e3e3;
+  padding: 0.8333328rem 0;
+  color: #999999;
+}
+.withdraw dl {
+  width: 95%;
+  margin: 0 auto;
+}
+.withdraw dl dd {
+  float: left;
+  width: 1.8055544rem;
+  height: 1.8055544rem;
+  background: #999999;
+  line-height: 1.8055544rem;
+  text-align: center;
+}
+.withdraw dl dd.icon-jiage:before {
+  content: "\e60e";
+  font-size: 1.1111104rem;
+  color: #ffffff;
+}
+.withdraw dl dt {
+  border: solid 1px #e3e3e3;
+  line-height: 1.77777664rem;
+  width: 100%;
+  padding-left: 2.3611096rem;
+  font-size: 0.58333296rem;
+  position: relative;
+}
+.withdraw dl dt a {
+  color: #999999;
+  display: block;
+}
+.withdraw dl dt i.icon-right:before {
+  position: absolute;
+  right: 0;
+  top: 0.6249996rem;
+  font-size: 0.694444rem;
+  line-height: 0.694444rem;
+  color: #999999;
+}
+.personal-menu {
+  border-top: solid 1px #e3e3e3;
+  border-bottom: solid 1px #e3e3e3;
+  margin-bottom: 0.4166664rem;
+  background: #ffffff;
+}
+.personal-menu li:last-child {
+  border-bottom: none;
+}
+.personal-menu li {
+  border-bottom: solid 1px #e3e3e3;
+  line-height: 2.083332rem;
+  font-size: 0.66666624rem;
+  clear: both;
+  position: relative;
+  padding: 0 0.4166664rem;
+  overflow: auto;
+}
+.personal-menu li a {
+  display: block;
+  height: 2.083332rem;
+  color: #666666;
+}
+.personal-menu li i.icon-right:before {
+  position: absolute;
+  right: 0.1388888rem;
+  top: 0.6249996rem;
+  line-height: 0.694444rem;
+  color: #999999;
+}
+.personal-menu li i {
+  line-height: 2.083332rem;
+  display: block;
+  float: left;
+  font-size: 0.694444rem;
+}
+.personal-menu li i.icon-wodedingdan:before {
+  font-size: 0.9722216rem;
+  color: #ffffff;
+  color: #90cff3;
+}
+.personal-menu li i.icon-dingdan:before {
+  font-size: 1.1111104rem;
+  color: #ffffff;
+  color: #ff9053;
+}
+.personal-menu li i.icon-dianpu {
+  font-size: 0.9722216rem;
+  color: #ffffff;
+  color: #ffbe58;
+}
+.personal-menu li i.icon-tuiguang:before {
+  font-size: 1.1111104rem;
+  color: #ffffff;
+  color: #fa8080;
+}
+.personal-menu li i.icon-jilu-copy:before {
+  font-size: 0.9722216rem;
+  color: #ffffff;
+  color: #abb1f3;
+}
+.personal-menu li i.icon-shouruxiangqing:before {
+  font-size: 0.9027772rem;
+  color: #ffffff;
+  color: #ffbe58;
+}
+.personal-menu li span {
+  float: left;
+  padding-left: .5rem;
+}
+/* 账户管理 */
+.account-title {
+  background: #ffffff;
+  border-bottom: solid 1px #e3e3e3;
+  font-size: 0.66666624rem;
+  padding-left: 0.4166664rem;
+  line-height: 1.6666656rem;
+}
+.account-phone {
+  background: #ffffff;
+  border-bottom: solid 1px #e3e3e3;
+  line-height: 1.6666656rem;
+  padding: 0 0.4166664rem;
+  color: #666666;
+}
+.account-phone span {
+  float: right;
+}
+/* 店铺信息编辑 */
+.shop-inf {
+  border-bottom: solid 1px #e3e3e3;
+  font-size: 0.58333296rem;
+  background: #ffffff;
+}
+.shop-inf .head-portrait-box {
+  padding: .5rem 0;
+  border-bottom: solid 1px #e3e3e3;
+  overflow: auto;
+  font-size: 0.58333296rem;
+  margin: 0 0.4166664rem;
+}
+.shop-inf .head-portrait-box .head-portrait {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+  background: #ffffff;
+  border: solid 1px #e3e3e3;
+  float: right;
+  margin-right: 1.2rem;
+}
+.shop-inf .head-portrait-box .head-portrait img {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+}
+.shop-inf a {
+  display: block;
+  position: relative;
+  color: #333333;
+}
+.shop-inf a i.icon-right:before {
+  position: absolute;
+  right: 0;
+  top: 1.388888rem;
+  font-size: 1.1111104rem;
+  line-height: 1.1111104rem;
+  color: #999999;
+}
+.shop-inf a span {
+  color: #666666;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 15em;
+  text-align: right;
+}
+.shop-inf ul {
+  line-height: 2.083332rem;
+}
+.shop-inf ul :last-child {
+  border-bottom: none;
+}
+.shop-inf ul li {
+  border-bottom: solid 1px #e3e3e3;
+  margin: 0 0.4166664rem;
+}
+.shop-inf ul li span {
+  float: right;
+  margin-right: 1.2499992rem;
+}
+.shop-inf ul li a {
+  font-size: 0.58333296rem;
+}
+.shop-inf ul li a i.icon-right:before {
+  top: 0.4861108rem;
+  right: -0.4166664rem;
+}
+/* 店铺名称 */
+.shop-name {
+  border-bottom: solid 1px #e3e3e3;
+  line-height: 2.083332rem;
+  padding: 0 0.4166664rem;
+  font-size: 0.58333296rem;
+  position: relative;
+  background: #ffffff;
+}
+.shop-name span {
+  float: left;
+  position: absolute;
+  width: 6em;
+  top: 0;
+  left: 0.4166664rem;
+  color: #666666;
+}
+.shop-name input {
+  line-height: 2rem;
+  padding-left: 5em;
+  color: #333333;
+}
+.shop-name textarea {
+  padding: 0.694444rem 0 0 5em;
+  font-size: 0.58333296rem;
+  line-height: 0.694444rem;
+}
+/* 提现 */
+.money-statistics {
+  height: 5.555552rem;
+  border-bottom: dashed 1px #ccc;
+  text-align: center;
+  padding: 1.1111104rem 0;
+  background: #ffffff;
+}
+.money-statistics .name {
+  font-size: 0.66666624rem;
+  color: #333333;
+  line-height: 1.1111104rem;
+}
+.money-statistics .no {
+  font-size: 1.6666656rem;
+  color: #f02b2b;
+  line-height: 2.2222208rem;
+}
+.money-details {
+  background: #ffffff;
+  border-bottom: solid 1px #e3e3e3;
+  overflow: auto;
+  text-align: center;
+  padding: 0.8333328rem 0;
+}
+.money-details li {
+  width: 50%;
+  float: left;
+  border-right: dashed 1px #ccc;
+}
+.money-details li .name {
+  font-size: 0.66666624rem;
+  color: #666666;
+  line-height: 0.9722216rem;
+}
+.money-details li .no {
+  font-size: 0.72222176rem;
+  color: #f02b2b;
+  line-height: 1.1111104rem;
+}
+/* 提现明细 */
+.allowance-details {
+  background: #ffffff;
+}
+.allowance-details li {
+  border-bottom: solid 1px #e3e3e3;
+  padding: 0.2777776rem 0.4166664rem;
+  overflow: auto;
+}
+.allowance-details li .head-portrait {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+  background: #fff;
+  border: solid 1px #e3e3e3;
+  float: left;
+  margin-right: 0.4166664rem;
+}
+.allowance-details li .head-portrait img {
+  width: 2.777776rem;
+  height: 2.777776rem;
+  border-radius: 50%;
+}
+.allowance-details li .information {
+  float: left;
+  padding: 0.2777776rem 0;
+}
+.allowance-details li .information .name {
+  font-size: 0.58333296rem;
+  color: #333333;
+  line-height: 1.1111104rem;
+}
+.allowance-details li .information .date {
+  font-size: 0.49999968rem;
+  color: #999999;
+  line-height: 1.1111104rem;
+}
+.allowance-details li span {
+  float: right;
+  line-height: 2.777776rem;
+  font-size: 0.66666624rem;
+  color: #333333;
+}
+/* 提现-银行卡 */
+.withdrawals-bank {
+  height: 2.083332rem;
+  border-bottom: solid 1px #e3e3e3;
+  line-height: 2.083332rem;
+  padding: 0 0.4166664rem;
+  font-size: 0.58333296rem;
+  color: #333333;
+  position: relative;
+  background: #ffffff;
+}
+.withdrawals-bank a {
+  color: #333333;
+  display: block;
+}
+.withdrawals-bank i.icon-right:before {
+  position: absolute;
+  right: 0;
+  top: 0.6249996rem;
+  font-size: 0.694444rem;
+  line-height: 0.694444rem;
+  color: #999999;
+}
+.withdrawals-money {
+  padding: 0.4166664rem;
+  font-size: 0.58333296rem;
+  border-bottom: solid 1px #e3e3e3;
+  background: #ffffff;
+}
+.withdrawals-money h2 {
+  font-size: 0.58333296rem;
+  font-weight: normal;
+  line-height: 1.1111104rem;
+}
+.withdrawals-money h2 span {
+  color: #f02b2b;
+}
+.withdrawals-money .money-enter {
+  font-size: 0.49999968rem;
+  line-height: 1.1111104rem;
+}
+.withdrawals-money .money-enter span {
+  width: 6em;
+  position: absolute;
+}
+.withdrawals-money .money-enter input {
+  padding: 0 0 0 6em;
+  width: 100%;
+  font-size: 0.49999968rem;
+  line-height: 1.1111104rem;
+  border: none;
+  margin: 0;
+  height: 1.1111104rem;
+}
+.withdrawals-exp {
+  text-align: right;
+  padding: 0.2777776rem 0.4166664rem 0 0.4166664rem;
+  font-size: 0.58333296rem;
+  line-height: 1.1111104rem;
+}
+.withdrawals-exp a {
+  color: #f02b2b;
+}
+/* 身份验证 */
+.authentication {
+  padding: 0.694444rem 0.4166664rem;
+  border-bottom: solid 1px #e3e3e3;
+  background: #ffffff;
+}
+.authentication h2 {
+  font-size: 0.58333296rem;
+  color: #666666;
+  font-weight: normal;
+  padding-bottom: 0.1388888rem;
+}
+.authentication .codes-box {
+  position: relative;
+}
+.authentication .codes-box input {
+  line-height: 1.6666656rem;
+}
+.authentication .codes-box .codes-btn {
+  position: absolute;
+  width: 4.166664rem;
+  height: 1.388888rem;
+  line-height: 1.388888rem;
+  right: 0;
+  top: 0.1388888rem;
+  text-align: center;
+  border-radius: 0.694444rem;
+  border: solid 1px #e3e3e3;
+  font-size: 0.49999968rem;
+  color: #666666;
+}
+/* 选择银行卡 */
+.backcard-box {
+  height: 2.083332rem;
+  border-bottom: solid 1px #e3e3e3;
+  line-height: 2.083332rem;
+  padding: 0 0.4166664rem;
+  font-size: 0.58333296rem;
+  color: #333333;
+  background: #ffffff;
+  position: relative;
+}
+.backcard-box .select-bank {
+  position: absolute;
+  right: 0.4166664rem;
+  top: 0;
+  color: #666666;
+}
+.backcard-box .select-bank label {
+  font-size: 0.8333328rem;
+}
+/* 申请代理 */
+.application-agent {
+  background: #ffffff;
+  padding: 0 0.4166664rem;
+  font-size: 0.58333296rem;
+  line-height: 2.083332rem;
+  border-bottom: solid 1px #e3e3e3;
+  clolor: #666666;
+}
+.application-agent :last-child {
+  border-bottom: none;
+}
+.application-agent li {
+  border-bottom: solid 1px #e3e3e3;
+  overflow: auto;
+  position: relative;
+}
+.application-agent li span {
+  width: 6em;
+  position: absolute;
+}
+.application-agent li input {
+  padding: 0 0 0 6em;
+  width: 100%;
+  font-size: 0.58333296rem;
+  line-height: 2.083332rem;
+  border: none;
+  margin: 0;
+  height: 2.083332rem;
+}
+.application-agent li a {
+  position: absolute;
+  height: 1.8055544rem;
+  display: block;
+  top: 0.1388888rem;
+  right: 0;
+  border-left: solid 1px #e3e3e3;
+  padding-left: 0.2777776rem;
+  color: #999999;
+}
+.application-agent li select {
+  padding: 0 0 0 6em;
+}
+.application-agent li i {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.application-agent li i.icon-right:before {
+  position: absolute;
+  right: 0;
+  top: 0.4861108rem;
+  font-size: 1.1111104rem;
+  line-height: 1.1111104rem;
+  color: #999999;
+}
+.protocol-box .backcard-box {
+  background: none;
+  border-bottom: none;
+}
+.protocol-box .backcard-box span {
+  margin-left: 1.1111104rem;
+  position: relative;
+  z-index: 9;
+}
+.protocol-box .backcard-box .select-bank {
+  left: 0.4166664rem;
+}
+/* 售后 */
+.refund-instructions {
+  background: #ffffff;
+  border-bottom: solid 1px #e3e3e3;
+  padding: 0 0.4166664rem;
+}
+.refund-instructions h2 {
+  font-size: 0.58333296rem;
+  font-weight: normal;
+  line-height: 2.083332rem;
+  border-bottom: solid 1px #e3e3e3;
+}
+.refund-instructions textarea {
+  font-size: 0.58333296rem;
+  line-height: 0.694444rem;
+  margin: 0.2777776rem 0;
+  min-height: 2.777776rem;
+}
+/* 上传图片 */
+.upload-image-box {
+  background: #ffffff;
+  border-bottom: solid 1px #e3e3e3;
+  padding: 0.4166664rem;
+  font-size: 0.58333296rem;
+  overflow: auto;
+}
+.upload-image-box p {
+  padding-bottom: 0.4166664rem;
+}
+.upload-image-box span {
+  color: #999999;
+  font-size: 0.49999968rem;
+}
+.upload-image-box ul {
+  clear: both;
+  float: left;
+}
+.upload-image-box ul li {
+  float: left;
+  border: solid 1px #999;
+  margin-right: 0.694444rem;
+  position: relative;
+}
+.upload-image-box ul li img {
+  width: 2.777776rem;
+  height: 2.777776rem;
+}
+.upload-image-box ul li .close-img {
+  position: absolute;
+  width: 0.8333328rem;
+  height: 0.8333328rem;
+  background: #c3c3c3;
+  border-radius: 50%;
+  right: -0.4166664rem;
+  top: -0.4166664rem;
+}
+.upload-image-box ul li .close-img a {
+  width: 0.8333328rem;
+  height: 0.8333328rem;
+  display: block;
+  position: relative;
+}
+.upload-image-box ul li .close-img a i.icon-error:before {
+  font-size: 0.5555552rem;
+  position: absolute;
+  top: 0.1388888rem;
+  left: 0.1388888rem;
+  color: #ffffff;
+}
+.upload-image-box ul li .upload-btn-box {
+  clear: both;
+  position: relative;
+  overflow: hidden;
+  width: 2.777776rem;
+  height: 2.777776rem;
+}
+.upload-image-box ul li .upload-btn-box .upload-btn {
+  opacity: 0;
+  position: absolute;
+  width: 2.777776rem;
+  height: 2.777776rem;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+.upload-image-box ul li .upload-btn-box i.icon-tianjia1:before {
+  font-size: 1.388888rem;
+  position: absolute;
+  top: 0.694444rem;
+  left: 0.694444rem;
+  color: #666666;
+}
+/* 拍照弹出 */
+.change-pic {
+  position: relative;
+  padding: 0 0.4166664rem;
+  line-height: 2.083332rem;
+  background-color: #fff;
+  font-size: 0.58333296rem;
+}
+.change-pic .more {
+  position: absolute;
+  width: 2.083332rem;
+  line-height: 2.083332rem;
+  top: 0;
+  right: 0.4166664rem;
+  text-align: right;
+}
+.action-sheet {
+  position: fixed;
+  bottom: -26.66666667rem;
+  bottom: -100vh;
+  left: 0;
+  width: 100%;
+  height: 26.66666667rem;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+.action-sheet.open {
+  bottom: 0;
+}
+.action-sheet .action-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0.4166664rem;
+  padding: 0.4166664rem;
+}
+.action-sheet .action-container li {
+  background-color: #fff;
+  color: #333333;
+  line-height: 2.083332rem;
+  text-align: center;
+  font-size: 0.58333296rem;
+}
+.action-sheet .action-container li:first-of-type {
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #e3e3e3;
+}
+.action-sheet .action-container li:nth-of-type(2) {
+  border-radius: 0 0 8px 8px;
+}
+.action-sheet .action-container li:last-of-type {
+  border-radius: 8px;
+  margin-top: 0.5555552rem;
+}

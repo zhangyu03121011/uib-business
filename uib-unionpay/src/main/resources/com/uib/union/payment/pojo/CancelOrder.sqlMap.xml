@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uib.union.payment.pojo.CancelOrder">
+
+
+	<resultMap type="cancelOrder" id="cancelOrderMap">
+		<result property="id" column="ID"  />
+		<result property="cancelOrderNo" column="CANCEL_ORDER_NO"  />
+		<result property="paymentNo" column="PAYMENT_NO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="cancelState" column="CANCEL_STATE" />
+		<result property="remark" column="REMARK" />
+		<result property="cancelAmt" column="CANCEL_AMT" />
+		<result property="notifyUrl" column="NOTIFY_URL" />
+		<result property="threePaymentNo" column="THREE_PAYMENT_NO" />
+		<result property="payType" column="PAY_TYPE" />
+		<result property="cancelDate" column="CANCEL_DATE" />
+	</resultMap>
+	
+	
+	
+	
+	
+	<sql id="cancelOrder_Column_List">
+	  ID,CANCEL_ORDER_NO, PAYMENT_NO,ORDER_NO,CANCEL_STATE,REMARK,CANCEL_AMT,NOTIFY_URL,THREE_PAYMENT_NO,PAY_TYPE,CANCEL_DATE
+	</sql>
+
+	<select id="getCancelOrderByPaymentNo" parameterType="String" resultMap="cancelOrderMap" >
+	    SELECT <include refid="cancelOrder_Column_List"/> 
+	    FROM CANCEL_ORDER cancelOrder WHERE cancelOrder.PAYMENT_NO = #{paymentNo} 
+	</select>
+	
+	
+	
+	<update id="updateCancelOrder" parameterType="map">
+	    UPDATE CANCEL_ORDER cancelOrder 
+	    <set>
+	        <if test="threePaymentNo != null and threePaymentNo != ''">
+	            cancelOrder.THREE_PAYMENT_NO = #{threePaymentNo, jdbcType=VARCHAR}, 
+	        </if>
+	        <if test="cancelState != null and cancelState != ''">
+	            cancelOrder.CANCEL_STATE = #{cancelState, jdbcType=VARCHAR}, 
+	        </if>
+	    </set>
+	    WHERE cancelOrder.PAYMENT_NO = #{paymentNo}
+	</update>
+	
+
+	<insert id="saveCancelOrder" parameterType="cancelOrder"
+		statementType="CALLABLE">
+		<![CDATA[
+		INSERT INTO CANCEL_ORDER
+		  (
+		  	  CANCEL_ORDER_NO,
+	          PAYMENT_NO,
+	          ORDER_NO,
+	          CANCEL_STATE,
+	          REMARK,
+	          CANCEL_AMT,
+	          NOTIFY_URL,
+	          THREE_PAYMENT_NO,
+	          PAY_TYPE,
+	          CANCEL_DATE
+         )
+		VALUES(#{cancelOrderNo,jdbcType=VARCHAR},#{paymentNo,jdbcType=VARCHAR},
+		#{orderNo,jdbcType=VARCHAR},#{cancelState,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},#{cancelAmt,jdbcType=NUMERIC},
+		#{notifyUrl,jdbcType=VARCHAR},#{threePaymentNo,jdbcType=VARCHAR},
+		#{payType,jdbcType=VARCHAR},#{cancelDate,jdbcType=TIMESTAMP})
+		 ]]>
+	</insert>	
+	
+	
+</mapper>

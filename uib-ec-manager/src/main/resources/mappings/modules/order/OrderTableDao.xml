@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableDao">
+    <resultMap type="com.uib.ecmanager.modules.order.entity.OrderTable" id="orderTable_orderTableItem_result">
+    	<result column="id" property="id"/>
+    	<result column="orderNo" property="orderNo"/>
+    	<result column="address" property="address"/>
+    	<result column="amountPaid" property="amountPaid"/>
+    	<result column="areaName" property="areaName"/>
+    	<result column="consignee" property="consignee"/>
+    	<result column="couponDiscount" property="couponDiscount"/>
+    	<result column="expire" property="expire"/>
+    	<result column="fee" property="fee"/>
+    	<result column="freight" property="freight"/>
+    	<result column="operator" property="operator"/>
+    	<result column="invoiceTitle" property="invoiceTitle"/>
+    	<result column="isAllocatedStock" property="isAllocatedStock"/>
+    	<result column="isInvoice" property="isInvoice"/>
+    	<result column="lockExpire" property="lockExpire"/>
+    	<result column="memo" property="memo"/>
+    	<result column="memMember.id" property="memMember.id"/>
+    	<result column="offsetAmount" property="offsetAmount"/>
+    	<result column="orderStatus" property="orderStatus"/>
+    	<result column="paymentMethodName" property="paymentMethodName"/>
+    	<result column="paymentStatus" property="paymentStatus"/>
+    	<result column="phone" property="phone"/>
+    	<result column="point" property="point"/>
+    	<result column="promotion" property="promotion"/>
+    	<result column="promotionDiscount" property="promotionDiscount"/>
+    	<result column="shippingMethodName" property="shippingMethodName"/>
+    	<result column="shippingStatus" property="shippingStatus"/>
+    	<result column="tax" property="tax"/>
+    	<result column="exceptionRemarks" property="exceptionRemarks"/>
+    	<result column="isRemarks" property="isRemarks"/>
+    	<result column="zipCode" property="zipCode"/>
+    	<result column="area" property="area"/>
+    	<result column="couponCode.id" property="couponCode.id"/>
+    	<result column="paymentMethod.id" property="paymentMethod.id"/>
+    	<result column="shippingMethod.id" property="shippingMethod.id"/>
+    	<result column="userName" property="userName"/>
+    	<result column="distributorName" property="distributorName"/>
+    	<result column="distributorPhone" property="distributorPhone"/>
+    	<result column="orderSource" property="orderSource"/>
+    	<result column="shippingDate" property="shippingDate"/>
+    	<result column="createBy.id" property="createBy.id"/>
+    	<result column="createDate" property="createDate"/>
+    	<result column="updateBy.id" property="updateBy.id"/>
+    	<result column="updateDate" property="updateDate"/>
+    	<result column="remarks" property="remarks"/>
+    	<result column="delFlag" property="delFlag"/>
+    	<result column="supplierName" property="supplierName"/>
+    	<collection property="orderTableItemList" javaType="ArrayList" 
+    	ofType="com.uib.ecmanager.modules.order.entity.OrderTableItem">
+    		<result column="i_id" property="id"/>
+    		<result column="orderTable.id" property="orderTable.id"/>
+    		<result column="fullName" property="fullName"/>
+    		<result column="isGift" property="isGift"/>
+    		<result column="name" property="name"/>
+    		<result column="price" property="price"/>
+    		<result column="quantity" property="quantity"/>
+    		<result column="returnQuantity" property="returnQuantity"/>
+    		<result column="shippedQuantity" property="shippedQuantity"/>
+    		<result column="product.id" property="product.id"/>
+    		<result column="thumbnail" property="thumbnail"/>
+    		<result column="weight" property="weight"/>
+    		<result column="orderNo" property="orderNo"/>
+    		<result column="createBy.id" property="createBy.id"/>
+    		<result column="createDate" property="createDate"/>
+    		<result column="updateBy.id" property="updateBy.id"/>
+    		<result column="updateDate" property="updateDate"/>
+    		<result column="remarks" property="remarks"/>
+    		<result column="productType" property="productType"/>
+    		<result column="delFlag" property="delFlag"/>
+    	</collection>
+    </resultMap>
+	<sql id="orderTableColumns">
+		a.id AS "id",
+		a.order_no AS "orderNo",
+		a.address AS "address",
+		a.amount_paid AS "amountPaid",
+		a.area_name AS "areaName",
+		a.consignee AS "consignee",
+		a.coupon_discount AS "couponDiscount",
+		a.expire AS "expire",
+		a.fee AS "fee",
+		a.freight AS "freight",
+		a.operator AS "operator",
+		a.invoice_title AS "invoiceTitle",
+		a.is_allocated_stock AS "isAllocatedStock",
+		a.is_invoice AS "isInvoice",
+		a.lock_expire AS "lockExpire",
+		a.memo AS "memo",
+		a.member_no AS "memMember.id",
+		a.offset_amount AS "offsetAmount",
+		a.order_status AS "orderStatus",
+		a.payment_method_name AS "paymentMethodName",
+		a.payment_status AS "paymentStatus",
+		a.phone AS "phone",
+		a.point AS "point",
+		a.promotion AS "promotion",
+		a.promotion_discount AS "promotionDiscount",
+		a.shipping_method_name AS "shippingMethodName",
+		a.shipping_status AS "shippingStatus",
+		a.tax AS "tax",
+		a.exception_remarks AS "exceptionRemarks",
+		a.is_remarks AS "isRemarks",
+		a.zip_code AS "zipCode",
+		a.area AS "area",
+		a.coupon_code AS "couponCode",
+		a.payment_method AS "paymentMethod.id",
+		a.shipping_method AS "shippingMethod.id",
+		a.user_name AS "userName",
+		a.distributor_name AS "distributorName",
+		a.distributor_phone AS "distributorPhone",
+		a.order_source AS "orderSource",
+		a.shipping_date AS "shippingDate",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+<!-- 		supplier_name AS "supplierName", -->
+		a.member_no AS "memberNo"
+	</sql>
+	
+	<sql id="orderTableJoins">
+		
+	</sql>
+    
+	<select id="get" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="findOrderTableByOrderNo" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		WHERE a.order_no = #{orderNo} AND a.del_flag = 0
+	</select>
+	
+	<select id="findList" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		<where>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="orderSource!=null and orderSource!=''">
+				AND a.order_source = #{orderSource}
+			</if>
+			<if test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status = #{orderStatus}
+			</if>
+<!-- 			<if test="supplierName != null and supplierName != ''"> -->
+<!-- 				AND supplier_name = CONCAT(CONCAT(#{supplierName},"%"),"%") -->
+<!-- 			</if> -->
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListItem" resultMap="orderTable_orderTableItem_result">
+		SELECT 
+			a.id ,
+			a.order_no AS "orderNo",
+			a.address AS "address",
+			a.amount_paid AS "amountPaid",
+			a.area_name AS "areaName",
+			a.consignee AS "consignee",
+			a.coupon_discount AS "couponDiscount",
+			a.expire AS "expire",
+			a.fee AS "fee",
+			a.freight AS "freight",
+			a.operator AS "operator",
+			a.invoice_title AS "invoiceTitle",
+			a.is_allocated_stock AS "isAllocatedStock",
+			a.is_invoice AS "isInvoice",
+			a.lock_expire AS "lockExpire",
+			a.memo AS "memo",
+			a.member_no AS "memMember.id",
+			a.offset_amount AS "offsetAmount",
+			a.order_status AS "orderStatus",
+			a.payment_method_name AS "paymentMethodName",
+			a.payment_status AS "paymentStatus",
+			a.phone AS "phone",
+			a.point AS "point",
+			a.promotion AS "promotion",
+			a.promotion_discount AS "promotionDiscount",
+			a.shipping_method_name AS "shippingMethodName",
+			a.shipping_status AS "shippingStatus",
+			a.tax AS "tax",
+			a.exception_remarks AS "exceptionRemarks",
+			a.is_remarks AS "isRemarks",
+			a.zip_code AS "zipCode",
+			a.area AS "area",
+			a.coupon_code AS "couponCode.id",
+			a.payment_method AS "paymentMethod.id",
+			a.shipping_method AS "shippingMethod.id",
+			a.user_name AS "userName",
+			a.distributor_name AS "distributorName",
+			a.distributor_phone AS "distributorPhone",
+			a.order_source AS "orderSource",
+			a.shipping_date AS "shippingDate",
+			a.create_by AS "createBy.id",
+			a.create_date AS "createDate",
+			a.update_by AS "updateBy.id",
+			a.update_date AS "updateDate",
+			a.remarks AS "remarks",
+			a.del_flag AS "delFlag",
+			i.id as "i_id",
+			i.order_table_id AS "orderTable.id",
+			i.full_name AS "fullName",
+			i.is_gift AS "isGift",
+			i.name AS "name",
+			i.price AS "price",
+			i.quantity AS "quantity",
+			i.return_quantity AS "returnQuantity",
+			i.shipped_quantity AS "shippedQuantity",
+			i.order_type AS "productType",
+			s.company_name AS "supplierName",
+			i.goods_no AS "product.id"
+		FROM 
+			order_table AS a 
+		LEFT JOIN 
+			order_table_item AS i 
+		ON 
+			a.id=i.order_table_id
+		LEFT JOIN
+			supplier s
+		ON 
+			a.`supplier_id` = s.`id`
+		<where>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="orderSource!=null and orderSource!=''">
+				AND a.order_source = #{orderSource}
+			</if>
+			<if test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status = #{orderStatus}
+			</if>
+			<if test="supplierId != null and supplierId != ''">
+				AND a.supplier_id = #{supplierId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderSource!=null and orderSource!=''">
+				AND a.order_source = #{orderSource}
+			</if>
+			<if test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status = #{orderStatus}
+			</if>
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table(
+			id,
+			order_no,
+			address,
+			amount_paid,
+			area_name,
+			consignee,
+			coupon_discount,
+			expire,
+			fee,
+			freight,
+			operator,
+			invoice_title,
+			is_allocated_stock,
+			is_invoice,
+			lock_expire,
+			memo,
+			member_no,
+			offset_amount,
+			order_status,
+			payment_method_name,
+			payment_status,
+			phone,
+			point,
+			promotion,
+			promotion_discount,
+			shipping_method_name,
+			shipping_status,
+			tax,
+			exception_remarks,
+			is_remarks,
+			zip_code,
+			area,
+			coupon_code,
+			payment_method,
+			shipping_method,
+			user_name,
+			distributor_name,
+			distributor_phone,
+			order_source,
+			shipping_date,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderNo},
+			#{address},
+			#{amountPaid},
+			#{areaName},
+			#{consignee},
+			#{couponDiscount},
+			#{expire},
+			#{fee},
+			#{freight},
+			#{operator},
+			#{invoiceTitle},
+			#{isAllocatedStock},
+			#{isInvoice},
+			#{lockExpire},
+			#{memo},
+			#{memMember.id},
+			#{offsetAmount},
+			#{orderStatus},
+			#{paymentMethodName},
+			#{paymentStatus},
+			#{phone},
+			#{point},
+			#{promotion},
+			#{promotionDiscount},
+			#{shippingMethodName},
+			#{shippingStatus},
+			#{tax},
+			#{exceptionRemarks},
+			#{isRemarks},
+			#{zipCode},
+			#{area},
+			#{couponCode},
+			#{paymentMethod.id},
+			#{shippingMethod.id},
+			#{userName},
+			#{distributorName},
+			#{distributorPhone},
+			#{orderSource},
+			#{shippingDate},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table SET 	
+			order_no = #{orderNo},
+			address = #{address},
+			amount_paid = #{amountPaid},
+			area_name = #{areaName},
+			consignee = #{consignee},
+			coupon_discount = #{couponDiscount},
+			expire = #{expire},
+			fee = #{fee},
+			freight = #{freight},
+			operator = #{operator},
+			invoice_title = #{invoiceTitle},
+			is_allocated_stock = #{isAllocatedStock},
+			is_invoice = #{isInvoice},
+			lock_expire = #{lockExpire},
+			memo = #{memo},
+			member_no = #{memMember.id},
+			offset_amount = #{offsetAmount},
+			order_status = #{orderStatus},
+			payment_method_name = #{paymentMethodName},
+			payment_status = #{paymentStatus},
+			phone = #{phone},
+			point = #{point},
+			promotion = #{promotion},
+			promotion_discount = #{promotionDiscount},
+			shipping_method_name = #{shippingMethodName},
+			shipping_status = #{shippingStatus},
+			tax = #{tax},
+			exception_remarks = #{exceptionRemarks},
+			is_remarks = #{isRemarks},
+			zip_code = #{zipCode},
+			area = #{area},
+			coupon_code = #{couponCode},
+			payment_method = #{paymentMethod.id},
+			shipping_method = #{shippingMethod.id},
+			user_name = #{userName},
+			distributor_name = #{distributorName},
+			distributor_phone = #{distributorPhone},
+			order_source = #{orderSource},
+			shipping_date = #{shippingDate},
+			create_by = #{createBy.id},
+			create_date = #{createDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="queryRecommendMeberByOrderNoAndProductId" parameterType="string" resultType="map">
+		SELECT 
+		 	t2.id AS "recommendMemberId",
+		 	t2.username AS "recommendMeberName",
+		 	t2.phone AS "phone"
+		FROM
+		  	recommend_product_log t 
+	  	LEFT JOIN 
+	  		mem_member t2 
+	    ON 
+	    	t.recommend_member_id = t2.id 
+		WHERE 
+			t.order_no = #{orderNo}
+		AND
+			t.product_id = #{productId}
+	</select>
+</mapper>

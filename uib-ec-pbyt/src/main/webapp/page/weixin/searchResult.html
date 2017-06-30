@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>搜索结果</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+.ui-loader-default{ display:none}
+.ui-mobile-viewport{ border:none;}
+.ui-page {padding: 0; margin: 0; outline: 0} 
+</style>
+</head>
+
+<body>
+<!-- 搜索 -->
+<div class="search-box">
+	<div class="input-box-tre">
+		<input type="text" placeholder="搜索商品分类、名称、品牌、功效" id ="searchkey">
+	</div>
+</div>
+<!-- 切换 -->
+<div class="tab  mt3">
+	<input id="menu-index" type="hidden" value="0"/>
+	<input id="firstPriceSelect" type="hidden" value="true"/>
+	<input id="doublePriceSelect" type="hidden" value="false"/>
+	<input id="firstSalesSelect" type="hidden" value="true"/>
+	<input id="doubleSalesSelect" type="hidden" value="false"/>
+     <ul class="tab-bar" id="tags">
+        <li class="tab-bar-group">
+	        <span class="tab-bar-item hover"><a href="javascript:void(0)">最新</a></span>
+	        <span class="tab-bar-item sequence"><a href="javascript:void(0)" id="price-href">价格</a></span>
+	        <span class="tab-bar-item sequence"><a href="javascript:void(0)" id="sales-href">销量</a></span>
+	       <!--  <span class="tab-bar-item sequence"><a href="javascript:void(0)">人气</a></span> -->
+        </li>
+    </ul>
+  
+    <div id="tagContent">
+    	<!-- 最新一 -->
+        <div class="tab-group" style="display:block">
+        	<input id="all-product-page" type="hidden" value="1"/>
+            <ul id="all-product-ul">
+            </ul>
+        </div>
+        
+        <!-- 价格-->
+        <div class="tab-group">
+        	<input id="price-page" type="hidden" value="1"/>
+            <ul id="price-ul">
+            </ul>
+        </div>
+        
+        <!-- 销量 -->
+        <div class="tab-group">
+        	<input id="sales-page" type="hidden" value="1"/>
+            <ul id="sales-ul"> 
+            </ul>
+        </div>
+        
+        <!-- 人气 -->
+        <!-- <div class="tab-group">
+        	<input id="merchandise-page" type="hidden" value="1"/>
+            <ul id="merchandise-ul">
+            </ul>
+        </div> -->
+    </div>
+</div>
+<!-- 底部快捷菜单 -->
+<div class="quick-cat"><a href="cart.html" data-ajax="false"><i></i></a></div>
+<!-- <div class="quick-top"><a href="#" onclick="goTop()"><i></i></a></div> -->
+<div id="returnTop" style="display:none;"></div>
+
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/searchResult.js"></script>
+</body>
+</html>

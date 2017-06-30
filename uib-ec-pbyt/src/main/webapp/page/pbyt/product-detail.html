@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<link rel="stylesheet" type="text/css" href="js/lib/swiper-3.3.1.change.css">
+<link rel="stylesheet" type="text/css" href="js/lib/mobile-select-area.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<title>商品详情</title>
+
+
+</head>
+<body class="product-detail-page">
+<header>
+	<div class="top-bar-container">
+        <div class="title" id="fullName"><a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a></div>
+
+       
+    </div>
+</header>
+<section class="app-body">
+	<!-- 产品banner -->
+	<div class="swiper-container index-banner">
+  		<div class="swiper-wrapper" id ="swiperWrapper">
+      		<!-- <div class="swiper-slide"><img src="./images/index-banner1.jpg" /></div>
+        	<div class="swiper-slide"><img src="./images/index-banner1.jpg" /></div>
+        	<div class="swiper-slide"><img src="./images/index-banner1.jpg" /></div> -->
+  		</div>
+  		<div class="banner-pagination"></div>
+	</div>
+
+   <!--  产品info -->
+
+    <div class="product-detail-page-info">
+        <h3 class="title" id="productName"></h3>
+        <div class="price">
+            <span class="discount-price" id="price"></span>
+            <span class="market-price" id="markprice"></span>
+        </div>
+        <div class="sale-info display-flex align-items-center">
+            <div class="flex-1">运费包邮</div>
+            <div class="flex-1 center" id="stock"></div>
+            <div class="flex-1 right" id="sales"></div>
+        </div>
+    </div>
+    <!-- 送货地址star
+    <div class="product-detail-page-select"  id="adressto">
+       <div class="text" id="addressTo">送货至</div>
+       <i class="arrow-right iconfont icon-right"></i>
+   </div> -->
+    <div class="product-detail-page-select"  id="adressto">
+    <div class="ui-form-item select-item text">
+            <label for="#" id="adressTo">选择地区</label>
+            <span class="un-change data-input"  style="color:#333"  check="span" errorMsg="请选择地区"></span>
+            <i class="arrow-right iconfont icon-right"></i>
+            <input type="hidden" name="" id="districtName2" value="广东 深圳" data-value="12,124,3269">
+     </div>
+   </div>
+   <!-- 送货地址end -->
+   <!--  选择产品Star -->
+   <div class="product-detail-page-select" id="detailSelect">
+       <div class="text" id="selectspec" >请选择 商品规格  数量</div>
+       <i class="arrow-right iconfont icon-right"></i>
+   </div>
+   <!--  选择产品end -->
+  <!--  产品内容 -->
+  <div class="product-detail-page-content">
+      <div class="select-title display-flex align-items-center">
+          <div class="flex-1 head-text active" data-name='detail'>商品详情</div>
+          <div class="flex-1 head-text" data-name='spec'>商品参数</div>
+      </div>
+      <div class="select-content">
+          <div class="content-detail" id="tagContent0"></div>
+          <div class="content-spec hide-content" >
+          <table class="app-spec-table" border="1" cellspacing="1" width="100%" id="parmBody">           
+           <tbody><tr><th colspan="2">参数说明</th></tr>
+           
+          </tbody>
+          </table>
+          </div>
+      </div>
+  </div>
+
+</section>
+<footer>
+  <div class='bottom-menu'>
+        <ul class='display-flex align-items-center'>
+          <li class="flex-1 menu-item active">
+            <a href="./index.html" >
+              <i  class="menu-icon iconfont icon-youhui"></i>
+              <div class='text'>优品</div>
+            </a>
+          </li>
+          <li class="flex-1 menu-item">
+            <a  href="./products_list.html">
+              <i type="tablet" class="menu-icon iconfont icon-shangpin"></i>
+              <div class='text'>商品</div>
+            </a>
+          </li>
+          <li class="flex-1 menu-item">
+            <a href="./cart.html">
+              <i  class="menu-icon iconfont icon-gouwuche"></i>
+              <div class='text'>购物车</div>
+            </a>
+          </li>
+          <li class="flex-1 menu-item">
+            <a href="./personal.html">
+              <i type="user" class="menu-icon iconfont icon-wo"></i>
+              <div class='text'>我</div>
+            </a>
+          </li>
+        </ul>
+        </div>
+</footer>
+<!-- 地区选择开始 
+<section class="spec-choose-content" id="adressTrue">
+     <div class="closeIcon" id="adressClose">X</div>
+      <div class="submit-block" id="asideCart">
+           <!--  <button class="submit-btn">提交</button>
+        </div>
+    <div class="content">
+     <div class="ui-form-item select-item">
+            <label for="#">选择地区</label>
+            <span class="un-change data-input"  style="color:#333"  check="span" errorMsg="请选择地区"></span>
+            <i class="arrow-right iconfont icon-right"></i>
+            <input type="hidden" name="" id="districtName2" value="广东 深圳" data-value="12,124,3269">
+        </div>
+    </div>
+</section>
+ -->
+
+<!-- 规格star -->
+<section class="spec-choose-content" id="productDcolor">
+       <div class="closeIcon" id="ColorClose">X</div>
+       <div class="submit-block" id="asideCart">
+           <!--  <button class="submit-btn">提交</button> -->
+        </div>
+     
+    
+    <div class="content">
+        <div class="head">
+            <img src="./images/product-s-01.png" class="pic" id="asideImg"/>
+            <div class="info">
+                <p class="price" id="price2"></p>
+                <p class="store" id="stock2"></p>
+                <p class="text">选择 规格</p>
+            </div>
+        </div>
+        <div id="specList">
+        	<!--  <div class="spec-choose">
+	            <h3 class="title">尺码</h3>
+	            <div class="spec"><span class="selected">S</span><span>M</span><span>L</span></div>
+	        </div>
+	        <div class="spec-choose">
+	            <h3 class="title">颜色</h3>
+	            <div class="spec"><span>藕色</span><span>天蓝色</span></div>
+	        </div> -->
+        </div>
+      
+        <div class="buy-quantity display-flex align-items-center">
+            <div class="flex-1 title">购买数量</div>
+            <div class="block disabled cal sub" data-cal='sub'>-</div>
+            <input type="number" id="BuyNum" name="" class="block num"  value="1" style="width:4em;text-align: center;" maxLength="3"/>
+            <div class="block cal add" data-cal='add'>+</div>
+        </div>
+        
+    </div>
+</section>
+<!-- 规格end -->
+  <nav id="right-nav">
+        <a class="circle close" href="javaScript:">
+            <i class="iconfont icon-error"></i>
+        </a>
+        <div class="nav-wrap">
+            <a href="./index.html">
+                <i class="right-nav-icon iconfont icon-youhui"></i>
+                <div class="title">优品</div>
+            </a>
+            <a href="./products_list.html">
+                <i class="right-nav-icon iconfont icon-shangpin"></i>
+                <div class="title">商品</div>
+            </a>
+            <a href="./personal.html">
+                <i class="right-nav-icon iconfont icon-wo"></i>
+                <div class="title">我</div>
+            </a>
+            <a class="share-action"  id="tuiguang">
+                <i class="right-nav-icon iconfont icon-tuiguang1"></i>
+                <div class="title">推广</div>
+            </a>
+            <a  id="addStore" >
+                <i class="right-nav-icon iconfont icon-jiaruchengguo"></i>
+                <div class="title" >加入</div>
+            </a>
+        </div>
+    </nav>
+<input type="hidden" id="memrId" value="">
+<input type="hidden" id="memId" value="">
+<!--<section class="wx-share-action ">
+  <div class='icon-part display-flex'>
+    <div class="flex-1 icon-box" id="appMsg" ><span class="wx"></span><p>微信好友</p></div>
+    <div class="flex-1 icon-box" id="timeLine"><span class="freinds"></span><p>朋友圈</p></div>
+  </div>
+  <div class="cancle-btn">取消</div>
+</section>  -->
+<section class="share-tips hide">
+  <div class="text-box"></div>
+  <div class="btn-box">
+    <a  class="close-btn"></a>
+  </div>
+</section>
+<section class="bottom-action" id="addCarts">
+  <button class="add-cart-btn"  id="addCart"  onclick="addCartForSpec()">加入购物车</button>
+  <div class="shop-cart">
+   <i class="iconfont icon-gouwuche1"></i>
+    <!--  <span class="label" id="cart_count">0</span>  -->
+  </div>
+</section>
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src="js/lib/swiper-3.3.1.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/lib/frozen.js"></script>
+<script type="text/javascript" src='js/product-detail.js'></script>
+<script type="text/javascript" src='js/lib/mobile-select-area.js'></script>
+<script type="text/javascript" src="js/lib/dialog.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	  touch.on('.share-tips .close-btn','tap',function(){
+		    $('.share-tips').addClass('hide');
+		  });
+		  
+		   touch.on('.share-action','tap',function(){
+		    $('.share-tips').removeClass('hide');
+		  });
+		   
+			
+
+})
+</script>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductSpecificationGroupRefDao">
+    
+	<sql id="productSpecificationGroupRefColumns">
+		a.id AS "id",
+		a.specification_group_id AS "specificationGroupId",
+		a.product_id AS "productId"
+	</sql>
+	
+	<sql id="productSpecificationGroupRefJoins">
+	</sql>
+    
+	<select id="get" resultType="ProductSpecificationGroupRef">
+		SELECT 
+			<include refid="productSpecificationGroupRefColumns"/>
+		FROM product_specification_group_ref a
+		<include refid="productSpecificationGroupRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProductSpecificationGroupRef">
+		SELECT 
+			<include refid="productSpecificationGroupRefColumns"/>
+		FROM product_specification_group_ref a
+		<include refid="productSpecificationGroupRefJoins"/>
+		<where>
+			
+			<if test="specificationGroupId != null and specificationGroupId != ''">
+				AND a.specification_group_id = #{specificationGroupId}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductSpecificationGroupRef">
+		SELECT 
+			<include refid="productSpecificationGroupRefColumns"/>
+		FROM product_specification_group_ref a
+		<include refid="productSpecificationGroupRefJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_specification_group_ref(
+			specification_group_id,
+			product_id
+		) VALUES (
+			#{specificationGroupId},
+			#{productId}
+		)
+	</insert>
+	
+	<insert id="batchSave">
+		INSERT INTO product_specification_group_ref(
+			specification_group_id,
+			product_id
+		) VALUES
+		<foreach collection="productIds" item="productId" index="index" separator=",">
+			<foreach collection="groupIds" item="groupId" index="gIndex" separator=",">
+				(#{groupId},#{productId})	
+			</foreach>
+		</foreach>
+		ON DUPLICATE KEY UPDATE specification_group_id=VALUES(specification_group_id),product_id=(product_id)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_specification_group_ref SET 	
+			specification_group_id = #{specificationGroupId},
+			product_id = #{productId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM product_specification_group_ref
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteByProductId">
+		DELETE FROM product_specification_group_ref
+		<where>
+			product_id = #{productId}
+		</where>
+	</delete>
+	<delete id="batchDeleteByGoodsId">
+		DELETE FROM product_specification_group_ref
+		<where>
+			product_id IN(SELECT id FROM product AS a WHERE a.goods=#{goodsId})
+		</where>
+	</delete>
+	
+	<delete id="batchDeleteByProductIds" parameterType="List">
+		DELETE FROM product_specification_group_ref
+		<where>
+			<choose>
+				<when test="productIds!=null and productIds.size()>0">
+					product_id IN
+					<foreach collection="productIds" open="(" separator="," close=")" item="pid">
+						#{pid}
+					</foreach>
+				</when>
+				<otherwise>
+					0=1
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+</mapper>

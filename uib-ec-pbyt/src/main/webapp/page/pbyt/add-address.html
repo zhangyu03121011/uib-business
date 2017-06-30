@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" type="text/css" href="css/frozen.css">
+
+<link rel="stylesheet" type="text/css" href="js/lib/mobile-select-area.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <title>地址管理</title>
+
+
+</head>
+<body class="address-edit-page">
+<header>
+  <div class="top-bar-container">
+    <a href ="javascript:void(0)" onclick="history.go(-1)" class=" iconfont icon-back top-bar-back" ></a>
+    <div class="title">新增地址</div>
+<!--     <div class="right-text">保存</div> -->
+  </div>
+</header>
+<section class="app-body no-menu ">
+  <div class="ui-form form-content">
+    <form action="" id="addressFrom">
+        <div class="ui-form-item ">
+            <label for="#">收货人</label>
+            <input type="text" name="consignee" id="consignee"  placeholder="请输入收货人的姓名" errorMsg="请输入收货人的姓名">
+        </div>
+        <div class="ui-form-item ">
+            <label for="#">手机号</label>
+            <input type="number" name="phone" id="phone"  placeholder="请输入收货人的手机号" errorMsg="请输入收货人的手机号">
+        </div>
+        <div class="ui-form-item select-item">
+            <label for="#">选择地区</label>
+            <span class="un-change data-input"  style="color:#333"  check="span" errorMsg="请选择地区"></span>
+            <i class="arrow-right iconfont icon-right"></i>
+            <input type="hidden" name="" id="districtName2" value="广东 深圳" data-value="12,124,3269">
+        </div>
+        <!-- <div class="ui-form-item select-item">
+            <label for="#">选择市</label>
+           <span class="un-change">选择城市</span>
+            <i class="arrow-right iconfont icon-icon103-copy"></i>
+        </div>
+        <div class="ui-form-item select-item">
+            <label for="#">选择区</label>
+            <span class="un-change">选择区</span>
+            <i class="arrow-right iconfont icon-icon103-copy"></i>
+        </div> -->
+        <div class="ui-form-item">
+            <label for="#">详细地址</label>
+            <input type="text" name="address"  placeholder="请填写详细地址" errorMsg="请填写详细地址">
+        </div>
+
+    </form>
+</div>
+<div class="set-default app-checkbox">
+  <input type="checkbox" id="set-default">
+  <label for="set-default" class="iconfont"></label>
+  <font>设为默认</font>
+</div>
+
+<div>
+    <button class="new-address-btn" id="new-address-btn">保存</button>
+</div>
+
+</section>
+
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src='js/lib/mobile-select-area.js'></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/lib/dialog.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/add-address.js"></script>
+<script>
+//地址选择	
+
+</script>
+
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title>店铺说明</title>
+	<script type="text/javascript">
+		var observe;
+		if (window.attachEvent) {
+		    observe = function (element, event, handler) {
+		        element.attachEvent('on'+event, handler);
+		    };
+		}
+		else {
+		    observe = function (element, event, handler) {
+		        element.addEventListener(event, handler, false);
+		    };
+		}
+		function init () {
+		    var text = document.getElementById('explain');
+		    function resize () {
+		        text.style.height = 'auto';
+		        text.style.height = text.scrollHeight+'px';
+		    }
+		    function delayedResize () {
+		        window.setTimeout(resize, 0);
+		    }
+		    observe(text, 'change',  resize);
+		    observe(text, 'cut',     delayedResize);
+		    observe(text, 'paste',   delayedResize);
+		    observe(text, 'drop',    delayedResize);
+		    observe(text, 'keydown', delayedResize);
+		    text.focus();
+		    // text.select();
+		    resize();
+		}
+</script>
+</head>
+<body onload="init();" class="main-bg">
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+    <div class="title" id="pageTitle"></div>
+    <div id="complete" class="right-text">完成</div>
+  </div>
+</header>
+<section class="app-body no-menu">
+	<div class="shop-name">
+		<span style="z-index:10;">店铺说明：</span>
+		<textarea cols="" rows="" id="explain" placeholder="请输入店铺说明"  ></textarea>
+	</div>
+</section>
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src='js/alert.js'></script>
+<script type="text/javascript" src='js/shop-explanation.js'></script>
+</html>

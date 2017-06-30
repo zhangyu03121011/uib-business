@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.weixin.dto.CartInfo4Wechat">
+	
+	<resultMap type="com.uib.weixin.dto.CartInfo4Wechat" id="cartInfoResultMap">
+		<id property="cartId" column="id" />
+		<result property="cartItemId" column="cartItemId" />
+		<result property="quantity" column="quantity" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="original_name" />
+		<result property="productFullName" column="original_name" />
+		<result property="stock" column="stock" />
+		<result property="price" column="price" />
+		<result property="marketPrice" column="market_price" />
+		<result property="image" column="image" />
+		<result property="wxIsMarketable" column="wx_is_marketable" />
+		<result property="productType" column="type" />
+		<collection property="productSpecificationList" ofType="ProductSpecification" column="product_id" select="com.uib.product.entity.ProductSpecification.querySpecificationsAndSpecificationGroupByProductId"></collection>
+	</resultMap>
+	
+	<select id="queryCartByUserName" parameterType="Map" resultMap="cartInfoResultMap">
+		SELECT
+			c.id AS 'cartId',
+			ci.id AS 'cartItemId',
+			ci.quantity,
+			ci.product_id,
+			ci.type,
+			p.name,
+			p.original_name,
+			p.stock - p.allocated_stock AS 'stock',
+			ci.price,
+			p.market_price,
+			CONCAT(#{imageUrl},p.image) AS 'image',
+			p.wx_is_marketable
+		FROM
+			cart c 
+		INNER JOIN 
+			cart_item ci 
+			ON c.id = ci.cart_id
+		INNER JOIN 
+			product p 
+			ON ci.product_id = p.id
+		WHERE
+			c.member_id = #{userId}
+		ORDER BY 
+			p.wx_is_marketable DESC,ci.modify_date DESC 
+<!-- 		<if test="pageIndex !=null  and pageSize !=null "> -->
+<!-- 		  	LIMIT #{pageIndex},#{pageSize} -->
+<!-- 		</if> -->
+	</select>
+	
+	<delete id="deleteByCartItemId" parameterType="List">
+		DELETE FROM 
+			cart_item
+		WHERE
+			id in
+			 <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        		#{item}   
+    		</foreach> 
+	</delete>
+	
+</mapper>

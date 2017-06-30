@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uib.product.entity.ProductComment">
+	<resultMap id="BaseResultMap" type="productComment">
+	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="is_guests" property="isGuests" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="order_table_item_id" property="orderTableItemId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="VARCHAR" />
+    <result column="re_user_id" property="reUserId" jdbcType="VARCHAR" />
+    <result column="re_content" property="reContent" jdbcType="VARCHAR" />
+    <result column="re_comment_id" property="reCommentId" jdbcType="VARCHAR" />
+    <result column="content_type" property="contentType" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    </resultMap>
+	<sql id="Base_Column_List" >
+    id, content, ip, is_guests, score, order_table_item_id, product_id, member_id, re_user_id, 
+    re_content, re_comment_id, content_type, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="findCountGroupByProductId"  parameterType="String" resultType="Map">
+  		SELECT  
+		SUM(CASE  WHEN  4<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>5   THEN 1   ELSE 0 END) 'hp',
+		SUM(CASE  WHEN  score =3 	  THEN 1	 ELSE 0 END) 'zp',
+		SUM(CASE  WHEN  1<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>2   THEN 1	 ELSE 0 END) 'cp',
+		SUM(CASE  WHEN  score 	THEN 1	 ELSE 0 END) 'all',
+		AVG(score) 'zongp',
+		CONCAT('width:',AVG(score) * 20,'%;') as scorePercent
+		FROM  product_comment   
+		WHERE   product_id=#{productId}
+	 	GROUP BY  product_id    
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from product_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findById"  parameterType="Map" resultType="Map" >
+  	SELECT
+		pc.id AS 'contentId',
+		pc.member_id AS 'memberId',
+		<!-- mm.username AS 'userName', -->
+		IF (
+			pc.is_guests = 1,
+			CONCAT(
+				LEFT (mm.username, 1),
+				'***',
+				RIGHT (mm.username, 1)
+			),
+			mm.username
+		) AS 'userName',
+		pc.product_id AS 'productId',
+		CONCAT('width:',pc.score * 20,'%;') as scorePercent,
+		pc.content,
+		pc.content_type AS 'contentType',
+		pc.create_by AS 'createBy',
+		pc.create_date AS 'createTime',
+		pc.del_flag AS 'delFlag',
+		pc.is_guests AS 'isGuests',
+		pc.ip,
+		pc.order_table_item_id AS 'orderTableId',
+		pc.remarks,
+		pc.re_comment_id AS 'reCommentId',
+		pc.re_content AS 'reContent',
+		pc.re_user_id AS 'reUserId',
+		pc.update_by AS 'updateBy',
+		pc.update_date AS 'updateTime'
+	FROM
+		product_comment pc
+	LEFT JOIN mem_member mm ON pc.member_id = mm.id
+  	<where>
+	  	pc.product_id = #{productId}  AND pc.del_flag='0'
+	  	<if test="flag==1">
+	 	 	AND  1<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>2 
+	  	</if>
+	  	<if test="flag==2">
+	  		AND score =3 
+	  	</if>
+	  	<if test="flag==3">
+	    	AND	 4<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>5 
+	  	</if>
+  	</where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from product_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.uib.product.entity.ProductComment" >
+   insert into product_comment (id, content, ip, 
+      is_guests, score, order_table_item_id, 
+      product_id, member_id, re_user_id, 
+      re_content, re_comment_id, content_type, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{id,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{isGuests,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, #{orderTableItemId,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{reUserId,jdbcType=VARCHAR}, 
+      #{reContent,jdbcType=VARCHAR}, #{reCommentId,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.uib.product.entity.ProductComment" >
+   insert into product_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="isGuests != null" >
+        is_guests,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="orderTableItemId != null" >
+        order_table_item_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="reUserId != null" >
+        re_user_id,
+      </if>
+      <if test="reContent != null" >
+        re_content,
+      </if>
+      <if test="reCommentId != null" >
+        re_comment_id,
+      </if>
+      <if test="contentType != null" >
+        content_type,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="isGuests != null" >
+        #{isGuests,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="orderTableItemId != null" >
+        #{orderTableItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="reUserId != null" >
+        #{reUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="reContent != null" >
+        #{reContent,jdbcType=VARCHAR},
+      </if>
+      <if test="reCommentId != null" >
+        #{reCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.uib.product.entity.ProductComment" >
+    update product_comment
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="isGuests != null" >
+        is_guests = #{isGuests,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="orderTableItemId != null" >
+        order_table_item_id = #{orderTableItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="reUserId != null" >
+        re_user_id = #{reUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="reContent != null" >
+        re_content = #{reContent,jdbcType=VARCHAR},
+      </if>
+      <if test="reCommentId != null" >
+        re_comment_id = #{reCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        content_type = #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.uib.product.entity.ProductComment" >
+    update product_comment
+    set content = #{content,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      is_guests = #{isGuests,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      order_table_item_id = #{orderTableItemId,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=VARCHAR},
+      re_user_id = #{reUserId,jdbcType=VARCHAR},
+      re_content = #{reContent,jdbcType=VARCHAR},
+      re_comment_id = #{reCommentId,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="queryComment"  parameterType="Map" resultType="Map" >
+   SELECT
+		content AS "content",
+		score AS "score",
+		is_guests AS "isGuests",
+		create_date AS "createDate"
+	FROM
+		product_comment
+	WHERE 
+		product_id =#{productId}
+	AND
+		member_id = #{memberId}
+	AND
+		order_table_item_id =#{orderItemId}
+   </select>
+   
+   <select id="queryLast5Comment"  parameterType="map" resultType="Map" >
+  	SELECT
+		pc.id AS 'contentId',
+		pc.member_id AS 'memberId',
+		<!-- mm.username AS 'userName', -->
+		IF (
+			pc.is_guests = 1,
+			CONCAT(
+				LEFT (mm.username, 1),
+				'***',
+				RIGHT (mm.username, 1)
+			),
+			mm.username
+		) AS 'userName',
+		pc.product_id AS 'productId',
+		CONCAT('width:',pc.score * 20,'%;') as scorePercent,
+		pc.content,
+		pc.content_type AS 'contentType',
+		pc.create_by AS 'createBy',
+		<!-- pc.create_date AS 'createTime', -->
+		date_format(pc.create_date,'%Y-%m-%d %T') AS 'createTime', 
+		pc.del_flag AS 'delFlag',
+		pc.is_guests AS 'isGuests',
+		pc.ip,
+		pc.order_table_item_id AS 'orderTableId',
+		pc.remarks,
+		pc.re_comment_id AS 'reCommentId',
+		pc.re_content AS 'reContent',
+		pc.re_user_id AS 'reUserId',
+		pc.update_by AS 'updateBy',
+		pc.update_date AS 'updateTime'
+	FROM
+		product_comment pc
+	LEFT JOIN mem_member mm ON pc.member_id = mm.id
+  	<where>
+	  	pc.product_id = #{productId}  AND pc.del_flag='0'
+  	</where>
+  	ORDER BY pc.create_date DESC
+  	limit 5
+  </select>
+  
+  <select id="queryCommentByPage"  parameterType="Map" resultType="Map" >
+  	SELECT
+		pc.id AS 'contentId',
+		pc.member_id AS 'memberId',
+		<!-- mm.username AS 'userName', -->
+		IF (
+			pc.is_guests = 1,
+			CONCAT(
+				LEFT (mm.username, 1),
+				'***',
+				RIGHT (mm.username, 1)
+			),
+			mm.username
+		) AS 'userName',
+		pc.product_id AS 'productId',
+		CONCAT('width:',pc.score * 20,'%;') as scorePercent,
+		pc.content,
+		pc.content_type AS 'contentType',
+		pc.create_by AS 'createBy',
+		<!-- pc.create_date AS 'createTime', -->
+		date_format(pc.create_date,'%Y-%m-%d %T') AS 'createTime', 
+		pc.del_flag AS 'delFlag',
+		pc.is_guests AS 'isGuests',
+		pc.ip,
+		pc.order_table_item_id AS 'orderTableId',
+		pc.remarks,
+		pc.re_comment_id AS 'reCommentId',
+		pc.re_content AS 'reContent',
+		pc.re_user_id AS 'reUserId',
+		pc.update_by AS 'updateBy',
+		pc.update_date AS 'updateTime'
+	FROM
+		product_comment pc
+	LEFT JOIN mem_member mm ON pc.member_id = mm.id
+  	<where>
+	  	pc.product_id = #{productId}  AND pc.del_flag='0'
+	  	<if test="flag==1">
+	 	 	AND  1<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>2 
+	  	</if>
+	  	<if test="flag==2">
+	  		AND score =3 
+	  	</if>
+	  	<if test="flag==3">
+	    	AND	 4<![CDATA[ <= ]]> score  AND score <![CDATA[ <= ]]>5 
+	  	</if>
+  	</where>
+  	ORDER BY pc.create_date DESC
+  	LIMIT #{startSize},#{pageSize}
+  </select>
+</mapper>

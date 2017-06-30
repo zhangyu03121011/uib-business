@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.product.entity.SpecificationGroup">
+
+	<sql id="specificationGroupColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.group_no AS "groupNo",
+		a.content_type AS "contentType",
+		a.orders AS "orders",
+		a.product_category_no AS "productCategoryNo",
+		a.merchant_no AS
+		"merchantNo",
+		a.product_category_id AS "productCategoryId",
+		a.create_by
+		AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS
+		"updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="specificationGroupJoins">
+	</sql>
+
+	<select id="get" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<include refid="specificationGroupJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<include refid="specificationGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<include refid="specificationGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="querySpecificationGroupsByCategoryId" parameterType="map"
+		resultMap="groupsResultMap">
+		SELECT a.id AS sid,
+			a.name AS sname,
+			a.content_type AS contentType,
+			a.orders AS orders,
+			a.merchant_no AS merchantNo,
+			a.product_category_id AS productCategoryId,
+			p.id AS pid,
+			p.orders AS porders,
+			p.`name` AS pname,
+			p.file_path AS file_path,
+			p.merchant_no AS pmerchant_no,
+			p.remarks AS remarks 
+		FROM specification_group AS a LEFT JOIN product_specification AS p 
+				ON a.id = p.specification_group_id
+		<where>
+			a.del_flag = '0'
+			<if test="categoryId!=null and categoryId!=''">
+			 	AND a.product_category_id=#{categoryId}
+			</if>
+		</where>
+		order by a.id;
+	</select>
+	
+	<select id="querySpecificationGroupsByProductId" parameterType="java.lang.String" resultType="SpecificationGroup">
+		SELECT 
+			<include refid="specificationGroupColumns"/>
+		FROM specification_group a
+		<where>
+			a.id IN (SELECT DISTINCT(p.specification_group_id) FROM product_specification p LEFT JOIN product_specification_ref ON p.id=product_specification_ref.specification_id
+		<where>
+			product_specification_ref.product_id=#{productId}
+			AND a.del_flag = '0'
+		</where>)
+		</where>
+	</select>
+
+	<resultMap type="com.uib.product.entity.SpecificationGroup"
+		id="groupsResultMap">
+		<id property="id" column="sid" />
+		<result property="name" column="sname" />
+		<result property="contentType" column="contentType" />
+		<result property="orders" column="sorders" />
+		<result property="merchantNo" column="smerchantNo" />
+		<result property="productCategoryId" column="productCategoryId" />
+		<collection property="productSpecificationList"
+			ofType="com.uib.product.entity.ProductSpecification" javaType="ArrayList">
+			<id property="id" column="pid"/>
+			<result property="orders" column="porders"/>
+			<result property="name" column="pname"/>
+			<result property="filePath" column="filePath"/>
+			<result property="merchantNo" column="pmerchantNo"/>
+			<result property="remarks" column="remarks"/>
+		</collection>
+	</resultMap>
+
+</mapper>

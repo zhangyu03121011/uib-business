@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductAreaRefDao">
+    
+	<sql id="productAreaRefColumns">
+		a.id AS "id",
+		a.product_id AS "productId",
+		a.area_id AS "areaId",
+		sa.name AS "area.name",
+		sa.type AS "area.type"
+	</sql>
+	
+	<sql id="productAreaRefJoins">
+		LEFT JOIN sys_area sa ON sa.id = a.area_id
+	</sql>
+    
+	<select id="get" resultType="ProductAreaRef">
+		SELECT 
+			<include refid="productAreaRefColumns"/>
+		FROM product_area_ref a
+		<include refid="productAreaRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findProductAreaRefList" resultType="ProductAreaRef">
+		SELECT 
+			<include refid="productAreaRefColumns"/>
+		FROM product_area_ref a
+		<include refid="productAreaRefJoins"/>
+		WHERE a.product_id = #{productId}
+	</select>
+	
+	<select id="findList" resultType="ProductAreaRef">
+		SELECT 
+			<include refid="productAreaRefColumns"/>
+		FROM product_area_ref a
+		<include refid="productAreaRefJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductAreaRef">
+		SELECT 
+			<include refid="productAreaRefColumns"/>
+		FROM product_area_ref a
+		<include refid="productAreaRefJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_area_ref(
+			id,
+			product_id,
+			area_id
+		) VALUES (
+			#{id},
+			#{productId},
+			#{areaId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_area_ref SET 	
+			product_id = #{product_id},
+			area_id = #{areaId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE product_area_ref SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByProductId">
+		DELETE FROM product_area_ref 
+		WHERE product_id = #{productId}
+	</update>
+	
+	<delete id = "batchDeleteArea" parameterType = "java.lang.String">  
+         DELETE FROM product_area_ref WHERE product_id in  
+        <foreach item="productId" collection = "array" open="(" separator="," close=")">
+       			 #{productId}  
+        </foreach>  
+    </delete>  
+    
+   <insert id="insertProductAreaRef" useGeneratedKeys="true" parameterType="java.util.List">   
+        insert into product_area_ref (id,product_id,area_id)   
+        values  
+         <foreach collection="list" item="item" index="index" 
+            separator=","> (#{item.id},#{item.productId},#{item.areaId})
+        </foreach>  
+    </insert>  
+</mapper>

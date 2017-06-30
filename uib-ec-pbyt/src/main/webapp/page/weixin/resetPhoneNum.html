@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>修改手机号</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="main">
+    <div class="common-wrapper" id="firstStepDiv">
+        <!-- 手机号 -->
+        <div class="phone-no mb1" id="currentPhone"></div>
+        <!-- 手机验证码 -->
+        <div class="reg-name mb1"> 
+            <div class="code-left"><input id="firstMessCode" type="text" placeholder="请输入短信验证码"></div>
+            <div class="code-right"><a href="#" id="firstReceiveCode" onclick="receiveCodeClick(this)">获取验证码</a></div>
+        </div>
+        <!-- 按钮 -->
+        <div class="reg-btn w100"><a id="nextStep">下一步</a></div>
+        <div class="tip-box"><span>*</span>如果您更换手机号码，请尽快修改手机号</div>
+    </div>
+    
+    <div class="common-wrapper" style="display:none" id="secondStepDiv">
+        <!-- 手机号 -->
+        <div class="reg-name mb1"><input id="newPhone" type="text" placeholder="请输入新的手机号"></div>
+        <!-- 手机验证码 -->
+        <div class="reg-name mb1">
+            <div class="code-left"><input id="secondMessCode" type="text" placeholder="请输入短信验证码"></div>
+            <div class="code-right"><a href="#" id="secondReceiveCode" onclick="receiveCodeClick(this)">获取验证码</a></div>
+        </div>
+        <!-- 按钮 -->
+        <div class="reg-btn w100"><a id="submit">完成</a></div>
+        <div class="tip-box"><span>*</span>如果您更换手机号码，请尽快修改手机号</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/resetPhoneNum.js"></script>
+</body>
+</html>

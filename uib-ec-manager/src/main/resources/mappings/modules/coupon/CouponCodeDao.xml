@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.coupon.dao.CouponCodeDao">
+    
+	<sql id="couponCodeColumns">
+		a.id AS "id",
+		a.coupon_id AS "coupon.id",
+		a.code AS "code",
+		a.is_used AS "isUsed",
+		a.used_date AS "usedDate",
+		a.member_id AS "memMember.id",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		b.name AS "coupon.name",
+		m.username AS "memMember.username"
+	</sql>
+	
+	<sql id="couponCodeJoins">
+		LEFT JOIN coupon b ON b.id = a.coupon_id LEFT JOIN mem_member m ON m.id = a.member_id
+	</sql>
+    
+	<select id="get" resultType="CouponCode">
+		SELECT 
+			<include refid="couponCodeColumns"/>
+		FROM coupon_code a
+		<include refid="couponCodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CouponCode">
+		SELECT 
+			<include refid="couponCodeColumns"/>
+		FROM coupon_code a
+		<include refid="couponCodeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="coupon != null and coupon.id != null and coupon.id != ''">
+				AND a.coupon_id = #{coupon.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CouponCode">
+		SELECT 
+			<include refid="couponCodeColumns"/>
+		FROM coupon_code a
+		<include refid="couponCodeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="totalCount" resultType="Integer">
+		SELECT 
+			count(*)
+		FROM coupon_code a
+		WHERE a.del_flag = 0 AND a.coupon_id = #{id}
+	</select>
+	
+	<select id="usedCount" resultType="Integer">
+		SELECT 
+			count(*)
+		FROM coupon_code a
+		WHERE a.del_flag = 0 AND a.coupon_id = #{id}  AND a.is_used = 1;
+	</select>
+	<insert id="insert">
+		INSERT INTO coupon_code(
+			id,
+			coupon_id,
+			code,
+			is_used,
+			used_date,
+			member_id,
+			create_date,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{coupon.id},
+			#{code},
+			#{isUsed},
+			#{usedDate},
+			#{memMember.id},
+			#{createDate},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE coupon_code SET 	
+			coupon_id = #{coupon.id},
+			code = #{code},
+			is_used = #{isUsed},
+			used_date = #{usedDate},
+			member_id = #{memMember.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE coupon_code SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE coupon_id = #{coupon.id}
+			</otherwise>
+		</choose>
+	</update>
+	<select id="count" resultType="CouponCode">
+		SELECT 
+			
+		FROM coupon_code a
+		WHERE del_flag = #{DEL_FLAG_NORMAL} AND a.id = #{id}
+	</select>
+</mapper>

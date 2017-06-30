@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>首页</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.ui-loader-default{ display:none}
+	.ui-mobile-viewport{ border:none;}
+	.ui-page {padding: 0; margin: 0; outline: 0} 
+</style>
+</head>
+
+<body>
+<!-- 搜索 -->
+<div class="search-box">
+	<div class="list-quick">
+		<a href="classification.html" data-ajax="false">
+			<img src="images/list.png"/>
+			分类
+		</a>
+	</div>
+	<div class="input-box">
+		<input type="text" placeholder="搜索商品分类、名称、品牌、功效" onclick="location.href='search.html'">
+	</div>
+</div>
+<!-- banner -->
+<div id="banner_box" class="box_swipe mt3">
+    <ul id="images_url"></ul>
+    <!-- <li>
+        <a onClick="return false;"><img src="images/banner-o.jpg" alt="1" style="width:100%;" /></a>
+     </li> -->
+    <ol>
+        <li class="on"></li>
+        <li ></li>
+        <li ></li>
+    </ol>
+</div>
+<!-- 切换 -->
+<div class="tab-group mb-3" style="display:block">
+			<input id="menu-index" type="hidden" value="0"/>
+			<input id="all-product-page" type="hidden" value="1"/>
+            <ul id="all-product-ul"></ul>
+        </div>
+<!-- 底部快捷菜单 -->
+<div class="quick-cat"><a href="cart.html" data-ajax="false"><i></i></a></div>
+<!-- <div class="quick-top"><a href="#" onclick="goTop()"><i></i></a></div> -->
+<div id="returnTop" style="display:none;"></div>
+
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/swipe-two.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
+</body>
+</html>

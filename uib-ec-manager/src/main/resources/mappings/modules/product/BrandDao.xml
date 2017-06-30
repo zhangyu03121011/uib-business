@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.BrandDao">
+    
+	<sql id="brandColumns">
+		a.id AS "id",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.introduce AS "introduce",
+		a.url AS "url",
+		a.logo AS "logo",
+		a.merchant_no AS "merchantNo",
+		a.product_category_id AS "productCategoryId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		p.name AS "productCategoryName"
+	</sql>
+	
+	<sql id="brandJoins">
+		 LEFT JOIN product_category P ON A.product_category_id = P.id
+	</sql>
+    
+	<select id="get" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId !=null and productCategoryId !=''">
+				AND a.product_category_id = #{productCategoryId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO brand(
+			id,
+			orders,
+			name,
+			introduce,
+			url,
+			logo,
+			merchant_no,
+			product_category_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orders},
+			#{name},
+			#{introduce},
+			#{url},
+			#{logo},
+			#{merchantNo},
+			#{productCategoryId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE brand SET 	
+			orders = #{orders},
+			name = #{name},
+			introduce = #{introduce},
+			url = #{url},
+			logo = #{logo},
+			merchant_no = #{merchantNo},
+			product_category_id = #{productCategoryId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE brand SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="batchDeleteByProductCategoryId">
+		UPDATE brand SET 
+			del_flag = '1'
+		<where>
+			product_category_id = #{productCategoryId} 
+			OR product_category_id IN (SELECT id FROM product_category AS p WHERE p.parent_ids LIKE CONCAT('%',#{productCategoryId},'%') AND p.del_flag='0')
+		</where>
+	</update>
+	
+</mapper>

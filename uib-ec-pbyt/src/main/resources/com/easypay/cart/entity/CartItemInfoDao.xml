@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.cart.entity.CartItemInfo">
+	
+	<select id="queryPriceByProductId" resultType="com.uib.cart.entity.CartItemInfo" parameterType="java.util.List">
+		SELECT
+			i.cart_id AS 'cartId',
+			i.product_id as 'productId',
+			p.price as 'productPrice'
+		FROM
+			cart_item i
+		LEFT JOIN product p ON i.product_id = p.id
+		WHERE i.cart_id in
+					<foreach collection="list" item="item" index="index" open="(" separator="," close=")">  
+		   			   #{item.cartId,jdbcType=VARCHAR}
+		   			</foreach>
+			
+	</select>
+	
+	<update id="batchUpdatePrice" parameterType="java.util.List">
+       <!--  begin
+        <foreach collection="list" item="item" index="index" separator="" > 
+            update cart_item 
+            <set>       
+                price = (SELECT
+								price
+							FROM
+								product p
+							WHERE
+								id = #{item.productId})
+            </set>
+            where cart_id = #{item.cartId}
+              and product_id = #{item.productId};
+        </foreach>
+        end; -->
+        
+        <foreach collection="list" item="item" index="index" separator=";" open="" close="" >
+            update cart_item 
+            <set>       
+                price = #{item.productPrice}
+            </set>
+            <where>
+           	 	cart_id = #{item.cartId} and
+               product_id = #{item.productId}
+            </where> 
+        </foreach>
+    </update>
+    
+     <update id="updatePrice">
+   		UPDATE cart_item
+		SET price = #{productPrice}
+		WHERE
+			cart_id = #{cartId} and
+			product_id = #{productId}
+    </update>
+    
+    <select id="queryProductNumberByIdAndUserName" resultType="Map" parameterType="Map">
+		SELECT
+			m.username  AS 'userName',
+			ci.product_id AS 'productId',
+			ci.quantity AS 'count'
+		FROM
+			mem_member m
+		INNER JOIN cart ct ON m.id = ct.member_id
+		INNER JOIN cart_item ci ON ct.id = ci.cart_id
+		WHERE
+			m.username = #{userName}
+		AND ci.product_id = #{productId}
+	</select>
+	
+	<select id="queryProductNumberByUserName" resultType="Map" parameterType="Map">
+		SELECT
+			SUM(ci.quantity) AS 'count'
+		FROM
+			mem_member m
+		INNER JOIN cart ct ON m.id = ct.member_id
+		INNER JOIN cart_item ci ON ct.id = ci.cart_id
+		WHERE
+			m.username = #{userName}
+	</select>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd
+">
+	<!-- ===============   begin 商品lucuen 添加索引定时器 ============================ -->
+	<!-- 方式二：使用MethodInvokingJobDetailFactoryBean，任务类可以不实现Job接口，通过targetMethod指定调用方法 -->
+	<!-- 定义目标bean和bean中的方法 -->
+	<!-- <bean id="springQtzJobMethod"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="productLoadTask" />
+		</property>
+		<property name="targetMethod">  要执行的方法名称
+			<value>execute</value>
+		</property>
+	</bean> -->
+	<!-- ======================== 调度触发器 ======================== -->
+	<!-- <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="springQtzJobMethod"></property>
+		<property name="cronExpression" value="0 0/20 * * * ?"></property>
+	</bean> -->
+	<!-- ===============   end 商品lucuen 添加索引定时器 ============================ -->
+	
+	
+	<!--  ================= begin 每30分钟调用一次 订单处理订时任务 ====================== -->
+	<!--   <bean id="orderTableTimeTaskJob" class="com.easypay.quartz.OrderTableTimeTask" /> --> 
+	<bean id="orderSignforMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"  ref="orderTableTimeTask"/>
+		<property name="targetMethod" value="init" />
+	</bean>
+	
+	<bean id="orderSignforBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="orderSignforMethod"/>
+		<property name="cronExpression" value="0 */30 * * * ?"/>
+	</bean>  
+	<!--  ================= end 订单处理订时任务 ====================== -->
+	
+	<!--   begin 推荐用户结算佣金定时任务  -->
+	<bean id="settleCommissionMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"  ref="settleCommissionTask"/>
+		<property name="targetMethod" value="settleCommission" />
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="settleCommissionBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="settleCommissionMethod"/>
+		<!-- 每天凌晨1点运行 -->
+		<property name="cronExpression" value="0 0 1 * * ?"/>
+	</bean>  
+	<!--   end 推荐用户结算佣金定时任务 -->
+	
+	<!--   begin 普通用户结算贡献值定时任务  -->
+	<bean id="customerCommissionMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"  ref="customerCommissionSettleTask"/>
+		<property name="targetMethod" value="customerCommission" />
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="customerCommissionBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="customerCommissionMethod"/>
+		<!-- 每天凌晨3点运行 -->
+		<property name="cronExpression" value="0 0 3 * * ?"/>
+	</bean>  
+	<!--   end 普通用户结算贡献值定时任务 -->
+	
+	<!--   begin 结算佣金记录状态变为1未结算  -->
+	<bean id="orderCommissionSettleMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"  ref="orderCommissionSettleTask"/>
+		<property name="targetMethod" value="orderCommissionSettle" />
+		<property name="concurrent" value="false"/>
+	</bean>
+	<!-- 每天23点运行 -->
+	<bean id="orderCommissionSettleBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="orderCommissionSettleMethod"/>
+		<property name="cronExpression" value="0 0 23 * * ?"/>
+	</bean>  
+	<!--   end 结算佣金记录状态变为1未结算 -->
+
+	<!-- ======================== 调度工厂 ======================== -->
+	<bean id="springJobSchedulerFactoryBean"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="cronTriggerBean" /> -->
+				  <ref bean="orderSignforBean" />  
+				   <ref bean="settleCommissionBean" />  
+				   <ref bean="orderCommissionSettleBean" />
+			       <ref bean="customerCommissionBean" />  
+			</list>
+		</property>
+	</bean>
+	
+</beans>

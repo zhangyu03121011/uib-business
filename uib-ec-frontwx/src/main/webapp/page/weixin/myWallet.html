@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>我的钱包</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+</head>
+
+<body>
+<div class="brokerage-stati" id="CommissionInput">
+</div>
+<ul class="brokerage-tab">
+<li class="hover">已结算</li>
+<li>未结算</li>
+</ul>
+<!-- 已结算内容 -->
+<div class="brokerage-cen mb-3" style="display:block" id ="Settled">
+</div>
+<!-- 未结算内容 -->
+<div class="brokerage-cen" id="Notsettled">
+</div>
+<div class="select-all">
+<a href="javascript:void(0)" onclick="del()">删除</a>
+<div class="checkboxFive">
+	  	<input type="checkbox" value="1" id="checkAll" onclick="checkAll()" checked="checked"/>
+	  	<label for="checkAll"></label>
+  	</div>
+    <span>全选</span>
+</div>
+
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/swipe-two.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/myWallet.js"></script>
+</body>
+</html>
+<!-- table -->

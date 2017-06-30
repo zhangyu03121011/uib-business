@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.GiftItemDao">
+    
+	<sql id="giftItemColumns">
+		a.id AS "id",
+		a.quantity AS "quantity",
+		a.product_id AS "productId",
+		a.promotion_id AS "promotionId",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate"
+	</sql>
+	
+	<sql id="giftItemJoins">
+	</sql>
+    
+	<select id="get" resultType="GiftItem">
+		SELECT 
+			<include refid="giftItemColumns"/>
+		FROM gift_item a
+		<include refid="giftItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GiftItem">
+		SELECT 
+			<include refid="giftItemColumns"/>
+		FROM gift_item a
+		<include refid="giftItemJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GiftItem">
+		SELECT 
+			<include refid="giftItemColumns"/>
+		FROM gift_item a
+		<include refid="giftItemJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO gift_item(
+			id,
+			quantity,
+			product_id,
+			promotion_id,
+			create_date,
+			modify_date
+		) VALUES (
+			#{id},
+			#{quantity},
+			#{productId},
+			#{promotionId},
+			#{createDate},
+			#{modifyDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE gift_item SET 	
+			quantity = #{quantity},
+			product_id = #{productId},
+			promotion_id = #{promotionId},
+			modify_date = #{modifyDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM gift_item
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>订单列表</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-eee">
+<!-- 切换 -->
+<div class="tab">
+    <ul class="tab-bar" id="tags">
+        <li class="tab-bar-group">
+            <span class="tab-bar-item hover"><a id="orderPay" href="javascript:void(0)" onclick="orderPay.initTable()">待付款</a></span>
+            <span class="tab-bar-item"><a id="orderReceive" href="javascript:void(0)" onclick="orderReceive.initTable()">待发货</a></span>
+            <span class="tab-bar-item"><a id="orderDelivery" href="javascript:void(0)" onclick="orderDelivery.initTable()">待收货</a></span>
+            <span class="tab-bar-item"><a id="orderOld" href="javascript:void(0)" onclick="orderHistory.initTable()">历史订单</a></span>
+        </li>
+    </ul>
+    <div id="tagContent">
+    	<!-- 列表内容区一 -->
+        <div class="tab-group" style="display:block">
+			<ul class="order-list">
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="pop-up-box">
+    <div class="title">操作<a href="javascript:;" title="关闭" class="close close-tip"><img src="images/close.png"/></a></div>
+    <div class="content">
+    	<!-- 支付按钮 -->
+        <div class="payment-box"><a class="add-btn reen-btn" href="javascript:void(0)" id="wx_pay_btn">微信支付</a></div>
+        <input type="hidden" id="order_no"/>
+    </div>
+</div>
+<div class="theme-popover-mask"></div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="order-receive.js"></script>
+<script type="text/javascript" src="order-delivery.js"></script>
+<script type="text/javascript" src="order-history.js"></script>
+<script type="text/javascript" src="order-pay.js"></script>
+</body>
+</html>
+<!-- table -->
+<script type="text/javascript">
+$(".tab-bar-item").click(function(){
+		$(".tab-bar-item").removeClass("hover");
+		$(this).addClass("hover");
+		//$("#tagContent .tab-group").hide();
+		//$("#tagContent .tab-group").eq($(this).index()).show();
+	});
+	
+$(document).ready(function(){
+	var flag = URL_PARAM.getParam("flag");
+	if(flag != '' && flag != null){
+		$("#"+flag).click();
+	}
+});
+
+</script>

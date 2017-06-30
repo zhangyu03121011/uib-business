@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.product.entity.Brand">
+    
+	<sql id="brandColumns">
+		a.id AS "id",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.introduce AS "introduce",
+		a.url AS "url",
+		a.logo AS "logo",
+		a.merchant_no AS "merchantNo",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="brandJoins">
+	</sql>
+    
+	<select id="get" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		<where>
+			a.del_flag = '0'
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<include refid="brandJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryBrandByCategoryId" parameterType="map" resultType="Brand">
+		SELECT 
+			<include refid="brandColumns"/>
+		FROM brand a
+		<where>
+			a.del_flag = '0'
+			<if test="categoryId!=null and categoryId!=''">
+				AND a.product_category_id=#{categoryId}
+			</if>
+		</where>
+	</select>
+</mapper>

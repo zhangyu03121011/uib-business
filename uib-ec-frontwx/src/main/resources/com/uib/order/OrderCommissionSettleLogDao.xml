@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.order.entity.OrderCommissionSettleLog">
+
+	<insert id="insert">
+		INSERT INTO order_commission_settle_log(
+			order_no,
+			status,
+			create_time,
+			update_time
+		) VALUES (
+			#{orderNo},
+			#{status},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<select id="queryOrderAndProductInfo" resultType="Map">
+		SELECT
+			mm.id AS 'memberId',
+			ot.user_name AS 'userName',
+			ot.order_no AS 'orderNo',
+			oti.goods_no AS 'productId',
+			oti.full_name AS 'fullName',
+			oti.quantity AS 'number'
+		FROM
+			order_table ot
+		LEFT JOIN order_table_item oti ON ot.order_no = oti.order_no
+		LEFT JOIN mem_member mm ON ot.user_name = mm.username
+		WHERE
+			ot.order_no IN (
+				SELECT
+					ocsl.order_no
+				FROM
+					order_commission_settle_log ocsl
+				WHERE
+					ocsl.status = 0
+			)
+	</select>
+	
+	<!-- <update id="batchUpdateIsRecorded" parameterType="java.util.List" >
+		<foreach collection="list" item="item" index="index" separator="" > 
+			update order_commission_settle_log
+			<set>
+				status = 1,
+				update_time = NOW()
+			</set>
+				where order_no =#{item.orderNo};
+		</foreach>
+	</update> -->
+	
+	<update id="batchUpdateIsRecorded" parameterType="java.util.List" >
+		UPDATE order_commission_settle_log
+		<set>
+			status = 1,
+			update_time = NOW()
+		</set>
+		WHERE order_no 	IN
+		<foreach collection="list" item="item" index="index" separator="," 	open="(" close=")"> 
+			#{item.orderNo}
+		</foreach>
+	</update>
+
+</mapper>

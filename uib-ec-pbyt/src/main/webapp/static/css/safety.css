@@ -1,0 +1,103 @@
+@charset "utf-8";
+/* 保险 */
+.pro_feature dd,.first_num,.usual_num,.notice_c_temp .last_bg,.notice_c1_tips .num_bg,.qa_list .q_ico,.qa_list .a_ico{ background:url(../images/pro_det_ico.gif) no-repeat}
+.buy_pro_main{width:1200px;margin:0 auto}
+.page_location{line-height:40px}
+.product-intro{border:1px solid #dcdcdc;overflow:auto;margin-bottom:20px}
+.product-intro .pro_big_img{width:400px;}
+.pro_big_img_info{width:758px}
+.pro_big_img_info .title{height:40px;line-height:40px;font-size:16px}
+.pro_big_img_info .title font{font-weight:bold}
+.pro_big_img_info .price{padding:5px 0}
+.pro_big_img_info .price font{font-size:22px;}
+.pro_big_img_info .btn_box{width:100%;height:40px;padding:10px 0 20px 0}
+.pro_big_img_info .btn_box .buybtn{background:#ff7e00;color:#fff;text-align:center;width:150px;height:40px;line-height:40px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;float:left;display:block;text-decoration:none;font-size:16px}
+.pro_big_img_info .btn_box .buybtn:hover{background:#e87300}
+.pro_feature{border-top:dotted 1px #eee}
+.pro_feature dt{line-height:24px;color:#333;font-weight:bold;line-height:24px;padding:12px 0 8px 0;}
+.pro_feature dd{background-position:0 -476px;padding-left:23px;line-height:24px;}
+
+.tab_a{border-bottom:2px solid #1c547d;background:#F7F7F7;height:38px}
+.tab_a li{height:18px;padding: 10px 0;cursor:pointer;float:left;font-size:16px}
+.tab_a li.cut{background:#1c547d}
+.tab_a li.cut a{color:#fff}
+.tab_a li span{border-right:1px solid #C6C6C6;padding: 0 20px;}
+.tab_a li.cut span{color: #fff;border-right-color:transparent;_border-right-color: #F63;}
+.tab_a li.last span{border-right-color: transparent;_border-right-color: #F7F7F7;}
+
+
+.pro_det_con1{border:1px solid #dcdcdc;padding:20px;}
+.pro_det_con1_tips{border-bottom:1px dashed #b5b5b5;line-height:24px;padding-bottom:7px;font-size:14px}
+.bx_item_table{border-top:3px solid #acd377;border-left:1px solid #d7dbd2;border-right:1px solid #d7dbd2;border-bottom:1px solid #d7dbd2;}
+.bx_item_table th{padding:10px;text-align:center;font-size: 16px;background-color: #f7fbf1;}
+.bx_item_table td{padding:8px 15px;line-height:24px;}
+.bx_item_table th, .bx_item_table td {border-right:1px dashed #d2d2d2;border-bottom:1px dashed #d2d2d2;}
+.bx_item_ico{display:block;margin-left:20px;vertical-align:middle;width:32px;min-height:27px;_height:27px;}
+.bx_item_text{display:block;line-height:24px;vertical-align:middle;color:#666;float:none;margin-left:60px;_zoom:1;_display:inline;_margin-left:0;}
+.tac{text-align:center;}
+.b_c_f7fbf1{background-color: #f7fbf1;}
+.bx_item_tips{line-height:26px;padding:5px 0;}
+.bx_item_tips2{padding: 5px 0;}
+.bx_item_table .pl20{padding-left:20px;padding-right:20px;}
+.f_c_2e84ca{color: #2E84CA;}
+a.ano_2e84ca{color:#2E84CA;text-decoration:none;}
+a.a1_j{float: right;background: url(../images/arrow.gif) no-repeat 0 8px;color: #f63;padding-left:18px;text-decoration:underline;}
+.pro_feature dd{background-position:0 -476px;padding-left:23px;line-height:24px;}
+
+/* 投保须知 */
+.b_l5s_f63 {border-left: 5px solid #1c547d;}
+.pro_tit_temp{font-family: "Microsoft Yahei";font-size: 16px;line-height: 20px;padding-left: 8px;margin: 20px 0 10px 0;}
+.fwb{font-weight:bold;}
+.f_c_f63{color:#1c547d;}
+.w160 {width: 160px;}
+.pro_det_box2{border: 1px solid #dcdcdc;padding:20px;}
+.notice_c1{width:716px;}
+.notice_c_temp{background-color:#edf8da;height:70px;}
+.notice_c_temp .num_bg{width: 44px;height: 70px;text-align: center;font-family: Arial, Helvetica, sans-serif;font-size: 24px;font-weight: bold;color: #fff;line-height:70px;}
+.notice_c_temp li{float: left;}
+.first_num{background-position: 0 -134px;}
+.notice_c_temp .item_temp {padding-left: 30px;}
+.notice_c_temp .item_temp, .notice_c_temp .item_temp2 {line-height: 70px;font-weight: bold;font-size: 14px;}
+.usual_num{background-position: -44px -134px;}
+.notice_c_temp .last_bg {float: right;width: 4px;height: 70px;background-position: -88px -134px;}
+.b_t1d_b5b5b5{border-top: 1px dashed #b5b5b5;}
+.notice_c1_tips dt{line-height: 24px;font-weight: bold;margin-top: 15px;font-size: 14px;}
+.notice_c1_tips dd{line-height:24px;text-indent:-26px;padding-left:26px;}
+.notice_c1_tips .num_bg {display: inline-block;vertical-align: middle;width: 13px;height: 14px;line-height: 14px;font-weight: bold;background-position: -118px -214px;color: #fff;padding-left: 3px;text-indent: 0px;}
+
+.qa_list{padding: 17px 0;}
+.b_b1d_b5b5b5{border-bottom: 1px dashed #b5b5b5;}
+.qa_list .q_ico{background-position: -136px -41px;}
+.qa_list .a_ico{background-position: -136px -85px;}
+.qa_list dt {color: #333;font-size: 14px;line-height: 24px;font-weight: bold;}
+.qa_ico{padding-left: 28px;}
+.qa_list dd {line-height: 24px;color: #666;}
+/* 评价 */
+.products_evaluate{height:32px;background:#f5f5f5;line-height:30px}
+.products_evaluate li{float:left;width:auto;padding:0 10px;height:32px;display:block;text-align:center;cursor:pointer;color:#666; line-height:32px}
+.products_evaluate li.hover{color:#666;font-weight:bold;color:#004579;border-bottom:solid 2px #004579;height:30px}
+.products_rating{width:100%;overflow:auto;padding-bottom:10px;position:relative;height:35px}
+.products_rating  span{float:left;line-height:35px;padding-right:5px}
+.products_rating .starbox{float:left;margin:9px 5px 0 0;display:inline-block;width:75px;height:14px}
+.s1,.s2,.s3,.s4,.s5{background:url(../images/orders_icq.png) no-repeat;}
+.s5{background-position:0 -222px}
+.s4{background-position:0 -237px}
+.s3{background-position:0 -252px}
+.s2{background-position:0 -267px}
+.s1{background-position:0 -283px}
+
+.evaluate_content{width:100%;overflow:auto;margin-top:20px}
+.evaluate_content .avatat{width:60px;height:60px;border:solid 1px #ccc;padding:2px}
+.evaluate_content .avatat img{width:60px;height:60px;overflow:auto}
+.evaluate_content dl{ overflow:auto;margin-bottom:20px}
+.evaluate_content dd{float:left;width:66px}
+.evaluate_content dd p{line-height:24px;color:#999}
+.evaluate_content dt{width:1080px;float:left;margin-left:10px;border:solid 1px #ccc}
+.evaluate_content .rating_title{width:1060px;height:30px; border-bottom:dotted 1px #ccc;line-height:30px;padding:0 10px}
+.evaluate_content .rating_title span{float:left;line-height:30px;padding-right:5px}
+.evaluate_content .rating_title font{float:right}
+.evaluate_content .rating_title .starbox{float:left;margin:6px 5px 0 0;display:inline-block;width:75px;height:14px}
+.evaluate_content .experience{width:1060px;padding:10px;line-height:24px}
+.evaluate_content .experience h3{width:100%;padding-bottom:5px}
+.evaluate_content .experience h3 span{ float:right;color:#999;font-size:12px;font-weight:normal}
+.evaluate_content .reply_content{width:858px;padding:10px;border-top:solid 1px #ccc}

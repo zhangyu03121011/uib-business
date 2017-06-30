@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>我的订单</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/popover.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <div class="app-body no-menu" style="padding-top:0px">
+        <!-- 分类开始 -->
+        <div class="flex-row me-status">
+            <a class="flex-item item active" href="#item1" orderStatus = "">全部</a>
+            <a class="flex-item item" href="#wait_pay" orderStatus = "4">待付款</a>
+            <a class="flex-item item" href="#paid_shipped" orderStatus = "5">待发货</a>
+            <a class="flex-item item" href="#shipped" orderStatus = "6">待收货</a>
+            <a class="flex-item item" href="#completed" orderStatus = "2">已完成</div>
+        </div>
+        <!-- 分类结束 -->
+        <div class="me-wrap" id="no-data" style="display: none;">
+            <div class="no-data">
+                <div class="no-data-logo">
+                <span class="iconfont icon-dingdan1"></span></div>
+                <p class="no-data-title">您还没有相关的订单</p>
+                <p class="no-data-title-s">可以去看看有哪些想买的</p>
+            </div>
+        </div>
+        <!-- 订单开始 -->
+        <div id="order-list">
+        	
+    	</div>
+    	<li class='scrimg' style="display:none;"><p class='load_tip' align='center'>正在努力加载数据...</p></li>
+   	</div>
+    <!-- 底部导航 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/touch.js"></script>
+    <script src="./js/alert.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/pbyt/order.js"></script>
+    <script src="./js/pbyt/order-me.js"></script>
+</body>
+
+</html>

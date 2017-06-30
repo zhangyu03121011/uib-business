@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uib.union.payment.pojo.PaymentOrderLog">
+	
+	
+	<resultMap type="paymentOrderLog" id="paymentOrderLogMap">
+		<result property="id" column="ID"  />
+		<result property="paymentNo" column="PAYMENT_NO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="orderAmt" column="ORDER_AMT" />
+		<result property="tranStat" column="TRAN_STAT" />
+		<result property="message" column="MESSAGE" />
+		<result property="payMethod" column="PAY_METHOD" />	
+		<result property="threePaymentNo" column="THREE_PAYMENT_NO" />
+	</resultMap>
+	
+	
+	
+	<sql id="PaymentOrderLog_Column_List">
+	  ID, PAYMENT_NO,ORDER_NO,CREATE_TIME,ORDER_AMT,TRAN_STAT,MESSAGE,PAY_METHOD,THREE_PAYMENT_NO
+	</sql>
+
+	<select id="getPaymentOrderLogById" parameterType="string" resultMap="paymentOrderLogMap" useCache="true">
+	    SELECT <include refid="PaymentOrderLog_Column_List"/> 
+	    FROM PAYMENT_ORDER_LOG polog
+	    <where>
+	        <if test="paymentNo != null and paymentNo != ''">
+	            polog.PAYMENT_NO = #{paymentNo, jdbcType=VARCHAR} 
+	        </if>
+	    </where>
+	</select>
+	
+	
+	
+	
+	<insert id="savePaymentOrderLog" parameterType="paymentOrderLog"
+		statementType="CALLABLE">
+		<![CDATA[
+		INSERT INTO PAYMENT_ORDER_LOG
+		  (
+          PAYMENT_NO,
+          ORDER_NO,
+          CREATE_TIME,
+          ORDER_AMT,
+          TRAN_STAT,
+          MESSAGE,
+          PAY_METHOD,
+          THREE_PAYMENT_NO)
+		VALUES(#{paymentNo,jdbcType=VARCHAR},
+		#{orderNo,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{orderAmt,jdbcType=NUMERIC},
+		#{tranStat,jdbcType=VARCHAR},
+		#{message,jdbcType=VARCHAR},#{payMethod,jdbcType=VARCHAR},
+		#{threePaymentNo,jdbcType=VARCHAR})
+		 ]]>
+	</insert>
+	
+	
+	<update id="updatePaymentOrderLog" parameterType="map">
+	    UPDATE PAYMENT_ORDER_LOG paylog 
+	    <set>
+	        <if test="threePaymentNo != null and threePaymentNo != ''">
+	            paylog.THREE_PAYMENT_NO = #{threePaymentNo, jdbcType=VARCHAR}, 
+	        </if>
+	        
+	        <if test="tranStat != null and tranStat != ''">
+	            paylog.TRAN_STAT = #{tranStat, jdbcType=VARCHAR},
+	        </if>
+	    </set>
+	    where paylog.ORDER_NO = #{orderNo}
+	</update>
+	
+</mapper>

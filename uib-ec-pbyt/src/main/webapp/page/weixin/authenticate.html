@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>实名认证</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="authenticate.js"></script>
+</head>
+
+<body>
+	<div class="order-detail">
+    <!-- 个人信息 -->
+    <div class="personal-inf">
+   	<!-- 真实姓名 -->
+    <div class="sn-block">
+    <div class="input-a wbox bt">
+        <span class="label">真实姓名</span>
+        <div class="wbox-flex ml60">
+        <input id="realName" placeholder="请输入您的真实姓名" type="text">
+        </div>
+        </div>
+    </div>
+    <!-- 身份证号 -->
+    <div class="sn-block">
+	    <div class="input-a wbox bt">
+	        <span class="label">身份证号</span>
+	        <div class="wbox-flex ml60">
+		        <input id="idCard" placeholder="请输入您的身份证号" maxlength="18" type="text">
+	        </div>
+        </div>
+    </div>
+    <!-- 身份证有效期 -->
+    <div class="sn-block">
+	    <div class="input-a wbox bt">
+	        <span class="label">有效期限</span>
+	        <div class="wbox-flex ml60">
+	        	<input id="indate" placeholder="请输入身份证有效期限" type="date">
+	        </div>
+        </div>
+    </div>
+    </div>
+    <!-- 上传照片区 -->
+    <div class="authenticate-box">
+    <P>请上传证件照</P>
+    <ul>
+    <li><p>个人信息所在面</p>
+	    <div class="img-item" id="idCardPositiveImgDiv" style="display: none">
+	    	<div class="close" id="idCardPositiveClose"></div>
+	    	<span><img src="images/sfz.jpg" id="idCardPositiveImg"></span>
+	    </div>
+	    <div class="upload-btn-box" id="idCardPositiveFileDiv">
+	    	<input type="button" id="idCardPositive" class="upload-btn" />
+	    </div>
+    </li>
+    
+    <li><p>国徽图案面</p>
+	    <div class="img-item" id="idCardOppositeImgDiv" style="display: none">
+	    	<div class="close" id="idCardOppositeClose"></div>
+	    	<span><img src="images/sfz.jpg" id="idCardOppositeImg"></span>
+	    </div>
+	    <div class="upload-btn-box" id="idCardOppositeFileDiv">
+	    	<input type="button" id="idCardOpposite" class="upload-btn" />
+	    </div>
+    </li>
+    
+    <li><p>手持证件照</p>
+	    <div class="img-item" id="idCardHandImgDiv" style="display: none">
+	    	<div class="close" id="idCardHandClose"></div>
+	    	<span><img src="images/sfz.jpg" id="idCardHandImg"></span>
+	    </div>
+	    <div class="upload-btn-box" id="idCardHandFileDiv">
+	    	<input type="button" id="idCardHand" class="upload-btn" />
+	    </div>
+    </li>
+    </ul>
+    </div>
+    <!-- 提示 -->
+    <div class="authenticate-tip"><font class="pink">*</font> 上传证件照要求：本人真实身份证；证件必须是清晰彩色原件电子版，可以是扫描件或者数码拍摄照片；手持证件照必须为本人手持自己的身份证拍摄的照片。</div>
+    <!-- 按钮 -->
+    <div><a class="add-btn red-btn" href="#" id="subBtn">提交</a></div>
+    <!-- <div><a class="add-btn red-btn" href="#" id="mapBtn">地图测试</a></div> -->
+    </div>
+</body>
+</html>

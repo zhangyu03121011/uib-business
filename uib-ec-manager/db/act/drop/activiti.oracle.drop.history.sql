@@ -1,0 +1,24 @@
+drop index act_idx_hi_pro_inst_end;
+drop index act_idx_hi_pro_i_buskey;
+drop index act_idx_hi_act_inst_start;
+drop index act_idx_hi_act_inst_end;
+drop index act_idx_hi_detail_proc_inst;
+drop index act_idx_hi_detail_act_inst;
+drop index act_idx_hi_detail_time;
+drop index act_idx_hi_detail_name;
+drop index act_idx_hi_detail_task_id;
+drop index act_idx_hi_procvar_proc_inst;
+drop index act_idx_hi_procvar_name_type;
+drop index act_idx_hi_act_inst_procinst;
+drop index act_idx_hi_ident_lnk_user;
+drop index act_idx_hi_ident_lnk_task;
+drop index act_idx_hi_ident_lnk_procinst;
+
+drop table act_hi_procinst;
+drop table act_hi_actinst;
+drop table act_hi_varinst;
+drop table act_hi_taskinst;
+drop table act_hi_detail;
+drop table act_hi_comment;
+drop table act_hi_attachment;
+drop table act_hi_identitylink;

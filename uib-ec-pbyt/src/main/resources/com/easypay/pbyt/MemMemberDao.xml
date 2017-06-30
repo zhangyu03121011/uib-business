@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.MemMemberDao">
+    
+    <select id="queryMemMember" parameterType="map" resultType="map">
+        select 
+			a.id as "id",
+			a.name as "name",
+			a.avatar AS "avatar",
+			a.commission as "commission",
+			a.balance as "balance",
+			a.user_type as "userType",
+			a.rank_id as "rankId",
+			a.approve_flag as "approveFlag",
+			a.sumamount as "sumamount",
+			r.name as "rankName",
+			a.phone as "phone",
+			a.username as "username",
+			a.id_card as "idCard"
+		from 
+			mem_member a left join mem_rank r
+		on a.rank_id=r.id
+		where
+		    1=1
+		    <if test="openId!=null and openId!=''">
+		        and a.openId=#{openId}
+		    </if>	
+		     <if test="id!=null and id!=''">
+		        and a.id=#{id}
+		    </if>
+		    <if test="phone!=null and phone!=''">
+		        and a.phone=#{phone}
+		    </if>
+		    <if test="delFlag!=null and delFlag!=''">
+		        and a.del_flag=#{delFlag}
+		    </if>
+    </select>
+    
+    <update id="updateMemMember" parameterType="map">
+        update mem_member 
+        set
+            username=#{username},
+            id_card=#{card},
+            phone=#{phone},
+            approve_flag='0'
+        where 
+            id=#{id}
+    </update>
+    
+    <update id="updatePhone" parameterType="map">
+        update mem_member
+        set
+            phone=#{phone},
+            <choose>
+                <when test="userType!=null and userType!=''">
+                    user_type=#{userType}
+                </when>
+                <otherwise>
+                    del_flag='0'
+                </otherwise>
+            </choose>
+         where
+            id=#{id}
+    </update>
+    
+     <insert id="createUser" parameterType="com.uib.member.entity.MemMember">
+		INSERT INTO mem_member(
+			id,
+			user_type,
+			username,
+			openId,
+			create_date,
+			rank_id
+		) VALUES (
+			#{id},
+			#{userType},
+			#{username},
+			#{openId},
+			now(),
+			#{rankId}
+		)
+    </insert>
+    
+     <select id="getuserIdByopenId" parameterType="String" resultType="map">
+        select 
+			id as "id",
+			username as "userName",
+			rank_id as "rankId"
+		from 
+			mem_member
+		where
+		    openId=#{openId}
+    </select>
+    
+     <select id="getmerchartIdByUserId" parameterType="String" resultType="String">
+        select 
+			id as "id"
+		from 
+			mem_merchant
+		where
+		    member_id=#{userId}
+    </select>
+    
+     <update id="updateUserHead" parameterType="com.uib.member.entity.MemMember">
+        update mem_member 
+        set
+            avatar=#{avatar},
+            gender=#{gender}
+        where 
+             openId=#{openId}
+    </update>
+    
+     <update id="updateUserName" parameterType="com.uib.member.entity.MemMember">
+        update mem_member 
+        set
+            name=#{username},
+            username=#{username}
+        where 
+             openId=#{openId}
+    </update>
+    <!-- 被推荐人信息 -->
+      <select id="getMemberByIds" parameterType="list" resultType="map">
+        select 
+			id as "id",
+			commission as "commission",
+			balance as "balance",
+			user_type as "userType",
+			rank_id as "rankId",
+			sumamount as "sumamount"
+		from 
+			mem_member 
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+             #{item.memberId}
+        </foreach>
+    </select>
+    <!-- 推荐人信息 -->
+    <select id="getRecommendMemberByIds" parameterType="list" resultType="map">
+        select 
+			id as "id",
+			commission as "commission",
+			balance as "balance",
+			user_type as "userType",
+			rank_id as "rankId",
+			sumamount as "sumamount"
+		from 
+			mem_member 
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+             #{item.recommendMemberId}
+        </foreach>
+    </select>
+    
+    <select id="getMemByUsernameList" parameterType="list" resultType="map">
+        select 
+			id as "id",
+			commission as "commission",
+			balance as "balance",
+			user_type as "userType",
+			rank_id as "rankId",
+			sumamount as "sumamount"
+		from 
+			mem_member 
+		where  username in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+             #{item.userName}
+        </foreach>
+    </select>
+    
+    <select id="getCode" resultType="int">
+        select 
+			code as "code"
+		from 
+			t_sequence 
+    </select>
+    
+     <update id="updateCode">
+        update t_sequence 
+        set
+            code=#{code}
+    </update>
+</mapper>

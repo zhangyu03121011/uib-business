@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.product.entity.MemberFavoriteProduct">
+	
+	<resultMap type="memberFavoriteProduct" id="memberFavoriteProductMap">
+		<result column="id" property="id" />
+		<result column="member_id" property="memberId" />
+		<result column="product_id" property="productId"/>
+		<result column="create_date" property="createDate"/>
+		<result column="del_flag" property="delFlag"/>
+	</resultMap>
+	
+	
+	<sql id="memberFavoriteProductColumns">
+		a.id AS "id",
+		a.member_id AS "memberId",
+		a.product_id AS "productId",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memberFavoriteProductJoins">
+	left join product p on a.product_id = p.id
+	</sql>
+	
+    
+	<select id="getMemberFavoriteProductsByMemberId" parameterType="Map" resultType="Map">
+		SELECT 
+			a.id,p.name as productName,p.stock-p.allocated_stock AS availableStock,p.app_is_marketable AS appIsMarketable,
+			p.price,p.market_price as marketPrice, p.id as productId, CONCAT(#{imageUrl},p.image) as image
+		FROM tb_member_favorite_product a 
+		<include refid="memberFavoriteProductJoins"/>
+		WHERE a.del_flag = 0 AND a.member_id = #{memberId} order by a.create_date desc;
+	</select>
+	
+	<select id="getFavoriteProductByMap" parameterType="Map" resultType="memberFavoriteProduct">
+		SELECT 
+			<include refid="memberFavoriteProductColumns"/>
+		FROM tb_member_favorite_product a
+		<where>
+			a.del_flag = '0' AND a.member_id = #{memberId} AND a.product_id = #{productId}
+		</where>
+	</select>
+	
+	<insert id="saveFavorite" parameterType="memberFavoriteProduct" statementType="CALLABLE">
+		INSERT INTO tb_member_favorite_product(
+			id,
+			member_id,
+			product_id,
+			create_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{memberId},
+			#{productId},
+			#{createDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	
+	<select id="getFavoriteCount" parameterType="String" resultType="Integer">
+		SELECT 
+			count(id)
+		FROM tb_member_favorite_product a 
+		WHERE a.del_flag = 0 AND a.member_id = #{memberId}
+	</select>
+	
+	
+	<delete id="delete" parameterType="String">
+		delete from tb_member_favorite_product 
+		where id=#{id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>商品详情</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">  
+function selectTag(showContent,selfObj){  
+ // 操作标签  
+ var tag = document.getElementById("tags").getElementsByTagName("span");  
+ var taglength = tag.length;  
+ for(i=0; i<taglength; i++){  
+  tag[i].className = "";  
+ }  
+ selfObj.parentNode.className = "hover";  
+ // 操作内容  
+ for(i=0; j=document.getElementById("tagContent"+i); i++){  
+  j.style.display = "none";  
+ }  
+ document.getElementById(showContent).style.display = "block";     
+}  
+</script>  
+</head>
+
+<body>
+<!-- 提示区域 -->
+<div class="dow-pop">
+    <div class="close-box"><img src="images/close.png"/></div>
+    <div class="title-box">华夏通移动商城注册送优惠券</div>
+    <div class="dow-app"><a href="#">下载APP</a></div>
+</div>
+<!-- 头部 -->
+<div class="sn-nav">
+    <div class="sn-nav-back"><a class="sn-iconbtn" href="javascript:history.back(1)">返回</a></div>
+    <div class="sn-nav-title">用户口碑</div>
+</div>
+<!-- 内容区域 -->
+<div class="detail-wrapper">
+    <!-- 评分 -->
+    <div class="com-score">
+        	<div class="left">4.7</div>
+            <div class="com">
+                <p>好评率：89.0%</p>
+                <p>8442人评价</p>
+            </div>
+            <div class="right">
+            	<div class="starBar pr fl">
+                	<div class="starBarMask" style="width:80%;"></div>
+                </div>
+            </div>
+    </div>
+    <div class="tab">
+        <ul class="tab-bar" id="tags">
+            <li class="tab-bar-group">
+            	<span class="tab-bar-item hover"><a onClick="selectTag('tagContent0',this)" href="javascript:void(0)">好评（8779）</a></span>
+           		<span class="tab-bar-item"><a onClick="selectTag('tagContent1',this)" href="javascript:void(0)">中评（442）</a></span>
+                <span class="tab-bar-item"><a onClick="selectTag('tagContent2',this)" href="javascript:void(0)">差评（120）</a></span>
+            </li>
+        </ul>
+        <div id="tagContent"> 
+        	<!-- 好评 -->
+            <div class="tab-group show" id="tagContent0">
+            	<!-- 评价文字 -->
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-08-21 &nbsp;&nbsp;18:11:11</span><font class="fl">崔***V</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:100%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">这应该是海外购上比较早的产品了，售价市99元，现在打折还是比较划算的，记得朋友有推荐，说效果很不错，用了之后确实不错。</div>
+                    <!-- 晒图 -->
+                    <div class="img-item">
+                        <ul>
+                            <li><img src="images/products.jpg"/></li>
+                            <li><img src="images/products.jpg"/></li>
+                            <li><img src="images/products.jpg"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-08-21&nbsp;&nbsp;18:05:23</span><font class="fl">董***媛</font>
+                        <div class="starBar pr fl">
+                                <div class="starBarMask" style="width:100%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">很舒服，用完后不会觉得角质去得很厉害，又光滑。</div> 
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-08-21&nbsp;&nbsp;16:25:42</span><font class="fl">祝***9</font>
+                        <div class="starBar pr fl">
+                                <div class="starBarMask" style="width:100%;"></div>
+                    </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">朋友推荐，好大一罐，很重，每次化一点点就好…挺好用的</div> 
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-08-21&nbsp;&nbsp;15:01:35</span><font class="fl">殷***泰</font>
+                        <div class="starBar pr fl">
+                                <div class="starBarMask" style="width:100%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">用完的确滑滑的，比单用身体乳好多了，吸收更好。</div> 
+                </div>
+            </div>
+            <!-- 中评 -->
+            <div class="tab-group " id="tagContent1">
+            	<div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">爆***燥</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:60%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">很大一罐，沉甸甸的、味道很淡，洗了之后皮肤比较润滑…很不错，要坚持使用</div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">萝***佳</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:60%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">用了，不错，去角质很彻底。使得我再去美容院做身体淋巴排毒时，美容师说我吸收太好了</div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">张***希</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:60%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">用了几天来评价的。很厚实的一大瓶。很赞</div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">柴***善</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:60%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">非常好用，特别适合每周一次全身去角质</div>
+                </div>
+            </div>
+            <!-- 差评 -->
+            <div class="tab-group " id="tagContent2">
+            	<div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">邓***馨</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:40%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">去角质非常好，洗完皮肤滑滑嫩嫩的，如果有配小勺子就更好了</div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">汤***月</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:40%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">用起来蛮舒服的。而且一大盒全部都是有磨砂，是固体的。感觉舒服 </div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">姜***眉</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:40%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">味道淡淡的，颗粒很细，按摩的时候也不痛，不错</div>
+                </div>
+                <div class="com-eval">
+                    <!-- 时间 -->
+                    <div class="score-time"><span>2015-18-11&nbsp;&nbsp;18:11:11</span><font class="fl">齐***晶</font><div class="starBar pr fl">
+                                <div class="starBarMask" style="width:40%;"></div>
+                            </div></div>
+                    <!-- 评价内容 -->
+                    <div class="score-con">觉得是温和去角质的最佳选择。。。希望对我也有用</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

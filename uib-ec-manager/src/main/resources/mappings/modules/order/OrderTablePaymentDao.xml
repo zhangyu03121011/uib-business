@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTablePaymentDao">
+    
+	<sql id="orderTablePaymentColumns">
+		a.id AS "id",
+		a.order_table_id AS "orderTable.id",
+		a.order_no AS "orderNo",
+		a.method AS "method",
+		a.account AS "account",
+		a.amount AS "amount",
+		a.bank AS "bank",
+		a.expire AS "expire",
+		a.fee AS "fee",
+		a.operator AS "operator",
+		a.payer AS "payer",
+		a.payment_date AS "paymentDate",
+		a.payment_method AS "paymentMethod",
+		a.payment_plugin_id AS "paymentPluginId",
+		a.payment_no AS "paymentNo",
+		a.status AS "status",
+		a.type AS "type",
+		a.user_name AS "userName",
+		a.member AS "member",
+		a.exception_remarks AS "exceptionRemarks",
+		a.is_remarks AS "isRemarks",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTablePaymentJoins">
+		LEFT JOIN order_table b ON b.id = a.order_table_id
+	</sql>
+    
+	<select id="get" resultType="OrderTablePayment">
+		SELECT 
+			<include refid="orderTablePaymentColumns"/>
+		FROM order_table_payment a
+		<include refid="orderTablePaymentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTablePayment">
+		SELECT 
+			<include refid="orderTablePaymentColumns"/>
+		FROM order_table_payment a
+		<include refid="orderTablePaymentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderTable != null and orderTable.id != null and orderTable.id != ''">
+				AND a.order_table_id = #{orderTable.id}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="paymentNo != null and paymentNo != ''">
+				AND a.payment_no = #{paymentNo}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTablePayment">
+		SELECT 
+			<include refid="orderTablePaymentColumns"/>
+		FROM order_table_payment a
+		<include refid="orderTablePaymentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table_payment(
+			id,
+			order_table_id,
+			order_no,
+			method,
+			account,
+			amount,
+			bank,
+			expire,
+			fee,
+			operator,
+			payer,
+			payment_date,
+			payment_method,
+			payment_plugin_id,
+			payment_no,
+			status,
+			type,
+			user_name,
+			member,
+			exception_remarks,
+			is_remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderTable.id},
+			#{orderNo},
+			#{method},
+			#{account},
+			#{amount},
+			#{bank},
+			#{expire},
+			#{fee},
+			#{operator},
+			#{payer},
+			#{paymentDate},
+			#{paymentMethod},
+			#{paymentPluginId},
+			#{paymentNo},
+			#{status},
+			#{type},
+			#{userName},
+			#{member},
+			#{exceptionRemarks},
+			#{isRemarks},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table_payment SET 	
+			order_table_id = #{orderTable.id},
+			order_no = #{orderNo},
+			method = #{method},
+			account = #{account},
+			amount = #{amount},
+			bank = #{bank},
+			expire = #{expire},
+			fee = #{fee},
+			operator = #{operator},
+			payer = #{payer},
+			payment_date = #{paymentDate},
+			payment_method = #{paymentMethod},
+			payment_plugin_id = #{paymentPluginId},
+			payment_no = #{paymentNo},
+			status = #{status},
+			type = #{type},
+			user_name = #{userName},
+			member = #{member},
+			exception_remarks = #{exceptionRemarks},
+			is_remarks = #{isRemarks},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table_payment SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_id = #{orderTable.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

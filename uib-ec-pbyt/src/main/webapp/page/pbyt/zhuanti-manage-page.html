@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<link rel="stylesheet" type="text/css" href="js/lib/swiper-3.3.1.change.css">
+
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <title>专题编辑</title>
+
+
+</head>
+<body class="hot-sepecial-manage-page">
+<!-- <header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+    <div class="title">专题编辑</div>
+    <div class="right-text">完成</div>
+  </div>
+</header> -->
+<section class="app-body no-header ">
+    <div class="hot-special-part">
+	    <input id="menu-index" type="hidden" value="0"/>
+	   	<input id="all-product-page" type="hidden" value="1"/>
+	    <div id="all-product-ul" class="activity-list">
+            <!-- <div class="detail-body">
+                <a class="edit-label">X</a>
+                <div class="pic">
+                    <img src="./images/big_product01.png">
+                </div>
+                <div class="title">
+                    <h3 class="title-text">七月霸屏清单</h3>
+                    <p class="more">MORE>></p>
+                </div>
+                <div class="tips">有口皆碑毫无合集 剁手也要囤个够</div>
+            </div>
+
+            <div class="detail-body">
+                <a class="edit-label">X</a>
+                <div class="pic">
+                    <img src="./images/big_product01.png">
+                </div>
+                <div class="title">
+                    <h3 class="title-text">七月霸屏清单</h3>
+                    <p class="more">MORE>></p>
+                </div>
+                <div class="tips">有口皆碑毫无合集 剁手也要囤个够</div>
+            </div> -->
+        </div>
+        </div>
+
+</section>
+
+<section class="action-part">
+    <div class="container display-flex">
+        <!-- <div class="add flex-1"><i class="iconfont icon-tianjia"></i><a href="#" id="addZhuanti" >添加专题</a></div>
+        <div class="all flex-1"><i class="iconfont icon-11"></i><a href="#" id="manageZhuanti">批量管理</a></div> -->
+        
+         <div class="add flex-1" onclick="addZhuanti()">
+         	<i class="iconfont icon-tianjia"></i>
+         		添加专题
+         	</div>
+        <div class="all flex-1" onclick="zhuantiDelete()">
+        	<i class="iconfont icon-11"></i>
+       		批量管理
+        </div>
+    </div>
+</section>
+
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src="js/lib/swiper-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/zhuanti-manage-page.js"></script>
+
+
+
+</html>

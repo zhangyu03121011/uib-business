@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.StoreDao">
+
+	<select id="queryStore" resultType="com.uib.ptyt.entity.StoreDto">
+		select 
+			a.id id,
+			a.name `name`,
+			a.explain `explain`,
+			a.logo logo,
+			a.image image,
+			b.merchant_id merchantId
+		from 
+			t_store a
+		left join
+			t_store_merchant_ref b on a.id=b.store_id 
+		where 
+			b.merchant_id=#{merchantNo}
+	</select>
+
+	<insert id="insertStore">
+		insert into t_store(
+			id,
+			`name`,
+			`explain`,
+			logo,
+			image,
+			hits,
+			create_by,
+			create_time
+		)values(
+			#{id},
+			#{name},
+			#{explain},
+			#{logo},
+			#{image},
+			#{hits},
+			#{createBy},
+			now()
+		)
+	</insert>
+	
+	<insert id="insertStoreMerchant">
+		insert into t_store_merchant_ref(
+			id,
+			store_id,
+			merchant_id,
+			create_by,
+			create_time
+		)values(
+			#{id},
+			#{storeId},
+			#{merchantId},
+			#{createBy},
+			now()
+		)
+	</insert>
+
+	<update id="updateStore">
+		update 
+			t_store
+		set
+			<if test="name != null and name != ''">`name` = #{name},</if>
+			<if test="explain != null and explain != ''">`explain` = #{explain},</if>
+			<if test="logo != null and logo != ''">logo = #{logo},</if>
+			<if test="image != null and image != ''">image = #{image},</if>
+			update_by = #{updateBy},
+			update_time = now()
+		where
+			id = #{id}
+	</update>
+
+	<select id="queryProduct" resultType="com.uib.product.entity.Product">
+		SELECT 
+			a.id id,
+			a.original_name fullName,
+			CONCAT(#{imageUrl},a.image) as image,
+			pr.sell_price price,
+			a.market_price marketPrice,
+			b.is_recommend isRecommend 
+			
+		FROM
+		  	product a 
+		LEFT JOIN 
+			t_product_store b ON a.id=b.product_id
+		LEFT JOIN 
+			product_price_ref pr on a.id = pr.product_id
+		WHERE 
+			b.store_id=#{storeId} and pr.rank_id=#{rankId}
+		GROUP BY 
+			a.original_name
+		ORDER BY 
+			b.IS_RECOMMEND DESC,a.HITS DESC, a.CREATE_DATE DESC
+		LIMIT 
+			#{pageIndex}, #{pageSize}
+	</select>
+
+	<delete id="delProduct">
+		DELETE FROM
+			t_product_store 
+		WHERE 
+			store_id=#{storeId} AND product_id IN
+			<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">  
+	            #{item}  
+	        </foreach>
+	</delete>
+
+	<update id="redProduct">
+		update
+			t_product_store 
+		set
+			is_recommend=#{isRecommend}
+		WHERE 
+			store_id=#{storeId} AND product_id IN
+			<foreach collection="ids" item="item" index="index" open="(" separator="," close=")">  
+	            #{item}  
+	        </foreach>
+	</update>
+	
+	<select id="querySpecial" resultType="com.uib.ptyt.entity.Special">
+		SELECT 
+			A.id id,
+			A.special_title specialTitle,
+			A.special_article specialArticle,
+			CONCAT(#{imageUrl},A.show_image) as showImage
+		FROM 
+			SPECIAL A
+		LEFT JOIN 
+			SPECIAL_MERCHANT_REF B ON A.ID=B.SPECIAL_ID
+		WHERE 
+			B.MERCHANT_ID=#{merchantNo}
+		ORDER BY 
+			A.CREATE_DATE DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="querySpecial1" resultType="com.uib.ptyt.entity.Special">
+		SELECT 
+			A.id id,
+			A.special_title specialTitle,
+			A.special_article specialArticle,
+			CONCAT(#{imageUrl},A.show_image) as showImage
+		FROM 
+			SPECIAL A
+		LEFT JOIN 
+			SPECIAL_MERCHANT_REF B ON A.ID=B.SPECIAL_ID
+		WHERE 
+			B.MERCHANT_ID=#{merchantNo}
+		ORDER BY 
+			A.CREATE_DATE DESC
+	</select>
+	
+	<delete id="delSpecial">
+		DELETE FROM
+			special_merchant_ref 
+		WHERE 
+			merchant_id=#{merchantNo} AND special_id =#{id}
+	</delete>
+	<select id="queryProductList" resultType="com.uib.product.entity.Product">
+	  SELECT 
+			a.id id,
+			a.original_name fullName,
+			CONCAT(#{imageUrl},a.image) as image,
+			pr.sell_price price,
+			a.market_price marketPrice,
+			b.is_recommend isRecommend 			
+		FROM
+		  	product a 
+		LEFT JOIN 
+			t_product_store b ON a.id=b.product_id
+		LEFT JOIN 
+			product_price_ref pr on a.id = pr.product_id
+		WHERE 
+			b.store_id=#{storeId} 
+		GROUP BY 
+			a.original_name
+		ORDER BY 
+			b.IS_RECOMMEND DESC,a.HITS DESC, a.CREATE_DATE DESC
+	</select>
+</mapper>

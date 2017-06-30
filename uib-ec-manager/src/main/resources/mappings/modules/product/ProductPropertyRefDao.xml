@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductPropertyRefDao">
+    
+	<sql id="productPropertyRefColumns">
+		a.id AS "id",
+		a.property_id AS "propertyId",
+		a.product_id AS "productId"
+	</sql>
+	
+	<sql id="productPropertyRefJoins">
+	</sql>
+    
+	<select id="get" resultType="ProductPropertyRef">
+		SELECT 
+			<include refid="productPropertyRefColumns"/>
+		FROM product_property_ref a
+		<include refid="productPropertyRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProductPropertyRef">
+		SELECT 
+			<include refid="productPropertyRefColumns"/>
+		FROM product_property_ref a
+		<include refid="productPropertyRefJoins"/>
+		<where>
+			
+			<if test="propertyId != null and propertyId != ''">
+				AND a.property_id = #{propertyId}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductPropertyRef">
+		SELECT 
+			<include refid="productPropertyRefColumns"/>
+		FROM product_property_ref a
+		<include refid="productPropertyRefJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryPropertyIdsByProductId" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT a.property_id FROM product_property_ref a WHERE
+		a.product_id=#{productId};
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_property_ref(
+			id,
+			property_id,
+			product_id
+		) VALUES (
+			#{id},
+			#{propertyId},
+			#{productId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_property_ref SET 	
+			property_id = #{propertyId},
+			product_id = #{productId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM product_property_ref
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteFrom">
+		DELETE FROM product_property_ref
+		<where>
+				product_id=#{productId}
+			<if test="propertyIds!=null and propertyIds.size>0">
+				AND property_id IN
+				<foreach collection="propertyIds" item="propertyId" index="index"
+					open="(" separator="," close=")">
+					#{propertyId}
+				</foreach>
+			</if>
+		</where>
+	</update>
+	
+</mapper>

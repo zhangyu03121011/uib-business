@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>确认订单</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+            <div class="title">确认订单</div>
+        </div>
+    </header>
+    <!-- 购物车列表开始  -->
+    <div class="body-content">
+        <!-- 购物地址选择前 -->
+        <div id="select-address" class="flex-row address-wrap">
+            <div class="address-title">收货地址</div>
+            <div class="flex-item right" onclick="selectAddress()">
+				请添加收货地址
+            </div>
+            <i class="arrow-right iconfont icon-right"></i>
+        </div>
+		<!--购物地址选择后 -->
+        <div class="flex-row address-wrap" style="display: none;" id="address">
+            <div class="icon-location">
+                <span class="iconfont icon-dingwei"></span>
+            </div>
+            <div class="flex-item">
+            	<input type="hidden" id="receiver_id">
+            	<input type="hidden" id="receiver_area_id">
+                <div class="name-tel flex-row">
+                    <div class="flex-item">收货人：<font id="user_name"></font></div>
+                    <div class="flex-item right" id="phone"></div>
+                </div>
+                <div class="flex-item" id="address_area"></div>
+            </div>
+            <i class="arrow-right iconfont icon-right"></i>
+        </div>
+        <!-- 送货日期 -->
+<!--         <div class="flex-row date-wrap"> -->
+<!--             <div class="flex-item address-text"> -->
+<!--                 <span>工作日、双休日与假日均可送货</span> -->
+<!--             </div> -->
+<!--             <i class="arrow-right iconfont icon-right"></i> -->
+<!--         </div> -->
+        <!-- 购物地址结束 -->
+        <!-- 订单商品列表开始 -->
+        <div id="product_list">
+        
+        </div>
+        <!-- 订单商品列表结束 -->
+        <!-- 购物车列表结束 -->
+        <!-- 购物结账开始 -->
+        <div class="flex-row express">
+            <div class="flex-item me-express">运费</div>
+            <div class="flex-item me-express align-right">
+                <a href="#">
+                    <span>快递：包邮</span>
+<!--                     <i class="arrow-right iconfont icon-right"></i> -->
+                </a>
+            </div>
+        </div>
+        <div class="flex-row express">
+            <div class="flex-item me-express">
+               	合计
+            </div>
+            <div class="flex-item me-express align-right ">
+                <span class="amount" id="total_amount">¥0</span>
+            </div>
+        </div>
+        <div class="payoff">
+            <span>支付方式</span>
+            <div class="payoff-weixin">微信支付</div>
+        </div>
+        
+    </div>
+  
+    <!-- 购物结算开始 -->
+        <div class="account submit-order">
+            <div class="flex-row">
+                <div class="flex-item">
+                    <p class="text">共<font class="text" id="p_count">0</font>件商品</p>
+                    <p class="text">合计：<span class="total" id="total_price">￥0</span></p>
+                </div>
+                <div>
+                    <a href="#" class="calc" id="sub_order">提交订单</a>
+                </div>
+            </div>
+        </div>
+    <!-- 购物结算结束 -->    
+    <script src="./js/jquery.js"></script>
+    <script src="./js/touch.js"></script>
+    <script type="text/javascript" src="js/lib/frozen.js"></script>
+    <script type="text/javascript" src="./js/lib/dialog.js"></script>
+    <script src="./js/alert.js"></script>
+    <script src="./js/common.js"></script>
+    <script type="text/javascript" src="js/pbyt/order-submit.js"></script>
+</body>
+
+</html>

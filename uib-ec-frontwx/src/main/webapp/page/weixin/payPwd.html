@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>重置支付密码</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="main">
+	<form id="payPwdForm" action="">
+	    <div class="common-wrapper">
+	        <!-- 手机号 -->
+	        <input  name="phone" id="phone" type="hidden">
+	        <div class="phone-no mb1">手机号：<span id = "phoneText" name = "phone">135****8888</span></div>
+	        <!-- 图形验证码 -->
+	        <div class="reg-name mb1">
+	            <div class="codetwo-left"><input name="" id="captcha_seq" type="text" placeholder="验证码"></div>
+	            <div class="codetwo-right"><img id="captchaImage" src=""/>看不清楚？<a href="javascript:void(0)" id="captcha_image_change">换一张</a></div>
+	        </div>
+	        <!-- 手机验证码 -->
+	        <div class="reg-name mb1">
+	            <div class="code-left"><input name="validateCode" id="validateCode" type="text" placeholder="请输入短信验证码"></div>
+	            <div class="code-right"><a href="javascript:void(0)" id="btnSendCode" onclick="receiveCodeClick(this)">获取验证码</a></div>
+	        </div>
+	        <!-- 密码 -->
+	        <div class="reg-name mb1"><input  name="payPassword" id="password" type="password" placeholder="6-16位字母和数字密码"></div>
+	        <!-- 确认密码 -->
+	        <div class="reg-name mb1"><input id="password1" name="" type="password" placeholder="确认密码"></div>
+	        <!-- 按钮 -->
+	        <div class="reg-btn mb1 w100"><input id="submitBtn" type="button" value="重置密码"></div>
+	    </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/des/des.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/payPwd.js"></script>
+</body>
+</html>

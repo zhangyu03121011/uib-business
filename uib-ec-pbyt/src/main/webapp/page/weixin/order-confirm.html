@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>订单确认</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-eee">
+	<div class="order-detail">
+        <!-- 收货人信息 -->
+        <div class="receiver-inf">
+       	<span class="left">送至</span>
+        <span class="right">
+         <a href="javascript:void(0)" onclick="selectAddress()"> 
+	        <p><font id="default_font"></font><font id="address" style="color:#6b6b6b;"></font></p>
+	        <p id="phone"></p>
+	        <b></b> 
+         </a> 
+        </span>
+        </div>
+    	<!-- 列表内容区一 -->
+        <div class="tab-group">
+			<ul class="order-list">
+                <li>
+                <div class="status-title">
+               <!--  <p>商品数量：<span class="pink" id="productCount"></span></p> -->
+                </div>
+            <div id="product-list">
+
+            </div>
+          </li>
+       </ul>
+    </div>
+    
+     <!-- 支付方式 -->
+    <div class="pay-by">
+    	<p><span>在线支付</span>支付方式</p>
+
+		<p>
+			<span>
+				<input type="checkbox" id="balancePay" class="lcs_check" autocomplete="off"/>
+			</span>
+			余额支付<b id="balanceShow">可用余额：￥0.00</b>
+		</p>
+ 		<p><a href="javascript:void(0)" onclick="selectCoupon()"><span id="coupon_span"></span></a>优惠券使用 <b id="coupon_b"></b> </p>
+     	<h2>给商家留言</h2>
+    	<div class="text-box">
+     		<textarea id="memo" name="memo" cols="" rows="" maxlength="45"></textarea>
+    	</div>
+    </div>
+
+    <!-- 金额统计 -->
+    <div class="stati-box">
+     <p><span id="price"></span>商品价格</p>
+     <p><span id="freight">+￥0.00</span>运费</p>
+     <div id="product_coupon_div" style="display: none;">
+    	 <p><span id="coupon_p_span">-￥0.00</span>商品优惠</p>
+     </div>
+     <p><span id="sum"></span>实付款</p>
+    </div>
+    <!-- 支付按钮 -->
+    <div class="payment-box">
+    	<a class="add-btn reen-btn" href="#" id="subOrder">微信支付</a>
+    	<div class="back-cat" style="display: none;" id="back_cart_div">
+    	<a href="cart.html">返回购物车</a></div>
+    </div>
+   </div>
+   
+   <!-- 收货地址信息隐藏域 -->
+   <input type="hidden" name="consignee" id="consignee"/>
+   <input type="hidden" name="areaName" id="areaName"/>
+   <input type="hidden" name="address" id="_address"/>
+   <input type="hidden" name="phone" id="_phone"/>
+   <input type="hidden" name="area" id="area"/>
+   
+   <div class="sk-circle" style="display: none;">
+      <div class="sk-circle1 sk-child"></div>
+      <div class="sk-circle2 sk-child"></div>
+      <div class="sk-circle3 sk-child"></div>
+      <div class="sk-circle4 sk-child"></div>
+      <div class="sk-circle5 sk-child"></div>
+      <div class="sk-circle6 sk-child"></div>
+      <div class="sk-circle7 sk-child"></div>
+      <div class="sk-circle8 sk-child"></div>
+      <div class="sk-circle9 sk-child"></div>
+      <div class="sk-circle10 sk-child"></div>
+      <div class="sk-circle11 sk-child"></div>
+      <div class="sk-circle12 sk-child"></div>
+    </div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/des/des.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/encode.js"></script>
+<script type="text/javascript" src="js/lc_switch.min.js"></script>
+<script type="text/javascript" src="js/artdialog/artDialog.min.js?skin=default" ></script>
+<script type="text/javascript" src="order-confirm.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+</body>
+</html>

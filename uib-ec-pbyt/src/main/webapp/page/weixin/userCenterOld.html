@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>个人中心</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!-- 个人中心 -->
+<div class="user-menu-box">
+<!-- 		<div class="user-name-title"><span id="phone"></span><font id="username"></font></div> -->
+<div class="user-name-title">
+	<div class="user-photo"><img src="images/user-photo.jpg"/></div>
+	<div class="user-inf">
+    <p id="username"></p>
+    <p id="phone"></p>
+    </div>
+</div>
+
+    	<ul>
+        	<li><a href="/page/weixin/favoriteList.html"><i><img src="images/user-one.png"/></i>个人收藏</a></li>
+            <li><a href="/page/weixin/order.html"><i><img src="images/user-two.png"/></i>我的订单</a></li>
+            <li><a href="/page/weixin/myCoupon.html"><i><img src="images/user-tre.png"/></i>我的优惠券</a></li>
+            <li><a href="/page/weixin/myWallet.html"><i><img src="images/user-four.png"/></i>我的钱包<span>账户余额，佣金管理</span></a></li>
+            <li><a href="/page/weixin/address.html"><i><img src="images/user-five.png"/></i>地址管理</a></li>
+            <li id="authenticate"><a href="javascript:void(0)" ><i><img src="images/user-six.png"/></i>实名认证<span id="authenticateSpan">未认证</span></a></li>
+            <li><a href="/page/weixin/account_security.html"><i><img src="images/user-sev.png"/></i>账户安全</a></li>
+            <li><a href="/page/weixin/complaintApplication.html"><i><img src="images/user-eig.png"/></i>投诉申请</a></li>
+            <li><a href="/page/weixin/personHelp.html"><i><img src="images/user-nine.png"/></i>个人帮助</a></li>
+        </ul>
+    </div>
+    <!-- 按钮 -->
+    <div class="mt2">
+    <a class="add-btn red-btn" href="javascript:void(0)" id="loginoff">退出登录</a>
+    </div>
+    
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="js/alert.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/ticket.js"></script>
+	<script type="text/javascript" src="js/ticketctl.js"></script>
+    <script type="text/javascript" src="js/userCenter.js"></script>
+</body>
+</html>

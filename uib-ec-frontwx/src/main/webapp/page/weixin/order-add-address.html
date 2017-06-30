@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>收货地址</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+</head>
+
+<body>
+	<div class="order-detail">
+		<form action="wechat/member/address/save" method="post"
+			id="addressFrom" name="addressFrom">
+			<!-- 个人信息 -->
+			<div class="personal-inf">
+				<!-- 姓名 -->
+				<div class="sn-block">
+					<div class="input-a wbox bt">
+						<span class="label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span>
+						<div class="wbox-flex ml60">
+							<input name="consignee" id="consignee" placeholder="必填" type="text" >
+						</div>
+					</div>
+				</div>
+				<!-- 手机号码 -->
+				<div class="sn-block">
+					<div class="input-a wbox bt">
+						<span class="label">手机号码</span>
+						<div class="wbox-flex ml60">
+							<input name="phone" id="phone" placeholder="必填" type="text">
+						</div>
+					</div>
+				</div>
+				<!-- 地区 -->
+				<!--
+    <div class="sn-block">
+    <div class="input-a wbox bt">
+        <span class="label">所在地区</span>
+        <div class="wbox-flex ml60"><a href="#">广东深圳南山区</a><b></b></div>
+        </div>
+    </div> -->
+				<!-- 省份 -->
+				<div class="sn-block">
+					<div class="input-a wbox bt" id="provicediv">
+						<span class="label">省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;份</span>
+						<div class="wbox-flex ml60">
+							<em></em> <select id="selprovince"
+								onchange="getCityAdd(this.value)">
+								<option value="0">-请选择省份-</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!-- 城市 -->
+				<div class="sn-block">
+					<div class="input-a wbox bt">
+						<span class="label">城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市</span>
+						<div class="wbox-flex ml60">
+							<em></em> <select id="selcity" onchange="getAreaAdd(this.value)">
+								<option value="0">-请选择城市-</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!-- 区/县 -->
+				<div class="sn-block">
+					<div class="input-a wbox bt">
+						<span class="label">区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;县</span>
+						<div class="wbox-flex ml60">
+							<em></em> <select id="selarea">
+								<option value="0">-请选择地区-</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!-- 详细地址 -->
+				<div class="sn-block mb-3">
+					<div class="input-a wbox bt">
+						<span class="label">详细地址</span>
+						<div class="wbox-flex ml60">
+							<input name="address" placeholder="必填" type="text">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 按钮 -->
+			<div>
+				<a class="add-btn red-btn" id="save">保存</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/alert.js"></script>
+	<script type="text/javascript" src="js/order-add-address.js"></script>
+</body>
+</html>

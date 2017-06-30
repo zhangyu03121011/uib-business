@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="css/popover.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title>个人中心</title>
+</head>
+<body class="main-bg">
+<section>
+<section class="app-body no-header">
+<!-- 个人中心 -->
+<div class="personal-center">
+        <!-- 未认证状态 -->
+        <div class="authenticate" id="authentication"><a href="Authentication-two.html?userType=3">立即认证</a></div>
+        <!-- 已认证状态 -->
+        <div class="verified" style="display:none;" id="shezhi"><a href="#" id="shezhi_href"><i class="iconfont icon-shezhi"></i></a></div>
+        <div class="head-portrait">
+            <img src="" id="head_image">
+            <!-- 认证图标 -->
+            <div class="side-ico" ><img src="images/v.png" id="image_authentication" style="display:none;"></div>
+        </div>
+		<div class="name" id="name"></div>
+		<div class="member-grade" id="memberGrade"></div>
+		<ul>
+			<li>
+				<a href="#">
+					<p class="money" id="allMoney"></p>
+					<p class="types-of">总收入(元)</p>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<p class="money" id="amount"></p>
+					<p class="types-of">贡献值(点)</p>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<P class="money" id="monthMoney"></P>
+					<p class="types-of">月收入(元)</p>
+				</a>
+			</li>
+		</ul>
+</div>
+<!-- 提现 -->
+<div class="withdraw">
+	<dl>
+		<dd class="iconfont icon-jiage"></dd>
+		<dt><span id="balance"></span><i class="iconfont icon-right"></i></dt>
+	</dl>
+</div>
+<!-- 快捷菜单 -->
+<div class="personal-menu">
+	<ul>
+		<li><a href="#" id="myOrder"><i class="iconfont icon-wodedingdan"></i><span>我的订单</span><i class="iconfont icon-right"></i></a></li>
+		<li><a href="#" id="saleOrder"><i class="iconfont icon-dingdan"></i><span>销售订单</span><i class="iconfont icon-right"></i></a></li>
+	</ul>
+</div>
+<div class="personal-menu">
+	<ul>
+		<li><a href="#" id="confirmBtn"><i class="iconfont icon-dianpu"></i><span>我的店铺</span><i class="iconfont icon-right"></i></a></li>
+	</ul>
+</div>
+<div class="personal-menu">
+	<ul>
+		<li><a href="#" id="myExpand"><i class="iconfont icon-tuiguang"></i><span>我的推广</span><i class="iconfont icon-right"></i></a></li>
+		<li><a href="#" id="moneyRecord"><i class="iconfont icon-jilu-copy"></i><span>提现记录</span><i class="iconfont icon-right"></i></a></li>
+		<li><a href="#" id="amountDetail"><i class="iconfont icon-shouruxiangqing"></i><span>津贴明细</span><i class="iconfont icon-right"></i></a></li>
+	</ul>
+</div>
+<div style="display:none"><input type="button" id="applyButton" /></div>
+</section>
+<footer>
+	<div class='bottom-menu'>
+        <ul class='display-flex align-items-center'>
+        	<li class="flex-1 menu-item">
+        		<a href="./index.html" >
+        			<i  class="menu-icon iconfont icon-youhui"></i>
+        			<div class='text'>优品</div>
+        		</a>
+        	</li>
+        	<li class="flex-1 menu-item">
+        		<a  href="./products_list.html">
+        			<i type="tablet" class="menu-icon iconfont icon-shangpin"></i>
+        			<div class='text'>商品</div>
+        		</a>
+        	</li>
+        	<li class="flex-1 menu-item">
+        		<a href="./cart.html">
+        			<i  class="menu-icon iconfont icon-gouwuche"></i>
+        			<div class='text'>购物车</div>
+        		</a>
+        	</li>
+        	<li class="flex-1 menu-item  active">
+        		<a href="./personal.html">
+        			<i type="user" class="menu-icon iconfont icon-wo"></i>
+        			<div class='text'>我</div>
+        		</a>
+        	</li>
+        </ul>
+        </div>
+</footer>
+ 
+<script src="./js/touch.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script src="js/uib.min.js"></script>
+<script type="text/javascript" src="js/personal.js"></script>
+
+<script></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>购物车</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!-- 购物车列表 -->
+<div class="catr-box mb-3">
+	<div class="tab-group">
+	    <ul id="cartDetail">
+	    </ul>
+	</div>
+</div>
+<!-- 页面底部 -->
+<div class="cart-bottom">
+<div class="checkboxFive">
+  		<input type="checkbox" value="1" id="checkAll" onclick="checkAll()" checked="checked"/>
+	  	<label for="checkAll"></label>
+  	</div>
+    <span>全选</span>
+    <!-- <span class="del" onclick="del()"><a href="#">删除</a></span> -->
+    <span class="del" ><a href="javascript:void(0)" onclick="del()">删除</a></span>
+    <span class="price" id="totalPrice"></span>
+    <a class="clearing fr" onclick="toSettle()"><p id="sel_count_p">去结算(0)</p></a>
+    <input type="hidden" id="cartId"/>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/cart.js"></script>
+</body>
+</html>

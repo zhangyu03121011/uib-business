@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title></title>
+</head>
+<body>
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.back(1)"></a>
+    <div class="title">身份认证</div>
+  </div>
+</header>
+<section class="app-body no-menu main-bg">
+    <div class="authentication">
+        <h2 id="show_phone"></h2>
+        <div class="codes-box">
+            <input name="" id="code" type="text" placeholder="请填写手机验证码" maxlength="10">
+            <button class="codes-btn" onclick="receiveCodeClick(this);">重新获取</button>
+        </div>
+        </div>
+</section>
+<div class="button-box">
+    <button class="return-btn" id="return">返回</button>
+    <button class="confirm-btn" id="submit">确认</button>
+</div>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="./js/lib/frozen.js"></script>
+<script type="text/javascript" src="./js/touch.min.js"></script>
+<script type="text/javascript" src="js/Authentication-tre.js"></script>
+<script>
+
+</script>
+</body>
+</html>

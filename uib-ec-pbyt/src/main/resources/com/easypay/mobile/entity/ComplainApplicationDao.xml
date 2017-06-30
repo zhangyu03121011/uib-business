@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.ComplaintApplicationDto">	
+	
+	<resultMap type="com.uib.mobile.dto.ComplaintApplicationDto" id="CompliainApplicationMap">
+		<result column="aid" property="id"/>
+		<result column="member_id" property="memberId"/>
+		<result column="feedback_type" property="feedbackType"/>
+		<result column="describeinfo" property="describeInfo"/>
+		<result column="title" property="title"/>
+		<result column="images" property="images"/>
+		<result column="del_flag" property="delFlag"/>
+		<result column="solution_state" property="solutionState"/>
+		<result column="reply" property="reply"/>
+		<result column="create_time" property="createTime"/>
+		<result column="solution_time" property="solutionTime"/>
+		<result column="modify_date" property="modifyDate"/>
+		
+		<association property="userComplaintAttrMap" javaType="com.uib.mobile.dto.UserComplaintAttrMap" resultMap="UserComplaintAttrMap" />
+		<collection property="tbAttachment" ofType="com.uib.mobile.dto.TbAttachment" javaType="ArrayList">
+			<result column="tid" property="id"/>
+			<result column="file_name" property="fileName"/>
+			<result column="file_path" property="filePath"/>
+			<result column="create_date" property="createDate"/>
+		</collection>		
+	</resultMap>
+	
+	<resultMap type="com.uib.mobile.dto.UserComplaintAttrMap" id="UserComplaintAttrMap">
+		<result column="uid" property="id"/>
+		<result column="complaint_id" property="complaintId"/>
+		<result column="attachment_id" property="attachmentId"/>	
+	</resultMap>
+	
+	<sql id="CompliainApplicationColumns">
+		a.id as "aid",
+		a.member_id ,
+		a.feedback_type,
+		a.describeinfo,
+		a.title,
+		a.images ,
+		a.del_flag ,
+		a.reply ,
+		a.solution_state,
+		a.create_time,
+		a.solution_time,
+		a.modify_date 
+	</sql>
+	
+	<sql id="TbAttachmentColumns">
+		t.id as "tid",
+		t.file_name ,
+		t.file_path,
+		t.create_date 
+	</sql>
+	
+	<sql id="UserComplaintAttrMapColumns">
+		u.id as "uid" ,
+		u.complaint_id ,
+		u.attachment_id 
+	</sql>
+	
+	<insert id="insert">
+		INSERT INTO user_complaint(
+			id,
+			member_id,
+			feedback_type,
+			title,
+			describeinfo,
+			images,
+			del_flag,
+			create_time,
+			modify_date
+		) VALUES (
+			#{id},
+			#{memberId},
+			#{feedbackType},
+			#{title},
+			#{describeInfo},
+			#{images},
+			#{delFlag},
+			#{createTime},
+			#{modifyDate}			
+		)
+	</insert>
+	
+	<select id="getComplaintApplicationById" resultMap="CompliainApplicationMap">
+		SELECT 
+			<include refid="CompliainApplicationColumns"/>,
+			<include refid="TbAttachmentColumns"/>,
+			<include refid="UserComplaintAttrMapColumns"/>
+		FROM user_complaint a
+		LEFT JOIN user_complaint_attr_map u   ON u.complaint_id=a.id
+		LEFT JOIN tb_attachment t ON u.attachment_id=t.id		
+		where a.del_flag = 0 and a.id= #{id}
+	</select>
+	
+<!-- 	<select id="complainRecords"  resultMap="CompliainApplicationMap"> -->
+<!-- 		SELECT  -->
+<!-- 			<include refid="CompliainApplicationColumns"/>, -->
+<!-- 			<include refid="TbAttachmentColumns"/>, -->
+<!-- 			<include refid="UserComplaintAttrMapColumns"/> -->
+<!-- 		FROM user_complaint_attr_map u -->
+<!-- 		LEFT JOIN user_complaint a   ON u.complaint_id=a.id -->
+<!-- 		LEFT JOIN tb_attachment t ON u.attachment_id=t.id		 -->
+<!-- 		where a.del_flag = 0 AND a.member_id=#{memberId} and a.id= #{id} -->
+<!-- 	</select> -->
+	
+	<!-- 微信分页查询投诉记录 -->
+	<select id="findcomplainRecords" resultMap="CompliainApplicationMap"   parameterType="Map">
+		SELECT 
+			<include refid="CompliainApplicationColumns"/>,
+			<include refid="TbAttachmentColumns"/>,
+			<include refid="UserComplaintAttrMapColumns"/>
+		FROM user_complaint a
+		LEFT JOIN user_complaint_attr_map u   ON u.complaint_id=a.id
+		LEFT JOIN tb_attachment t ON u.attachment_id=t.id		
+		where a.del_flag = 0 AND a.member_id=#{memberId} order by a.create_time desc
+<!-- 		<if test="startSize !=null  and pageSize !=null "> -->
+<!-- 		  LIMIT #{startSize},#{pageSize} -->
+<!-- 		</if> -->
+	</select>
+	
+	
+	<update id="deleteComplainRecord">
+		UPDATE user_complaint SET 
+			del_flag = 1
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+		
+</mapper>

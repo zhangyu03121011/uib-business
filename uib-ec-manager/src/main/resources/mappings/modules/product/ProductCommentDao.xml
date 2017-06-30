@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductCommentDao">
+    
+	<sql id="productCommentColumns">
+		a.id AS "id",
+		a.content AS "content",
+		a.ip AS "ip",
+		a.is_guests AS "isGuests",
+		a.score AS "score",
+		a.order_table_item_id AS "orderTableItemId",
+		a.product_id AS "productId",
+		a.member_id AS "memberId",
+		a.re_user_id AS "reUserId",
+		a.re_content AS "reContent",
+		a.re_comment_id AS "reCommentId",
+		a.content_type AS "contentType",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<resultMap id="BaseResultMap" type="com.uib.ecmanager.modules.product.entity.ProductComment">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="is_guests" property="isGuests" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="order_table_item_id" property="orderTableItemId"
+			jdbcType="VARCHAR" />
+		<result column="product_id" property="productId" jdbcType="VARCHAR" />
+		<result column="member_id" property="memberId" jdbcType="VARCHAR" />
+		<result column="re_user_id" property="reUserId" jdbcType="VARCHAR" />
+		<result column="re_content" property="reContent" jdbcType="VARCHAR" />
+		<result column="re_comment_id" property="reCommentId" jdbcType="VARCHAR" />
+		<result column="content_type" property="contentType" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="del_flag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, content, ip, is_guests, score, order_table_item_id,
+		product_id,member_id,re_user_id,
+		re_content,
+		re_comment_id,
+		content_type, create_by, create_date, update_by, update_date,
+		remarks,
+		del_flag
+	</sql>
+	
+	<sql id="productCommentJoins">
+	</sql>
+    
+	<select id="get" resultType="ProductComment">
+		SELECT 
+			<include refid="productCommentColumns"/>
+		FROM product_comment a
+		<include refid="productCommentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProductComment">
+		SELECT 
+			<include refid="productCommentColumns"/>
+		FROM product_comment a
+		<include refid="productCommentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductComment">
+		SELECT 
+			<include refid="productCommentColumns"/>
+		FROM product_comment a
+		<include refid="productCommentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectByProductId" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product_comment
+		<where>
+			product_id=#{productId}
+		</where>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_comment(
+			id,
+			content,
+			ip,
+			is_guests,
+			score,
+			order_table_item_id,
+			product_id,
+			member_id,
+			re_user_id,
+			re_content,
+			re_comment_id,
+			content_type,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{content},
+			#{ip},
+			#{isGuests},
+			#{score},
+			#{orderTableItemId},
+			#{productId},
+			#{memberId},
+			#{reUserId},
+			#{reContent},
+			#{reCommentId},
+			#{contentType},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_comment SET 	
+			content = #{content},
+			ip = #{ip},
+			is_guests = #{isGuests},
+			score = #{score},
+			order_table_item_id = #{orderTableItemId},
+			product_id = #{productId},
+			member_id = #{memberId},
+			re_user_id = #{reUserId},
+			re_content = #{reContent},
+			re_comment_id = #{reCommentId},
+			content_type = #{contentType},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE product_comment SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

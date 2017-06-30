@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>投诉申请</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.ui-loader-default{ display:none}
+	.ui-mobile-viewport{ border:none;}
+	.ui-page {padding: 0; margin: 0; outline: 0} 
+</style>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/complaintApplication.js"></script>
+</head>
+
+<body>
+<ul class="tab-bar">
+        <li class="tab-bar-group">
+        <span class="tab-bar-item hover"><a href="javascript:void(0)">我要投诉</a></span>
+        <span class="tab-bar-item" id="compliaintRecord"><a href="javascript:void(0)">投诉记录</a></span>
+    </ul>
+    <!-- 在线投诉 -->
+ <form action="" name="complaintApplicationFrom" id="complaintApplicationFrom">
+ <input type="hidden" name="tbAttachment.filePath0" id="filePath0">
+ <input type="hidden" name="tbAttachment.filePath1" id="filePath1">
+ <input type="hidden" name="tbAttachment.filePath2" id="filePath2">
+<div class="detail-wrapper complaints-tab" id="addComplainApplication" style="display:block">
+ 	<!-- 反馈类型 -->
+    <div class="types">
+    <font class="red">*</font>反馈类型：
+        <label><input checked="checked" type="radio" name="feedbackType" value="1" id="RadioGroup1_0" errorMsg = "反馈类型不能为空" data-role='none'>商品</label>
+        <label><input type="radio" name="feedbackType" value="2" id="RadioGroup1_1" errorMsg = "反馈类型不能为空" data-role='none' >服务</label>
+        <label><input type="radio" name="feedbackType" value="3" id="RadioGroup1_2" errorMsg = "反馈类型不能为空" data-role='none' >其它</label>
+    </div>
+    <!-- 标题 -->
+    <div class="types-title">
+    	<div class="sn-block">
+    <div class="input-a wbox">
+        <span class="label"><font class="red">*</font>标&nbsp;&nbsp;题：</span>
+        <div class="wbox-flex ml60">
+        <input class="input-none" name="title" placeholder="投诉标题" type="text" errorMsg = "标题不能为空">
+        </div>
+      </div>
+    </div>
+    </div>
+  <!-- 心得 -->
+    <div class="nytj-box">
+    	<p><font class="red">*</font>详细描述：</p>
+        <textarea cols="" name="describeInfo" rows="" placeholder="请输入您的意见，我们将不断优化体验" errorMsg = "详细描述不能为空"></textarea>
+    </div>
+    <!-- 图片上传 -->
+   	<div class="upload-image">
+    	<div class="title">图片上传</div>
+    	
+        <div class="quick-report fl" id="imgItem">
+        <div class="upload-btn-box" id="upload-btn-box">
+           <input type="button"  id="filePath" class="upload-btn">
+        </div>
+        
+        </div>
+        <div class="tip-box"><span>*注：</span>最多上传3张，每张不超过5M，支持JPG/BMP/PNG</div>
+        </div> 
+  <!-- 按钮 -->
+    <div class="evaluation-btn mt2">
+    <div class="reg-btn mb1 w100"><input type="button" id="submit" value="提交" data-role='none' ></div>
+    </div>
+</div>
+</form>
+<!-- 投诉记录 -->
+<input id="menu-index" type="hidden" value="0"/>
+<input id="all-product-page" type="hidden" value="1"/>
+<div class="detail-wrapper complaints-tab"  id="myComplaints">
+<!-- 第一个 -->
+
+</div>
+</body>
+</html>
+<!-- table -->
+<script type="text/javascript">
+$(".tab-bar-item").click(function(){
+		$(".tab-bar-item").removeClass("hover");
+		$(this).addClass("hover");
+		$(".complaints-tab").hide();
+		$(".complaints-tab").eq($(this).index()).show();
+		$("#menu-index").val($(this).index());
+	});
+</script>

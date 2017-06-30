@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductParameterDao">
+    
+	<sql id="productParameterColumns">
+		a.id AS "id",
+		a.parameter_no AS "parameterNo",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.group_no AS "groupNo",
+		a.merchant_no AS "merchantNo",
+		a.parameter_group_id AS "parameterGroup.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="productParameterJoins">
+		LEFT JOIN parameter_group b ON b.id = a.parameter_group_id
+	</sql>
+    
+	<select id="get" resultType="ProductParameter">
+		SELECT 
+			<include refid="productParameterColumns"/>
+		FROM product_parameter a
+		<include refid="productParameterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProductParameter">
+		SELECT 
+			<include refid="productParameterColumns"/>
+		FROM product_parameter a
+		<include refid="productParameterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="parameterNo != null and parameterNo != ''">
+				AND a.parameter_no = #{parameterNo}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="groupNo != null and groupNo != ''">
+				AND a.group_no = #{groupNo}
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if test="parameterGroup != null and parameterGroup.id != null and parameterGroup.id != ''">
+				AND a.parameter_group_id = #{parameterGroup.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.orders ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductParameter">
+		SELECT 
+			<include refid="productParameterColumns"/>
+		FROM product_parameter a
+		<include refid="productParameterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_parameter(
+			id,
+			parameter_no,
+			orders,
+			name,
+			group_no,
+			merchant_no,
+			parameter_group_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parameterNo},
+			#{orders},
+			#{name},
+			#{groupNo},
+			#{merchantNo},
+			#{parameterGroup.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_parameter SET 	
+			parameter_no = #{parameterNo},
+			orders = #{orders},
+			name = #{name},
+			group_no = #{groupNo},
+			merchant_no = #{merchantNo},
+			parameter_group_id = #{parameterGroup.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE product_parameter SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE parameter_group_id = #{parameterGroup.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.supplier.dao.SupplierDao">
+    
+	<sql id="supplierColumns">
+		a.id AS "id",
+		a.supplier_no AS "supplierNo",
+		a.company_name AS "companyName",
+		a.company_addr AS "companyAddr",
+		a.principal_name AS "principalName",
+		a.principal_phone AS "principalPhone",
+		a.create_date AS "createDate",
+		a.remark AS "remark",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="supplierJoins">
+	</sql>
+    
+	<select id="get" resultType="Supplier">
+		SELECT 
+			<include refid="supplierColumns"/>
+		FROM supplier a
+		<include refid="supplierJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Supplier">
+		SELECT 
+			<include refid="supplierColumns"/>
+		FROM supplier a
+		<include refid="supplierJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="companyName != null and companyName != ''">
+				a.company_name LIKE 
+				<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Supplier">
+		SELECT 
+			<include refid="supplierColumns"/>
+		FROM supplier a
+		<include refid="supplierJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supplier(
+			id,
+			supplier_no,
+			company_name,
+			company_addr,
+			principal_name,
+			principal_phone,
+			create_date,
+			remark,
+			del_flag
+		) VALUES (
+			#{id},
+			#{supplierNo},
+			#{companyName},
+			#{companyAddr},
+			#{principalName},
+			#{principalPhone},
+			#{createDate},
+			#{remark},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supplier SET 	
+			supplier_no = #{supplierNo},
+			company_name = #{companyName},
+			company_addr = #{companyAddr},
+			principal_name = #{principalName},
+			principal_phone = #{principalPhone},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE supplier SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

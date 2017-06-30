@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.uib</groupId>
+		<artifactId>uib-business</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<groupId>com.uib</groupId>
+	<artifactId>uib-core</artifactId>
+	<version>0.0.1</version>
+	<name>uib-core</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<!-- bean validate -->
+		<dependency>
+			<groupId>com.uib</groupId>
+			<artifactId>uib-common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		
+		<!-- solr  begin -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-analysis-extras</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-analytics</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-cell</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-clustering</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-core</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-langid</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-map-reduce</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-morphlines-cell</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-morphlines-core</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-solrj</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-test-framework</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-uima</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 		  <groupId>org.apache.solr</groupId> -->
+<!-- 		  <artifactId>solr-velocity</artifactId> -->
+<!-- 		  <version>${solr.version}</version> -->
+<!-- 		</dependency> -->
+		
+		<!--  solr public jar begin -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.httpcomponents</groupId> -->
+<!-- 			<artifactId>httpmime</artifactId> -->
+<!-- 			<version>4.4.1</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.httpcomponents</groupId> -->
+<!-- 			<artifactId>httpcore</artifactId> -->
+<!-- 			<version>4.4.1</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.httpcomponents</groupId> -->
+<!-- 			<artifactId>httpclient</artifactId> -->
+<!-- 			<version>4.4.1</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.noggit</groupId> -->
+<!-- 			<artifactId>noggit</artifactId> -->
+<!-- 			<version>0.6</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.codehaus.woodstox</groupId> -->
+<!-- 			<artifactId>stax2-api</artifactId> -->
+<!-- 			<version>3.1.4</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.codehaus.woodstox</groupId> -->
+<!-- 			<artifactId>woodstox-core-asl</artifactId> -->
+<!-- 			<version>4.4.1</version> -->
+<!-- 		</dependency> -->
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		
+		<!--  solr public jar end -->
+		
+		<!-- solr  end -->	
+		
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Eclipse plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpversion>none</wtpversion>
+				</configuration>
+			</plugin>
+
+			<!-- Source attach plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

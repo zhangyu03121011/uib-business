@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.pay.dto.WeixinPayResDto">
+	<insert id="savePayInfo">
+		INSERT INTO order_table_payment(
+			id,
+			order_no,
+			account,
+			amount,
+			payer,
+			payment_date,
+			payment_method,
+			method,
+			status,
+			payment_bank,
+			type,
+			order_table_id,
+			create_by,
+			update_by,
+			update_date,
+			create_date
+		) VALUES (
+			#{id},
+			#{orderNo},
+			#{account},
+			#{amount},
+			#{payer},
+			#{paymentDate},
+			#{paymentMethod},
+			#{paymentMethod},
+			#{status},
+			#{paymentBank},
+			#{type},
+			#{orderTableId},
+			#{payer},
+			#{payer},
+			now(),
+			now()
+		)
+	</insert>
+</mapper>

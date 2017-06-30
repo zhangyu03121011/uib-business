@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.cart.dao.CartDao">
+    
+	<sql id="cartColumns">
+		a.id AS "id",
+		a.cart_key AS "cartKey",
+		a.member_id AS "memberId",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate"
+	</sql>
+	
+	<sql id="cartJoins">
+	</sql>
+    
+	<select id="get" resultType="Cart">
+		SELECT 
+			<include refid="cartColumns"/>
+		FROM cart a
+		<include refid="cartJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Cart">
+		SELECT 
+			<include refid="cartColumns"/>
+		FROM cart a
+		<include refid="cartJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="cartKey != null and cartKey != ''">
+				AND a.cart_key = #{cartKey}
+			</if>
+			<if test="memberId != null and memberId != ''">
+				AND a.member_id = #{memberId}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="modifyDate != null and modifyDate != ''">
+				AND a.modify_date = #{modifyDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Cart">
+		SELECT 
+			<include refid="cartColumns"/>
+		FROM cart a
+		<include refid="cartJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cart(
+			id,
+			cart_key,
+			member_id,
+			create_date,
+			modify_date
+		) VALUES (
+			#{id},
+			#{cartKey},
+			#{memberId},
+			#{createDate},
+			#{modifyDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cart SET 	
+			cart_key = #{cartKey},
+			member_id = #{memberId},
+			modify_date = #{modifyDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM cart
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

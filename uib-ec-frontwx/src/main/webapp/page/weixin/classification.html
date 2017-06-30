@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>首页</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!-- 搜索 -->
+<div class="search-box">
+<div class="list-quick">
+<a href="home.html">
+<img src="images/list.png"/>
+分类
+</a>
+</div>
+<div id="searchBox" class="input-box w70">
+<input type="text" placeholder="搜索商品分类、名称、品牌、功效" onclick="location.href='search.html'">
+</div>
+</div>
+<!-- 分类 -->
+<div class="list-module mt3">
+	<!-- 左侧分类 -->
+    <div class="module-left">
+    	<ul id="first_classification"></ul>
+    </div>
+    <!-- 右侧分类 -->
+    <div class="module-right">
+    	<div id="second_classification"></div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/classification.js"></script>
+</body>
+</html>

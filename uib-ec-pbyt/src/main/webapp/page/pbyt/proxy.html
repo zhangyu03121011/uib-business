@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/popover.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title></title>
+</head>
+<body class="main-bg">
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.back(1)"></a>
+    <div class="title">申请代理</div>
+  </div>
+</header>
+<section class="app-body no-menu">
+<form name="proxyForm" id="proxyForm"  method="post" >
+    <input type="hidden" id="approveFlag" name="approveFlag"/>
+    <ul class="application-agent">
+        <li><span>姓名</span><input name="username" type="text" id="name" placeholder="请填写真实姓名" value=""/></li>
+        <li><span>身份证号</span><input name="card" type="text" id="card" placeholder="请填写您的身份证号" value=""/></li>
+        <li><span>手机号</span><input name="phone" type="text" id="phone" placeholder="请输入您的手机号" value=""/><a href="#" onclick="receiveCodeClick(this);">获取验证码</a></li>
+        <li><span>验证码</span><input name="" type="text" id="code" placeholder="请输入验证码" value=""/></li>
+    </ul>
+</form>
+    <ul class="protocol-box">
+      <li class="backcard-box">
+        <span><a href="#" id="confirmBtn">商城会员服务协议</a></span>
+        <div class="select-bank app-checkbox">
+          <input type="checkbox" id="RadioGroup1_0" name="RadioGroup1"/>
+          <label for="RadioGroup1_0" class="iconfont"></label>
+        </div>
+      </li>
+      </ul>
+	<button class="new-address-btn" id="applyBtn">立即申请</button>
+</section>
+
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/proxy.js"></script>
+<script src="js/uib.min.js"></script>
+        <script type="text/javascript" src="./js/lib/frozen.js"></script>
+        <script type="text/javascript" src="./js/touch.min.js"></script>
+</body>
+</html>

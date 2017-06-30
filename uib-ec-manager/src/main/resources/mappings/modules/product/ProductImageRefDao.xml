@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductImageRefDao">
+    
+	<sql id="productImageRefColumns">
+		a.id AS "id",
+		a.product_no AS "productNo",
+		a.file_path AS "filePath",
+		a.title AS "title",
+		a.source AS "source",
+		a.large AS "large",
+		a.medium AS "medium",
+		a.thumbnail AS "thumbnail",
+		a.orders AS "orders",
+		a.product_id AS "product.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="productImageRefJoins">
+		LEFT JOIN product b ON b.id = a.product_id
+	</sql>
+    
+	<select id="get" resultType="ProductImageRef">
+		SELECT 
+			<include refid="productImageRefColumns"/>
+		FROM product_image_ref a
+		<include refid="productImageRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProductImageRef">
+		SELECT 
+			<include refid="productImageRefColumns"/>
+		FROM product_image_ref a
+		<include refid="productImageRefJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="productNo != null and productNo != ''">
+				AND a.product_no = #{productNo}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="product != null and product.id != null and product.id != ''">
+				AND a.product_id = #{product.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProductImageRef">
+		SELECT 
+			<include refid="productImageRefColumns"/>
+		FROM product_image_ref a
+		<include refid="productImageRefJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO product_image_ref(
+			id,
+			product_no,
+			file_path,
+			title,
+			source,
+			large,
+			medium,
+			thumbnail,
+			orders,
+			product_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{productNo},
+			#{filePath},
+			#{title},
+			#{source},
+			#{large},
+			#{medium},
+			#{thumbnail},
+			#{orders},
+			#{product.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product_image_ref SET 	
+			product_no = #{productNo},
+			file_path = #{filePath},
+			title = #{title},
+			source = #{source},
+			large = #{large},
+			medium = #{medium},
+			thumbnail = #{thumbnail},
+			orders = #{orders},
+			product_id = #{product.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE product_image_ref SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE product_id = #{product.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

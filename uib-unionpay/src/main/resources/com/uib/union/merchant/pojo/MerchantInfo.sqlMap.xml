@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uib.union.merchant.pojo.MerchantInfo">
+	
+	
+	
+	<resultMap type="merchantInfo" id="merchantInfoMap">
+		<result property="id" column="ID"  />
+		<result property="merchantCode" column="MERCHANT_CODE" />
+		<result property="hmd5Password" column="HMD5_PASSWORD" />
+		<result property="receiveBankId" column="RECEIVE_BANK_ID" />
+		<result property="bankCardNo" column="BANK_CARD_NO" />
+		<result property="remark" column="REMARK" />
+		
+	</resultMap>
+	
+	
+	
+	<sql id="merchantInfo_Column_List">
+	  ID, MERCHANT_CODE,HMD5_PASSWORD,RECEIVE_BANK_ID,BANK_CARD_NO,REMARK
+	</sql>
+
+	<select id="getMerchantInfoByMerchantCode" parameterType="String" resultMap="merchantInfoMap" useCache="true">
+	    SELECT <include refid="merchantInfo_Column_List"/> 
+	    FROM MERCHANT_INFO mer WHERE  mer.MERCHANT_CODE = #{merchantCode} 
+	</select>
+	
+	
+	
+</mapper>

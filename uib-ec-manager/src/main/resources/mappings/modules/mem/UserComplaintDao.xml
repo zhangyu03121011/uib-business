@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.mem.dao.UserComplaintDao">
+    
+    <sql id="userComplaintColumns2">
+		a.id AS "id",
+		a.member_id AS "memberId",
+		a.feedback_type AS "feedbackType",
+		a.title AS "title",
+		a.describeinfo AS "describeinfo",
+		a.images AS "images",
+		a.del_flag AS "delFlag",
+		a.create_time AS "createTime",
+		a.solution_time AS "solutionTime",
+		a.modify_date AS "modifyDate",
+		a.solution_state AS "solutionState",
+		a.reply AS "reply",
+		m.username AS "username"		
+	</sql>
+    
+	<sql id="userComplaintColumns">
+		a.id AS "id",
+		a.member_id AS "memberId",
+		a.feedback_type AS "feedbackType",
+		a.title AS "title",
+		a.describeinfo AS "describeinfo",
+		a.images AS "images",
+		a.del_flag AS "delFlag",
+		a.create_time AS "createTime",
+		a.solution_time AS "solutionTime",
+		a.modify_date AS "modifyDate",
+		a.solution_state AS "solutionState",
+		a.reply AS "reply",
+		m.username AS "username",
+		c.id AS "cId",
+		c.file_name AS "fileName",
+		c.file_path AS "filePath"		
+	</sql>
+	
+	<sql id="userComplaintJoins">
+		LEFT JOIN mem_member m ON a.member_id = m.id
+		LEFT JOIN user_complaint_attr_map b ON a.id = b.complaint_id 
+    	LEFT JOIN tb_attachment c ON b.attachment_id = c.id  	
+	</sql>
+       
+	<select id="get"  resultMap="UserComplaintResultMap">
+		SELECT 
+		<include refid="userComplaintColumns"/>
+		FROM user_complaint a
+		<include refid="userComplaintJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UserComplaint">
+		SELECT 
+		<include refid="userComplaintColumns2"/>
+		FROM user_complaint a 
+		LEFT JOIN mem_member m ON a.member_id = m.id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="feedbackType != null and feedbackType != ''">
+				AND a.feedback_type = #{feedbackType}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		order by create_time desc
+		<!-- <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose> -->
+	</select>
+	
+	<select id="findAllList" resultType="UserComplaint">
+		SELECT 
+		<include refid="userComplaintColumns"/>
+		FROM user_complaint a
+		<include refid="userComplaintJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO user_complaint(
+			id,
+			member_id,
+			feedback_type,
+			title,
+			describeinfo,
+			images,
+			del_flag,
+			create_time,
+			solution_time,
+			modify_date,
+			solution_state,
+			reply
+		) VALUES (
+			#{id},
+			#{memberId},
+			#{feedbackType},
+			#{title},
+			#{describeinfo},
+			#{images},
+			#{delFlag},
+			#{createTime},
+			#{solutionTime},
+			#{modifyDate},
+			#{solutionState},
+			#{reply}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE user_complaint SET 	
+			member_id = #{memberId},
+			feedback_type = #{feedbackType},
+			title = #{title},
+			describeinfo = #{describeinfo},
+			images = #{images},
+			create_time = #{createTime},
+			solution_time = #{solutionTime},
+			modify_date = #{modifyDate},
+			solution_state = #{solutionState},
+			reply = #{reply}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE user_complaint SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 关联文件表查询图片 -->
+	<resultMap type="UserComplaint" id="UserComplaintResultMap">
+		<id property="id" column="id" />
+		<id property="memberId" column="memberId" />
+		<id property="feedbackType" column="feedbackType" />
+		<id property="title" column="title" />
+		<id property="describeinfo" column="describeinfo" />
+		<id property="images" column="images" />
+		<id property="delFlag" column="delFlag" />
+		<id property="createTime" column="createTime" />
+		<id property="solutionTime" column="solutionTime" />
+		<id property="modifyDate" column="modifyDate" />
+		<id property="solutionState" column="solutionState" />
+		<id property="reply" column="reply" />
+		<id property="username" column="username" />			
+		<collection property="userComplaintAttachmentList" javaType="ArrayList"
+			ofType="com.uib.ecmanager.modules.mem.entity.UserComplaintAttachment">
+			<id property="id" column="cId" />
+			<result property="fileName" column="fileName" />
+			<result property="filePath" column="filePath" />
+		</collection>	
+	</resultMap>
+</mapper>

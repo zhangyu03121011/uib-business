@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.member.entity.MemReceiver">
+    <cache eviction="FIFO" flushInterval="5000" size="512" readOnly="true"></cache>	
+	
+	<resultMap type="memReceiver" id="memReceiverMap">
+		<result column="id" property="id" />
+		<result column="address" property="address" />
+		<result column="area_name" property="areaName"/>
+		<result column="consignee" property="consignee"/>
+		<result column="is_default" property="isDefault"/>
+		<result column="phone" property="phone"/>
+		<result column="zip_code" property="zipCode"/>
+		<result column="area" property="area"/>
+		<result column="member_id" property="memberId"/>
+		<result column="create_date" property="createDate"/>
+		<result column="update_date" property="updateDate"/>
+		<result column="remarks" property="remarks"/>
+		<result column="del_flag" property="delFlag"/>
+	</resultMap>
+	
+	<select id="getLastOrderReceiverByMemberId" parameterType="String" resultType="memReceiver">
+		SELECT o.consignee, o.phone, o.address, o.area, o.area_name as areaName from order_table o
+		WHERE o.user_name = #{userName} order by o.create_date desc limit 1
+	</select>
+	
+	
+	<sql id="memReceiverColumns">
+		a.id AS "id",
+		a.address AS "address",
+		a.area_name AS "areaName",
+		a.consignee AS "consignee",
+		a.is_default AS "isDefault",
+		a.phone AS "phone",
+		a.zip_code AS "zipCode",
+		a.area AS "area",
+		a.member_id AS "memMember.id",
+		
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memReceiverJoins">
+	</sql>
+	
+    
+	<select id="getMemReceiverById" parameterType="string" resultType="memReceiver">
+		SELECT 
+			<include refid="memReceiverColumns"/>
+		FROM mem_receiver a
+		<include refid="memReceiverJoins"/>
+		WHERE a.del_flag = 0 AND a.id = #{id};
+	</select>
+	
+	<select id="getMemReceiverByAddress" parameterType="String" resultType="memReceiver">
+		SELECT 
+			<include refid="memReceiverColumns"/>
+		FROM mem_receiver a
+		<include refid="memReceiverJoins"/>
+		WHERE a.del_flag = 0 AND a.member_id = #{memberId} order by a.create_date desc
+	</select>
+	
+	<select id="getDefaultMemReceiverByMemberId" parameterType="String" resultType="memReceiver">
+		SELECT 
+			<include refid="memReceiverColumns"/>
+		FROM mem_receiver a
+		<include refid="memReceiverJoins"/>
+		WHERE a.del_flag = 0 AND a.is_default = 1 AND a.member_id = #{memberId} 
+	</select>
+	
+	
+	<select id="getMemReceiverByAddrCount" parameterType="String" resultType="Integer">
+		SELECT 
+			count(*)
+		FROM mem_receiver a
+		WHERE a.del_flag = 0 AND a.member_id = #{memberId}
+	</select>
+	
+
+	
+	<insert id="save" parameterType="memReceiver" statementType="CALLABLE">
+		INSERT INTO mem_receiver(
+			id,
+			address,
+			area_name,
+			consignee,
+			is_default,
+			phone,
+			zip_code,
+			area,
+			member_id,
+			create_date,
+			update_date,
+			remarks,
+			del_flag
+			
+		) VALUES (
+			#{id},
+			#{address},
+			#{areaName},
+			#{consignee},
+			#{isDefault},
+			#{phone},
+			#{zipCode},
+			#{area},
+			#{memMember.id},
+			#{createDate},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mem_receiver SET 	
+			id = #{id},
+			address = #{address},
+			area_name = #{areaName},
+			consignee = #{consignee},
+			is_default = #{isDefault},
+			phone = #{phone},
+			zip_code = #{zipCode},
+			area = #{area},
+			member_id = #{memMember.id},
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	<update id="updateIsDefault">
+		UPDATE mem_receiver SET 	
+			is_default = 1 
+		WHERE id = #{id}
+	</update>
+
+	
+	<update id="delete">
+		UPDATE mem_receiver SET 
+			del_flag = 1
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

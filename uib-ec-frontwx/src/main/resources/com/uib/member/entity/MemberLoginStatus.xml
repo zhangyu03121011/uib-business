@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easypay.member.entity.MemberLoginStatus">
+	<resultMap id="BaseResultMap" type="memberLoginStatus">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="session_id" property="sessionId" jdbcType="VARCHAR" />
+		<result column="member_id" property="memberId" jdbcType="VARCHAR" />
+		<result column="ip_address" property="ipAddress" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="findByMemberId" parameterType="string"	resultMap="BaseResultMap">
+		SELECT * FROM member_login_status WHERE member_id=#{memberId}
+	</select>
+	
+	<select id="findByMemberIdAndSessionId" parameterType="map"	resultType="memberLoginStatus">
+		SELECT * FROM member_login_status WHERE session_id=#{sessionId} and member_id=#{memberId}
+	</select>
+
+	<select id="findExistsBySessionId" parameterType="string"	resultType="int">
+		SELECT COUNT(id) FROM member_login_status WHERE session_id=#{sessionId}
+	</select>
+	<insert id="saveMemberLoginStatus" parameterType="memberLoginStatus">
+		insert into member_login_status
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sessionId != null">
+				session_id,
+			</if>
+			<if test="memberId != null">
+				member_id,
+			</if>
+			<if test="ipAddress != null">
+				ip_address,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="sessionId != null">
+				#{sessionId,jdbcType=VARCHAR},
+			</if>
+			<if test="memberId != null">
+				#{memberId,jdbcType=VARCHAR},
+			</if>
+			<if test="ipAddress != null">
+				#{ipAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

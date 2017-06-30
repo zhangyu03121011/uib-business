@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.MemMerchantDao">
+    <sql id="memMerchantColumns">
+		a.id AS "id",
+		a.merchant_no AS "merchantNo",
+		a.merchant_name AS "merchantName",
+		a.register_date AS "registerDate",
+		a.effective_date AS "effectiveDate",
+		a.template_num AS "templateNum",
+		a.merchant_page AS "merchantPage",
+		a.contact_name AS "contactName",
+		a.email AS "email",
+		a.phone AS "phone",
+		a.member_id AS "memberId",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memMerchantJoins">
+	</sql>
+    
+    <insert id="insert">
+        insert into mem_merchant(
+            id,
+            merchant_no,
+            merchant_name,
+            register_date,
+            effective_date,
+            template_num,
+            merchant_page,
+            contact_name,
+            email,
+            phone,
+            member_id,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            del_flag
+        )value(
+            #{id},
+            #{merchantNo},
+            #{merchantName},
+            #{registerDate},
+            #{effectiveDate},
+            #{templateNum},
+            #{merchantPage},
+            #{contactName},
+            #{email},
+            #{phone},
+            #{memberId},
+            #{createBy},
+            #{createDate},
+            #{updateBy},
+            #{updateDate},
+            #{remarks},
+            #{delFlag}
+        )
+    </insert>
+    
+    <update id="update">
+        update mem_merchant
+        set
+            phone=#{phone}
+        where
+            member_id=#{memberId}
+    </update>
+    
+    <select id="queryMerchant" resultType="com.uib.ptyt.entity.MemMerchantDto">
+         select 
+			<include refid="memMerchantColumns"></include>
+		from 
+			mem_merchant a
+		where	
+			a.del_flag = '0'
+			 <if test="memberId !=null and memberId!=''">
+		        and a.member_id=#{memberId}
+		    </if>
+    </select>
+</mapper>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductCategoryDao">
+
+	<sql id="productCategoryColumns">
+		a.id AS "id",
+		a.category_no AS "categoryNo",
+		a.orders AS
+		"orders",
+		a.grade AS "grade",
+		a.name AS "name",
+		a.image_path AS
+		"imagePath",
+		a.seo_description AS "seoDescription",
+		a.seo_keywords AS
+		"seoKeywords",
+		a.seo_title AS "seoTitle",
+		a.merchant_no AS "merchantNo",
+		a.parent_id AS "parent.id",
+		a.create_by AS "createBy.id",
+		a.parent_ids
+		AS "parentIds",
+		a.create_date AS "createDate",
+		a.update_by AS
+		"updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="productCategoryJoins">
+	</sql>
+
+	<select id="get" resultType="ProductCategory">
+		SELECT
+		<include refid="productCategoryColumns" />
+		FROM product_category a
+		<include refid="productCategoryJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ProductCategory">
+		SELECT
+		<include refid="productCategoryColumns" />
+		FROM product_category a
+		<include refid="productCategoryJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				AND a.parent_id = #{parent.id}
+			</if>
+			<if test="parentIds != null and parentIds != ''">
+				AND a.parent_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
+			</if>
+		</where>
+		order by a.orders asc 
+	</select>
+
+	<select id="findAllList" resultType="ProductCategory">
+		SELECT
+		<include refid="productCategoryColumns" />
+		FROM product_category a
+		<include refid="productCategoryJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		order by a.orders asc
+	</select>
+
+	<select id="findByParentIdsLike" resultType="ProductCategory">
+		SELECT
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_ids
+		FROM product_category a
+		<include refid="productCategoryJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.parent_ids LIKE
+			#{parentIds}
+		</where>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product_category(
+		id,
+		category_no,
+		orders,
+		grade,
+		name,
+		image_path,
+		seo_description,
+		seo_keywords,
+		seo_title,
+		merchant_no,
+		parent_id,
+		create_by,
+		parent_ids,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{categoryNo},
+		#{orders},
+		(LENGTH(#{parentIds})-LENGTH(REPLACE(#{parentIds},',',''))),
+		#{name},
+		#{imagePath},
+		#{seoDescription},
+		#{seoKeywords},
+		#{seoTitle},
+		#{merchantNo},
+		#{parent.id},
+		#{createBy.id},
+		#{parentIds},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE product_category SET
+		category_no = #{categoryNo},
+		orders = #{orders},
+		grade = (LENGTH(#{parentIds})-LENGTH(REPLACE(#{parentIds},',',''))),
+		name = #{name},
+		image_path = #{imagePath},
+		seo_description = #{seoDescription},
+		seo_keywords = #{seoKeywords},
+		seo_title = #{seoTitle},
+		merchant_no = #{merchantNo},
+		parent_id = #{parent.id},
+		parent_ids = #{parentIds},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateParentIds">
+		UPDATE product_category SET
+		parent_id = #{parent.id},
+		parent_ids = #{parentIds},
+		grade = (LENGTH(#{parentIds})-LENGTH(REPLACE(#{parentIds},',','')))
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE product_category SET
+		del_flag = '1'
+		WHERE id = #{id}
+		<if test="id != null and id != ''">
+			OR parent_ids LIKE
+			<if test="dbName == 'oracle'">'%'||#{id}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{id}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{id},'%')</if>
+		</if>
+	</update>
+
+	<select id="isLastStage" parameterType="String" resultType="boolean">
+		SELECT COUNT(*)=0 FROM product_category AS a
+		<where>
+			a.del_flag = '0' AND
+			a.parent_ids LIKE CONCAT('%',#{productCategoryId},'%');
+		</where>
+	</select>
+
+</mapper>

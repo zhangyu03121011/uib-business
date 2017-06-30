@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.product.entity.Product">
+<sql id="productColumns">
+		a.id AS "id",
+		a.product_no AS "productNo",
+		a.allocated_stock AS "allocatedStock",
+		a.cost AS "cost",
+		a.full_name AS "fullName",
+		a.hits AS "hits",
+		a.image AS "image",
+		a.introduction AS "introduction",
+		a.is_gift AS "isGift",
+		a.is_list AS "isList",
+		a.pc_is_marketable AS "pcIsMarketable",
+		a.app_is_marketable as "appIsMarketable",
+		a.wx_is_marketable as "wxIsMarketable",
+		a.app_home_show as "appHomeShow",
+		a.wx_home_show as "wxHomeShow",
+		a.is_top AS "isTop",
+		a.is_member_price AS "isMemberPrice",
+		a.hot_sell AS "hotSell",
+		a.newest AS "newest",
+		a.promotion AS "promotion",
+		a.keyword AS "keyword",
+		a.market_price AS "marketPrice",
+		a.memo AS "memo",
+		a.month_hits AS "monthHits",
+		a.month_hits_date AS "monthHitsDate",
+		a.month_sales AS "monthSales",
+		a.month_sales_date AS "monthSalesDate",
+		a.name AS "name",
+		a.point AS "point",
+		a.price AS "price",
+		a.sales AS "sales",
+		a.score AS "score",
+		a.score_count AS "scoreCount",
+		a.seo_description AS "seoDescription",
+		a.seo_keywords AS "seoKeywords",
+		a.seo_title AS "seoTitle",
+		a.stock AS "stock",
+		a.stock_memo AS "stockMemo",
+		a.total_score AS "totalScore",
+		a.unit AS "unit",
+		a.week_hits AS "weekHits",
+		a.week_hits_date AS "weekHitsDate",
+		a.week_sales AS "weekSales",
+		a.week_sales_date AS "weekSalesDate",
+		a.weight AS "weight",
+		a.goods AS "goods",
+		a.product_category_no AS "productCategoryNo",
+		a.proprietary AS "proprietary",
+		a.mechant_no AS "merchantNo",
+		a.product_category_id AS "productCategoryId",
+		a.create_by AS "createBy",
+		a.brand_id AS "brandId",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.comm_percent AS "commPercent"
+	</sql>
+	
+	<sql id="productJoins">
+	</sql>
+    
+    <select id="getParameters" resultType="Map">
+    SELECT * FROM (
+	SELECT
+	pp.`name`,pp.orders,
+	ppr.parameter_value AS parameterValue
+	FROM
+	product_parameter_ref	 ppr 
+	LEFT JOIN product_parameter  pp ON ppr.parameter_id = pp.id
+	LEFT JOIN parameter_group pg ON pp.parameter_group_id = pg.id
+	WHERE
+	ppr.product_id =#{productId} 
+	UNION
+	SELECT
+		pp.`name`,pp.orders,
+		ppr.parameter_value AS parameterValue
+	FROM
+		product_parameter_ref ppr
+	LEFT JOIN product_parameter pp ON ppr.parameter_id = pp.id
+	WHERE
+	ppr.product_id = #{productId} 
+	) temp  ORDER BY temp.orders
+    </select>
+    
+	<select id="queryProductByProductId" resultType="com.uib.product.entity.Product">
+		SELECT 
+			<include refid="productColumns"/>
+		FROM product a
+		<include refid="productJoins"/>
+		WHERE a.id = #{productId}
+	</select>
+
+	<select id="getProductByNotInIds"  parameterType="java.util.List" resultType="com.uib.product.entity.Product">
+		SELECT 
+			<include refid="productColumns"/>
+		FROM product a
+		<include refid="productJoins"/>
+		<where>
+			<if test="list != null and list.size>0">
+				 a.id not in 
+			    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+			            #{item}   
+			    </foreach> 
+		    </if>
+	    </where> 
+	</select>
+	
+	
+	<update id="updateSubtractProductStock" parameterType="map">
+		update product p set p.stock=p.stock-#{stock},p.allocated_stock=p.allocated_stock-#{stock} where p.id=#{id}
+	</update>
+	
+	<update id="updateSubtractAllocatedStock" parameterType="map">
+		update product p set p.allocated_stock=p.allocated_stock-#{allocatedStock} where p.id=#{id}
+	</update>
+	
+	<update id="updateProductSales" parameterType="map">
+		update product p set p.sales =p.sales + ${sales} where p.id=#{id}
+	</update>	
+		<select id="getProductListByProductNo" resultType="Product">
+		SELECT 
+			<include refid="productColumns"/>
+		FROM product a
+		<where>
+				a.del_flag ='0'
+			<if test="productNo != null and productNo != ''">
+				AND a.product_no = #{productNo}
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name = #{fullName}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				AND a.keyword = #{keyword}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.mechant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+				AND a.product_category_id = #{productCategoryId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListMobile" resultType="Map">
+			SELECT id, full_name  fullName,image, ifnull(market_price, 0) marketPrice ,price,stock-allocated_stock AS stock FROM  product 
+		<where>
+			<!-- mobile_home_display='1' AND is_marketable="1"  AND	del_flag='0' -->
+			app_home_show ='1' AND app_is_marketable = "1"  AND	del_flag = '0'
+		</where>
+			ORDER BY create_date  DESC
+	</select>
+	
+	<select id="findByCategory4Mobile"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName, 
+			CONCAT(#{imageUrl},p.image) as image  ,
+			p.market_price marketPrice , 
+			p.price,  
+			p.stock- p.allocated_stock AS stock,
+			ifnull(p.sales, 0) sales, 
+			count(p_comment.id) as commentCount
+		FROM   product  p   
+		LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		LEFT JOIN product_comment p_comment on p_comment.product_id = p.id
+		<where>
+		  <!--  p.is_marketable="1"   AND	p.del_flag='0' -->
+		  p.app_is_marketable ="1"   AND	p.del_flag='0'
+		 <if test="productName ==null  || productName ==''">
+		   AND  pc.id=#{categoryId}
+		 </if>
+		 <if test="productName !=null  and productName !=''">
+		  AND p.product_category_id  IN (SELECT id FROM  product_category WHERE parent_id  in (SELECT id FROM  product_category    WHERE  parent_id=#{categoryId}))
+		  AND p.full_name LIKE CONCAT('%',#{productName},'%') 
+		 </if>
+		</where>
+		GROUP BY p.id
+		<choose>
+		<when test="sortord==1">
+			ORDER BY  p.price
+		</when>
+		<when test="sortord==2">
+			ORDER BY  p.price DESC
+		</when>
+		<when test="sortord==3">
+			ORDER BY  sales
+		</when>
+		<when test="sortord==4">
+			ORDER BY  sales DESC
+		</when>
+		<when test="sortord==5">
+			ORDER BY  commentCount
+		</when>
+		<when test="sortord==6">
+			ORDER BY  commentCount DESC
+		</when>
+		<otherwise>
+			ORDER BY p.create_date  DESC
+		</otherwise>
+		</choose>
+		<if test="startSize !=null  and currSize !=null ">
+		  LIMIT #{startSize},#{currSize}
+		</if>
+
+	</select>
+	
+	<select id="findList" resultType="Product">
+		SELECT 
+			<include refid="productColumns"/>
+		FROM product a
+		<include refid="productJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="productNo != null and productNo != ''">
+				AND a.product_no = #{productNo}
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name = #{fullName}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				AND a.keyword = #{keyword}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.mechant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+				AND a.product_category_id = #{productCategoryId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Product">
+		SELECT 
+			<include refid="productColumns"/>
+		FROM product a
+		<include refid="productJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- <insert id="insert">
+		INSERT INTO product(
+			id,
+			product_no,
+			allocated_stock,
+			cost,
+			full_name,
+			hits,
+			image,
+			introduction,
+			is_gift,
+			is_list,
+			is_marketable,
+			is_top,
+			is_member_price,
+			hot_sell,
+			newest,
+			promotion,
+			keyword,
+			market_price,
+			memo,
+			month_hits,
+			month_hits_date,
+			month_sales,
+			month_sales_date,
+			name,
+			point,
+			price,
+			sales,
+			score,
+			score_count,
+			seo_description,
+			seo_keywords,
+			seo_title,
+			stock,
+			stock_memo,
+			total_score,
+			unit,
+			week_hits,
+			week_hits_date,
+			week_sales,
+			week_sales_date,
+			weight,
+			goods,
+			product_category_no,
+			proprietary,
+			mechant_no,
+			product_category_id,
+			create_by,
+			brand_id,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{productNo},
+			#{allocatedStock},
+			#{cost},
+			#{fullName},
+			#{hits},
+			#{image},
+			#{introduction},
+			#{isGift},
+			#{isList},
+			#{isMarketable},
+			#{isTop},
+			#{isMemberPrice},
+			#{hotSell},
+			#{newest},
+			#{promotion},
+			#{keyword},
+			#{marketPrice},
+			#{memo},
+			#{monthHits},
+			#{monthHitsDate},
+			#{monthSales},
+			#{monthSalesDate},
+			#{name},
+			#{point},
+			#{price},
+			#{sales},
+			#{score},
+			#{scoreCount},
+			#{seoDescription},
+			#{seoKeywords},
+			#{seoTitle},
+			#{stock},
+			#{stockMemo},
+			#{totalScore},
+			#{unit},
+			#{weekHits},
+			#{weekHitsDate},
+			#{weekSales},
+			#{weekSalesDate},
+			#{weight},
+			#{goods},
+			#{productCategoryNo},
+			#{proprietary},
+			#{merchantNo},
+			#{productCategoryId},
+			#{createBy.id},
+			#{brandId},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE product SET 	
+			product_no = #{productNo},
+			allocated_stock = #{allocatedStock},
+			cost = #{cost},
+			full_name = #{fullName},
+			hits = #{hits},
+			image = #{image},
+			introduction = #{introduction},
+			is_gift = #{isGift},
+			is_list = #{isList},
+			is_marketable = #{isMarketable},
+			is_top = #{isTop},
+			is_member_price = #{isMemberPrice},
+			hot_sell = #{hotSell},
+			newest = #{newest},
+			promotion = #{promotion},
+			keyword = #{keyword},
+			market_price = #{marketPrice},
+			memo = #{memo},
+			month_hits = #{monthHits},
+			month_hits_date = #{monthHitsDate},
+			month_sales = #{monthSales},
+			month_sales_date = #{monthSalesDate},
+			name = #{name},
+			point = #{point},
+			price = #{price},
+			sales = #{sales},
+			score = #{score},
+			score_count = #{scoreCount},
+			seo_description = #{seoDescription},
+			seo_keywords = #{seoKeywords},
+			seo_title = #{seoTitle},
+			stock = #{stock},
+			stock_memo = #{stockMemo},
+			total_score = #{totalScore},
+			unit = #{unit},
+			week_hits = #{weekHits},
+			week_hits_date = #{weekHitsDate},
+			week_sales = #{weekSales},
+			week_sales_date = #{weekSalesDate},
+			weight = #{weight},
+			goods = #{goods},
+			product_category_no = #{productCategoryNo},
+			proprietary = #{proprietary},
+			mechant_no = #{merchantNo},
+			product_category_id = #{productCategoryId},
+			brand_id = #{brandId},
+			update_by = #{updateBy},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE product SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update> -->
+	
+	<select id="queryProductByProductCategoryId" parameterType="map" resultType="com.uib.product.entity.Product">
+		SELECT <include refid="productColumns"/>
+		FROM product a 
+		<if test="productCategoryId!=null and productCategoryId!=''">
+			inner join product_category p ON a.product_category_id = p.id
+		</if>
+		<where>
+			a.del_flag = 0
+			<if test="productCategoryId!=null and productCategoryId!=''">
+				AND (a.product_category_id = #{productCategoryId} OR p.parent_id = #{productCategoryId} OR p.parent_ids REGEXP CONCAT('(.*,)?',#{productCategoryId},'(,.*)?')) 
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectProductByBrand" resultType="Product" parameterType="java.util.Map">
+		 select 
+		 <include refid="productColumns"/>
+		 from product a where a.del_flag=0 
+		 and a.brand_id=#{id}
+		 <if test="productcategoryid!=null and productcategoryid!=''">
+		 and product_category_id=#{productcategoryid}
+		 </if>
+		 <if test="flag!=null and flag=='desc'">
+		 	order by price desc
+		 </if>
+		 <if test="flag!=null and flag=='asc'">
+		 	order by price asc
+		 </if>
+	</select>
+	<select id="getAllProductNum" parameterType="Object" resultType="Integer">
+	 select count(1) from product a where a.del_flag=0 
+		 and a.brand_id=#{id}
+	</select>
+	
+	
+	<select id="queryHotProductByProductCategoryId" parameterType="map" resultType="com.uib.product.entity.Product">
+		SELECT <include refid="productColumns"/>
+		FROM product a 
+		<if test="productCategoryId!=null and productCategoryId!=''">
+			inner join product_category p ON a.product_category_id = p.id
+		</if>
+		<where>
+			a.del_flag = 0 AND a.hot_sell='1'
+			<if test="productCategoryId!=null and productCategoryId!=''">
+				AND (a.product_category_id = #{productCategoryId} OR p.parent_id = #{productCategoryId} OR p.parent_ids REGEXP CONCAT('(.*,)?',#{productCategoryId},'(,.*)?')) 
+			</if>
+		</where>
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="queryCategoryIdsByProductId" parameterType="map" resultType="String">
+		SELECT CONCAT_WS(' | ',a.product_category_id,p.parent_ids) AS ids 
+		FROM product a INNER JOIN product_category p ON a.product_category_id=p.id 
+		<where>
+			a.del_flag = 0 AND
+			a.id=#{productId};
+		</where>
+	</select>
+	
+	<select id="selectProductByBrandAndCategory" parameterType="Object" resultType="Integer"> 
+		SELECT COUNT(1) FROM product where del_flag=0 and brand_id=#{id} and product_category_id=#{categoryId}
+	</select>
+	
+	<update id="updateAllocatedStock">
+		UPDATE 
+			product SET allocated_stock = #{allocatedStock}
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<update id="releaseAllocatedStock">
+		UPDATE 
+			product SET allocated_stock = (allocated_stock - #{number})
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<update id="releaseAllocatedStockByRelativeId">
+		UPDATE product SET allocated_stock = (allocated_stock - (SELECT SUM(quantity) AS quantity FROM cart_item WHERE id=#{cartItemId}))
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<select id="queryProducts" parameterType="map" resultType="com.uib.product.entity.Product">
+		SELECT <include refid="productColumns"/>
+		FROM product a
+		<include refid="productJoins"/>
+		<where>
+			a.del_flag = 0
+			<if test="productCategoryId!=null and productCategoryId!=''">
+				AND (a.product_category_id = #{productCategoryId}
+					OR a.product_category_id IN(
+					SELECT id FROM product_category AS p 
+					WHERE p.del_flag='0' 
+					AND (p.parent_id = #{productCategoryId} 
+						OR p.parent_ids REGEXP CONCAT('(.*,)?',#{productCategoryId},'(,.*)?')))
+				)
+			</if>
+			<if test="brandId!=null and brandId!=''">
+				AND a.product_category_id IN (SELECT product_category_id FROM brand WHERE id=#{brandId})
+			</if>
+			<if test="specificationIds!=null and specificationIds!=''">
+				AND a.id IN 
+				(
+					SELECT product_id FROM product_specification_ref WHERE locate(specification_id,#{specificationIds})>0
+					<!-- foreach item="item" index="index" collection="specificationIds" open="(" separator="," close=")">
+						#{item}
+					</foreach-->
+				)
+			</if>
+			<if test="parameterIds!=null and parameterIds!=''">
+				AND a.id IN 
+				(
+					SELECT product_id FROM product_parameter_ref WHERE parameter_id IN
+					<foreach item="item" index="index" collection="parameterIds" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				)
+			</if>
+			<if test="propertyIds!=null and propertyIds!=''">
+				AND a.id IN
+				(
+					SELECT product_id FROM product_property_ref WHERE property_id IN 
+					<foreach item="item" index="index" collection="propertyIds" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				)
+			</if>
+			<if test="hasStock!=null and hasStock!=''">
+				AND a.stock-a.allocated_stock &gt; 0
+			</if>
+		</where>
+		ORDER BY ${orderField} ${sdx}
+		LIMIT #{start},#{size}
+	</select>
+	
+	<select id="selectExistIdsByIds" parameterType="map" resultType="String">
+		SELECT id FROM product 
+					WHERE 0
+				 	<if test="ids!=null and ids!=''">
+				 		OR id IN
+				 		<foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+							#{id}
+						</foreach>
+				 	</if>
+	</select>
+	
+	<update id="updateAllocatedStockBatch">
+		UPDATE product SET allocated_stock = CASE id
+			<choose>
+				<when test="operationType=='add'">
+					<foreach collection="params" item="item" index="index">
+						WHEN #{item.paramKey} THEN allocated_stock+#{item.paramValue}
+					</foreach>
+				</when>
+				<when test="operationType=='detract'">
+					<foreach collection="params" item="item" index="index">
+						WHEN #{item.paramKey} THEN allocated_stock-#{item.paramValue}
+					</foreach>
+				</when>
+			</choose>
+			END
+		WHERE id IN
+			<foreach collection="params" item="item" index="index" open="(" close=")" separator=",">
+				#{item.paramKey}
+			</foreach>
+	</update>
+	
+	<select id="findByCategoryWechat"  resultType="Map"  parameterType="Map">
+	SELECT 
+	p.id,   p.full_name  fullName, CONCAT(#{imageUrl},p.image) as image  ,p.market_price marketPrice , p.price,  p.stock- p.allocated_stock AS stock
+	FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+	<where>
+	   p.wx_is_marketable="1"   AND	p.del_flag='0'
+	  AND p.product_category_id  IN (SELECT id FROM  product_category WHERE parent_id  in (SELECT id FROM  product_category    WHERE  parent_id=#{categoryId}))
+	</where>
+	</select>
+	
+	<select id="findByPageWechat"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName, 
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice, 
+			p.price,  
+			p.stock- p.allocated_stock AS stock
+		  FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		<where>
+		    p.wx_is_marketable="1"   AND	p.del_flag='0'
+		 <if test="categoryId !=null">
+		 	AND p.product_category_id  IN 
+		 		(SELECT id FROM  product_category WHERE parent_id  in 
+		 			(SELECT id FROM  product_category    WHERE  parent_id=#{categoryId}))
+		 </if>
+		</where>
+		ORDER BY p.create_date  DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	<!-- 微信首页精品产品分页查询 -->
+	<select id="findHomeProduct"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName, 
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice, 
+			p.price,  
+			p.stock- p.allocated_stock AS stock
+		  FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		<where>
+		    p.wx_is_marketable="1"   AND	p.del_flag='0' AND p.wx_home_show=1
+		</where>
+		ORDER BY p.create_date  DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 程健 按最新，价格，销量，人气分页查询 -->
+	<select id="findByOrderAndPage"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName, 
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice, 
+			p.price,  
+			p.stock- p.allocated_stock AS stock
+		  FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		<where>
+		    p.wx_is_marketable="1"   AND	p.del_flag='0'
+			 <if test="productCategoryName !=null and productCategoryName!=''">
+		 		<choose>
+			 		<when test="productCategoryName.indexOf('%') != 0">
+			 			AND p.full_name LIKE CONCAT('%',#{productCategoryName},'%') ESCAPE  '/'
+			 		</when>
+			 		<otherwise>
+			 			AND p.full_name LIKE CONCAT('%',#{productCategoryName},'%')
+			 		</otherwise>
+			 	</choose>
+			 </if>
+			 
+		</where>
+		<!-- 最新 -->
+		<if test="orderparam=='date'.toString() ">
+		  ORDER BY p.create_date  DESC
+		</if>
+		<!-- 销量 -->
+		<if test="orderparam=='sales'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.sales  DESC
+			</if>
+		  	<if test="down==false">
+		 		 ORDER BY p.sales
+			</if>
+		</if>
+		<!-- 价格 -->
+		<if test="orderparam=='price'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.price  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.price
+			</if>
+		</if>
+		<!-- 人气 -->
+		<if test="orderparam=='score'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.score  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.score
+			</if>
+		</if>
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 程健 按最新，价格，销量，人气分页查询  按商品分类-->
+	<select id="findProductListCategoryAndPage"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName,
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice, 
+			p.price,  
+			p.stock- p.allocated_stock AS stock
+		  FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		<where>
+		    p.wx_is_marketable="1"   AND	p.del_flag='0'
+			 <if test="categoryId !=null and categoryId !=''"> 
+			 and p.product_category_id in
+				  <foreach collection="listId" index="index" item="item" open="(" separator="," close=")">  
+			            #{item}   
+			    	</foreach> 
+		 	</if>
+		</where>
+		<!-- 最新 -->
+		<if test="orderparam=='date'.toString() ">
+		  ORDER BY p.create_date  DESC
+		</if>
+		<!-- 销量 -->
+		<if test="orderparam=='sales'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.sales  DESC
+			</if>
+		  	<if test="down==false">
+		 		 ORDER BY p.sales
+			</if>
+		</if>
+		<!-- 价格 -->
+		<if test="orderparam=='price'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.price  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.price
+			</if>
+		</if>
+		<!-- 人气 -->
+		<if test="orderparam=='score'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.score  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.score
+			</if>
+		</if>
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 程健 按最新，价格，销量，人气分页查询  按商品分类-->
+	<select id="findProdCategoryAndPageMoblie"  resultType="Map"  parameterType="Map">
+		SELECT 
+			p.id,   
+			p.full_name  fullName,
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice, 
+			p.price,  
+			p.stock- p.allocated_stock AS stock
+		  FROM   product  p   LEFT JOIN   product_category pc ON  p.product_category_id=pc.id
+		<where>
+		    p.app_is_marketable="1"   AND	p.del_flag='0'
+			 <if test="categoryId !=null and categoryId !=''"> 
+			 and p.product_category_id in
+				  <foreach collection="listId" index="index" item="item" open="(" separator="," close=")">  
+			            #{item}   
+			    	</foreach> 
+		 	</if>
+		 	<if test="productCategoryName !=null and productCategoryName!=''">
+	                 AND p.full_name LIKE CONCAT('%',#{productCategoryName},'%')
+			 </if>
+		</where>
+		<!-- 最新 -->
+		<if test="orderparam=='date'.toString() ">
+		  ORDER BY p.create_date  DESC
+		</if>
+		<!-- 销量 -->
+		<if test="orderparam=='sales'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.sales  DESC
+			</if>
+		  	<if test="down==false">
+		 		 ORDER BY p.sales
+			</if>
+		</if>
+		<!-- 价格 -->
+		<if test="orderparam=='price'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.price  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.price
+			</if>
+		</if>
+		<!-- 人气 -->
+		<if test="orderparam=='score'.toString() ">
+			<if test="down==true">
+		 		 ORDER BY p.score  DESC
+			</if>
+		  	<if test="down==false">
+		 		ORDER BY p.score
+			</if>
+		</if>
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- <select id="queryProductStatusAndCount" resultType="Map"> -->
+	<select id="queryProductIsMarketable4Mobile" resultType="Map">
+		SELECT
+			p.app_is_marketable AS "isMarketable",
+			p.stock AS "stock"
+		FROM
+			product p
+		WHERE
+			p.id = #{productId}
+	</select>
+	
+	<select id="querySpecAndGroupSpecInfo" resultType="Map">
+		SELECT
+			sg.id 	AS 'specGroupId',
+			sg.name AS 'specGroupName',
+			ps.id 	AS 'specId',
+			ps.name AS 'specName',
+			CASE WHEN ps.id IN (
+				SELECT a.specification_id 
+				  FROM product_specification_ref a
+				 WHERE a.product_id = #{productId}
+			) THEN '1' ELSE '2' END AS 'flag'
+		FROM product_specification_group_ref psgr
+		LEFT JOIN specification_group sg ON psgr.specification_group_id = sg.id
+		LEFT JOIN product_specification ps ON sg.id = ps.specification_group_id
+		WHERE psgr.product_id = #{productId}
+		AND ps.id IN (
+			SELECT ips.id FROM product_specification ips
+			LEFT JOIN product_specification_ref ipsr ON ips.id = ipsr.specification_id
+			WHERE
+				ipsr.product_id IN (
+					SELECT otp.id FROM product otp
+					 WHERE
+						otp.goods IN (
+							SELECT p.goods FROM product p
+							WHERE p.id = #{productId}
+						)
+				)
+		)
+		ORDER BY sg.orders,sg.id,ps.orders ASC
+	</select>
+	
+	<select id="querySpecBySpecIdAndId" resultType="Map">
+		SELECT
+			otp.id 			AS 'productId',
+			otp.full_name 	AS 'productName',
+			ps.id 			AS 'specId',
+			ps.name 		AS 'specName',
+			sg.id 			AS 'specGroupId',
+			sg.name			AS 'specGroupName'
+		FROM
+			product otp
+		LEFT JOIN product_specification_ref psr ON psr.product_id = otp.id
+		LEFT JOIN product_specification ps ON psr.specification_id = ps.id
+		LEFT JOIN specification_group sg ON ps.specification_group_id = sg.id
+		WHERE
+			otp.goods IN (
+				SELECT
+					p.goods
+				FROM
+					product p
+				WHERE
+					p.id = #{productId}
+			)
+		AND otp.id IN (
+			SELECT
+				itp.id AS 'productId'
+			FROM
+				product itp
+			LEFT JOIN product_specification_ref ipsr ON ipsr.product_id = itp.id
+			LEFT JOIN product_specification ips ON ipsr.specification_id = ips.id
+			WHERE
+				otp.goods = (
+					SELECT
+						ip.goods
+					FROM
+						product ip
+					WHERE
+						ip.id = #{productId}
+				)
+			AND ips.id = #{specId}
+		)
+		ORDER BY
+			otp.id,
+			ps.orders
+	</select>
+	
+	<select id="queryProductAndSpecInfoById" resultType="Map">
+		SELECT
+			otp.id 			AS 'productId',
+			otp.full_name 	AS 'productName',
+			ps.id 			AS 'specId',
+			ps.name 		AS 'specName',
+			sg.id 			AS 'specGroupId',
+			sg.name 		AS 'specGroupName'
+		FROM
+			product otp
+		LEFT JOIN product_specification_ref psr ON psr.product_id = otp.id
+		LEFT JOIN product_specification ps ON psr.specification_id = ps.id
+		LEFT JOIN specification_group sg ON ps.specification_group_id = sg.id
+		WHERE
+			otp.goods = (
+				SELECT
+					p.goods
+				FROM
+					product p
+				WHERE
+					p.id = #{productId}
+			)
+		GROUP BY
+			otp.id,
+			ps.id
+		ORDER BY
+			otp.id,
+			ps.orders
+	</select>
+</mapper>

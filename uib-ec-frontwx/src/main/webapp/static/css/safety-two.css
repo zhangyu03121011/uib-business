@@ -1,0 +1,79 @@
+@charset "utf-8";
+/* 进度条 */
+.gray666{color:#666}
+.white{color:#fff}
+.progress_box{width:1200px;height:40px;padding:20px 0}
+.shop_titleright,.shop_titlerighttwo,.shop_titlerighttre{background:url(../images/jingdu_icq.png) no-repeat}
+.shop_titleright{width:775px;height:38px;float:right;background-position:0 0}
+.shop_titlerighttwo{width:775px;height:38px;float:right;background-position:0 -58px}
+.shop_titlerighttre{width:775px;height:38px;float:right;background-position:0 -116px}
+.shop_titlerightfour{width:775px;height:38px;float:right;background-position:0 -174px}
+.shop_titleright li,.shop_titlerighttwo li,.shop_titlerighttre li,.shop_titlerightfour li{float:left;line-height:38px;font-size:18px}
+.shop_titleright .lione,.shop_titlerighttwo .lione,.shop_titlerighttre .lione{width:145px;padding-left:45px}
+.shop_titleright .litwo,.shop_titlerighttwo .litwo,.shop_titlerighttre .litwo{width:140px;padding-left:55px}
+.shop_titleright .litre,.shop_titlerighttwo .litre,.shop_titlerighttre .litre{width:120px;padding-left:60px}
+.shop_titleright .lifour,.shop_titlerighttwo .lifour,.shop_titlerighttre .lifour{width:120px;padding-left:70px}
+/* 购物车 */
+.shop_cart{width:1200px;margin:0 auto;overflow:auto}
+.shop_content{width:1198px;border:solid 1px #eee;margin-bottom:20px;}
+/* 订单信息 */
+.order_thead{width:1188px;height:35px;background:#f7f7f7;line-height:35px;border-bottom:solid 1px #ccc;padding-left:10px;font-size:16px}
+.order_thead_return{height:16px;line-height:16px;float:right;margin-right:10px;background:url(../images/user_icq.png) no-repeat 0 -225px;padding-left:15px;margin-top:6px}
+.order_address{width:1198px;overflow:auto}
+.order_address li{padding: 5px 0 5px 30px;line-height:22px;overflow:auto}
+.address_selected{background-color:#F5F5F5;color:#333}
+.order_address_info{float:left}
+.order_address_info .radio_wrap input{float:left;margin-top:4px;margin-right:5px;margin-top:0\9}
+.order_address_info .c1{float:left;width:20px}
+.order_address_info .c2{float:left;width:85px}
+.order_address_info .c3{float:left;width:620px}
+.order_address_editor{position:relative;z-index:1;float:right;padding-right:20px}
+.order_address_editor a{margin-left:10px;color:#37f}
+.order_add_address{width:100%;overflow:auto;padding-bottom:10px}
+.order_add_address .list,.order_add_invoices .list{padding:5px 0;clear:both;overflow:auto}
+.order_add_address .error,.order_add_invoices .error{height:26px;padding-left: 6px;float:left;color:#f00;line-height:26px}
+.order_add_address .prompt,.order_add_invoices .prompt{height:26px;padding-left: 6px;float:left;color:#999;line-height:26px}
+.order_add_address .label em,.order_add_invoices .label em{margin-right:5px;color:#f00;font-family:sans-serif}
+.order_add_address .list .field,.order_add_invoices .list .field {height:26px;float:left;line-height:26px}
+.order_add_address .label,.order_add_invoices .label{width:105px;height:26px;margin-right:5px;float:left;color:#666;line-height:26px;text-align:right}
+.order_add_address .textbox,.order_add_invoices .textbox,.order_coupon .textbox{width:180px;height:16px;border:1px solid #ccc;padding:4px 3px}
+.order_address .safety_logo{width:100px;height:45px;border:solid 1px #eee;margin:10px}
+.order_address .safety_name{line-height:45px;padding:10px;font-size:16px}
+.order_address_info{float:left;padding:10px;}
+.order_address_info .radio_wrap input{float:left;margin-top:4px;margin-right:5px;margin-top:0\9}
+.order_address_info .c1{float:left;width:20px}
+.order_address .time_box{padding:20px;font-size:14px}
+.order_address .state_box{padding:10px 20px;line-height:24px}
+.order_address .agree_box{padding:0 20px 10px 20px}
+.date_box{padding:20px}
+.date_box input{width:180px;height:24px}
+/* 标的信息 */
+.order_add_address .tb_void{text-align: center;border: 1px solid #ccc;width:800px;margin-left:32px}
+.order_add_address .tb_void th{padding: 5px 10px;line-height: 24px;vertical-align: top;border: 1px solid #ccc;}
+.order_add_address td {padding: 5px 10px;line-height: 24px;vertical-align: top;border: 1px solid #ccc;}
+.order_add_address td .td_title{line-height:40px;text-align:left;border-bottom:dotted 1px #ccc;margin:0 10px;font-size:14px}
+.order_add_address td .td_title a{float:right;color:#1c547d;text-decoration:underline}
+.add_btn{padding:10px 0 10px 110px;overflow:auto;font-size:14px}
+.add_btn .addbtn{background:#ff7e00;color:#fff;text-align:center;width:100px;height:35px;line-height:35px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;float:left;display:block;text-decoration:none}
+.add_btn .addbtn:hover{background:#e87300}
+.add_btn .deletebtn{margin-left:20px;background:#51a4d6;color:#fff;text-align:center;width:100px;height:35px;line-height:35px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;float:left;display:block;text-decoration:none}
+.add_btn .deletebtn:hover{background:#3386b8}
+.submit_btn_box{width:1200px;height:50px;background:#f8f8f8;padding:10px 0}
+.submit_btn_box .submit_btn{width:200px;height:50px;margin:0 auto;line-height:50px;font-size:20px}
+.submit_btn_box .submit_btn a{background:#ff7e00;color:#fff;display:block;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;text-align:center;}
+.submit_btn_box .submit_btn a:hover{background:#e87300;text-decoration:none}
+.list .field .radio_wrap input{float:left;margin-top:4px;margin-right:5px;margin-top:0\12}
+.list .field label{float:left;padding-right:10px}
+.list .field .c1{float:left;width:20px}.
+.list .field .c2{float:left;width:85px}
+/* 列表分页 */
+.paging{width:100%;clear:both;font-family:arial;margin:20px 0;height:30px}
+.paging .page {padding:7px;text-allgn:center;float:right}
+.paging .page a{padding:5px 10px;color:#000;text-decoration:none;border:solid 1px #eee;margin:0 3px}
+.paging .page a:hover{color:#000;border:#b5b5b5 1px solid}
+.paging .page a:active {border:#b5b5b5 1px solid}
+.paging .page span.current{border:#003359 1px solid;padding:5px 10px;font-weight:bold;margin:2px;color:#fff;background:#004579}
+.paging .page span.disabled{border:#eee 1px solid;padding:5px 10px;margin:2px; color:#ddd;}
+.paging .specify{ float:right; line-height:30px}
+.paging .specify .inputbox{margin:0 2px;width:35px;height:20px;border:1px solid #ccc;line-height:20px;text-align:center;}
+.paging .specify .mod_page_go{position:relative;padding:0 5px;height:24px;border:1px solid #c9c9c9;background-color:#e8e8e8;line-height:24px;line-height:24px\9;_line-height:20px;cursor:pointer;margin-left:5px}

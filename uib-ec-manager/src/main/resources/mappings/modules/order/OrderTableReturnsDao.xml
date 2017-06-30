@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableReturnsDao">
+
+	<sql id="orderTableReturnsColumns">
+		a.id AS "id",
+		a.return_no AS "returnNo",
+		a.address AS
+		"address",
+		a.area AS "area",
+		a.delivery_corp AS "deliveryCorp",
+		a.freight AS "freight",
+		a.operator AS "operator",
+		a.phone AS "phone",
+		a.shipper AS "shipper",
+		a.shipping_method AS "shippingMethod",
+		a.tracking_no AS "trackingNo",
+		a.zip_code AS "zipCode",
+		a.order_no AS
+		"orderNo",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks
+		AS "remarks",
+		a.del_flag AS "delFlag",
+		a.return_type AS returnType,
+		ot.distributor_name AS storeId,
+		a.return_status AS returnStatus,
+		a.apply_time AS
+		applyTime,
+		ot.id AS orderTableId,
+		a.user_name AS userName,
+		a.product_id
+		AS productId,
+		a.return_reson AS returnReason,
+		a.return_sum AS returnSum,
+		a.return_desc AS retrunDesc
+	</sql>
+
+	<sql id="orderTableReturnsJoins">
+		,order_table ot
+	</sql>
+
+	<select id="get" resultType="OrderTableReturns">
+		SELECT
+		<include refid="orderTableReturnsColumns" />,
+		s.company_name as "companyName"
+		FROM order_table_returns a left join supplier s on a.supplier_id=s.id
+		<include refid="orderTableReturnsJoins" />
+		WHERE a.id = #{id} AND a.order_no=ot.order_no
+	</select>
+
+	<select id="findList" resultType="OrderTableReturns">
+		SELECT
+		<include refid="orderTableReturnsColumns" />,
+		s.company_name as "companyName"
+		FROM order_table_returns a left join supplier s on a.supplier_id=s.id
+		<include refid="orderTableReturnsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.order_no=ot.order_no
+			<if test="returnNo != null and returnNo != ''">
+				AND a.return_no = #{returnNo}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="returnType !=0">
+				AND a.return_type=#{returnType}
+			</if>
+			<if test="applyBginTime != null and applyBginTime != ''">
+				AND a.apply_time >= #{applyBginTime}
+			</if>
+			<if test="applyEndTime != null and applyEndTime != ''">
+				AND a.apply_time &lt;= #{applyEndTime}
+			</if>
+			<if test="returnStatus !=0">
+				AND a.return_status=#{returnStatus}
+			</if>
+			<if test="supplierId != null and supplierId != ''">
+				AND a.supplier_id = #{supplierId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="OrderTableReturns">
+		SELECT
+		<include refid="orderTableReturnsColumns" />
+		FROM order_table_returns a
+		<include refid="orderTableReturnsJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.order_no=ot.order_no
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO order_table_returns(
+		id,
+		return_no,
+		address,
+		area,
+		delivery_corp,
+		freight,
+		operator,
+		phone,
+		shipper,
+		shipping_method,
+		tracking_no,
+		zip_code,
+		order_no,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{returnNo},
+		#{address},
+		#{area},
+		#{deliveryCorp},
+		#{freight},
+		#{operator},
+		#{phone},
+		#{shipper},
+		#{shippingMethod},
+		#{trackingNo},
+		#{zipCode},
+		#{orderNo},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE order_table_returns SET
+		return_no =
+		#{returnNo},
+		address = #{address},
+		area = #{area},
+		delivery_corp =
+		#{deliveryCorp},
+		freight = #{freight},
+		operator = #{operator},
+		phone =
+		#{phone},
+		shipper = #{shipper},
+		shipping_method = #{shippingMethod},
+		tracking_no = #{trackingNo},
+		zip_code = #{zipCode},
+		order_no =
+		#{orderNo},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE order_table_returns SET
+		del_flag =
+		#{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="updateStatus">
+		UPDATE order_table_returns SET
+		return_status=#{returnStatus} WHERE id=#{id}
+	</update>
+</mapper>

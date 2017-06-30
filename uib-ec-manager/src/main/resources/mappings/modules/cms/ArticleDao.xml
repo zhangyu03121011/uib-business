@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.cms.dao.ArticleDao">
+    
+	<sql id="cmsArticleColumns">
+		a.id as "id",
+		a.category_id AS "category.id",
+		a.title as "title",
+		a.link as "link",
+		a.color as "color",
+		a.image as "image",
+		a.keywords as "keywords",
+		a.description as "description",
+		a.weight AS "weight",
+		a.weight_date as "weightDate",
+		a.hits as "hits",
+		a.posid as "posid",
+		a.custom_content_view as "customContentView",
+		a.view_config as "viewConfig",
+		a.create_by as "createBy.id",
+		a.create_date as "createDate",
+		a.update_by as "updateBy.id",
+		a.update_date as "updateDate",
+		a.remarks as "remarks",
+		a.del_flag as "delFlag",
+		c.name as "category.name",
+		u.name as "user.name"
+	</sql>
+	
+	<sql id="cmsArticleJoins">
+		join cms_category c on c.id = a.category_id
+		join sys_office o on o.id = c.office_id
+		join sys_user u on u.id = a.create_by
+	</sql>
+    
+	<select id="get" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a
+		<include refid="cmsArticleJoins"/>
+		where a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a
+		<include refid="cmsArticleJoins"/>
+		<where>
+			a.del_flag = #{delFlag}
+			<if test="title != null and title != ''">
+				and a.title like 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%', #{title}, '%')</if>
+			</if>
+			<if test="posid != null and posid != ''">
+				and a.posid like 
+					<if test="dbName == 'oracle'">'%'||#{posid}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%', #{posid}, '%')</if>
+			</if>
+			<if test="category.id != null and category.id != ''">
+				and (a.category_id = #{category.id}
+				<if test="category.parentIds != null and category.parentIds != ''">
+					or c.parent_ids like 
+						<if test="dbName == 'oracle'">'%'||#{category.id}||'%'</if>
+						<if test="dbName == 'mysql'">concat('%,', #{category.id}, ',%')</if>
+				</if>)
+			</if>
+			<if test="image != null and image != ''">
+				and a.image  = #{image}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				and a.create_by  = #{createBy.id}
+			</if>
+			<!-- ${sqlMap.dsf}-->
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				order by ${page.orderBy}
+			</when>
+			<otherwise>
+				order by a.weight desc, a.update_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a
+		<include refid="cmsArticleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				order by ${page.orderBy}
+			</when>
+			<otherwise>
+				order by a.weight desc, a.update_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		insert into cms_article(
+			id,
+			category_id,
+			title,
+			link,
+			color,
+			image,
+			keywords,
+			description,
+			weight,
+			weight_date,
+			hits,
+			posid,
+			custom_content_view,
+			view_config,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) values (
+			#{id},
+			#{category.id},
+			#{title},
+			#{link},
+			#{color},
+			#{image},
+			#{keywords},
+			#{description},
+			#{weight},
+			#{weightDate},
+			#{hits},
+			#{posid},
+			#{customContentView},
+			#{viewConfig},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		update cms_article set 	
+			category_id = #{category.id},
+			title = #{title},
+			link = #{link},
+			color = #{color},
+			image = #{image},
+			keywords = #{keywords},
+			description = #{description},
+			weight = #{weight},
+			weight_date = #{weightDate},
+			hits = #{hits},
+			posid = #{posid},
+			custom_content_view = #{customContentView},
+			view_config = #{viewConfig},
+			create_date = #{createDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag}
+		where id = #{id}
+	</update>
+	
+	<update id="delete">
+		update cms_article set 
+			del_flag = #{DEL_FLAG_DELETE}
+		where id = #{id}
+	</update>
+	
+	<select id="findByIdIn" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a where 
+		<where>
+			id in (${id});
+		</where>		
+	</select>
+ 
+	<update id="updateExpiredWeight">
+		update cms_article set
+			 weight = 0
+		where weight &gt; 0 and weight_date &lt; 
+			<if test="dbName == 'oracle'">sysdate</if>
+			<if test="dbName == 'mysql'">curdate()</if>
+	</update>
+	
+	<update id="updateHitsAddOne">
+		update cms_article set
+			 hits = hits+1
+		 where id = #{id}
+	</update>
+	
+	<select id="findStats" resultType="Category">
+		select max(c.id) as "id",
+		       max(c.name) as "name",
+		       max(cp.id) as "parent.id",
+		       max(cp.name) as "parent.name",
+		       count(*) as "cnt",
+		       sum(a.hits) as "hits",
+		       max(a.update_date) as "updateDate",
+		       max(o.id) as "office.id",
+		       max(o.name) as "office.name"
+		  from cms_article a
+		  right join cms_category c on c.id = a.category_id
+		  join cms_category cp on c.parent_id = cp.id
+		  join sys_office o on o.id = c.office_id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} 
+			and c.site_id = #{site.id}
+			<if test="office.id != null and office.id != ''">
+				and (c.office_id = #{office.id} OR o.parent_ids like 
+					<if test="dbName == 'oracle'">'%'||#{office.id}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%', #{office.id}, '%')</if>)
+			</if>
+			<if test="beginDate != null and beginDate != ''">
+				and a.update_date <![CDATA[ >= #{beginDate} ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and a.update_date <![CDATA[ <= #{endDate} ]]>
+			</if>
+			<if test="id != null and id != ''">
+				and (c.id = #{id} or c.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%'||#{id}||'%'</if>
+					<if test="dbName == 'mysql'">concat('%', #{id}, '%')</if>)
+			</if>
+			group by cp.sort, cp.id, c.sort, c.id
+			order by cp.sort, cp.id, c.sort, c.id
+		</where>		
+	</select>
+</mapper>

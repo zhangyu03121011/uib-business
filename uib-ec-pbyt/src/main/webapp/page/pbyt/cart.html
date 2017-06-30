@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>购物车</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/popover.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <div class="title">购物车</div>
+            <div class="right-text"><a class="uib-pull-right uib-edit" href="javascript:void(0)" id="edit_cart">编辑</a></div>
+        </div>
+    </header>
+    <!-- 购物车列表开始  -->
+    <div class="body-content two-menu" id="cart-wrap">
+        <div id="cart-list"></div>
+        <li class='scrimg' style="display:none;"><p class='load_tip' align='center'>正在努力加载数据...</p></li>
+    </div>
+    
+    <!-- 购物车列表结束 -->
+    <!-- 购物结算开始 -->
+    <div class="account">
+        <div class="flex-row">
+            <div class="flex-item">
+                <div class="app-checkbox">
+                <input id="checkAll" name="" value="" type="checkbox" onclick="checkAll()">
+<!--                 <input type="checkbox" id='checkAll'> -->
+                <label class="iconfont " for="checkAll"></label>
+                <span>全选</span>
+            </div>
+            </div>
+            <div class="flex-item">
+            	<div id="cart_price_sum">
+            		<p class="text" >合计：<span class="red" id="total_price">￥0</span>
+	                </p>
+	                <p>
+	                    	<span class="text">共</span><span class="text" id="total_sum">0</span><span class="text">件</span>
+	                </p>
+            	</div>
+                
+            </div>
+            <div class="flex-item">
+                <a href="javascript:void(0)" class="calc" id="submit_text" onclick="toSettle()">去结算</a>
+            </div>
+        </div>
+    </div>
+    <!-- 购物结算结束 -->
+    <!-- 底部导航开始 -->
+    <footer>
+        <div class='bottom-menu'>
+            <ul class='display-flex align-items-center'>
+                <li class="flex-1 menu-item">
+                    <a href="./index.html">
+                        <i class="menu-icon iconfont icon-youhui"></i>
+                        <div class='text'>优品</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item ">
+                    <a href="./products_list.html">
+                        <i type="tablet" class="menu-icon iconfont icon-shangpin"></i>
+                        <div class='text'>商品</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item active">
+                    <a href="./cart.html">
+                        <i class="menu-icon iconfont icon-gouwuche"></i>
+                        <div class='text'>购物车</div>
+                    </a>
+                </li>
+                <li class="flex-1 menu-item">
+                    <a href="./personal.html">
+                        <i type="user" class="menu-icon iconfont icon-wo"></i>
+                        <div class='text'>我</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+    <!-- 购物车为空开始 -->
+    <div class="cart-empty" id="cart_empty">
+        <p class="cart-empty-title">购物车还空着呢，快去挑选商品吧</p>
+        <a href="products_list.html">去逛逛</a>
+    </div>
+    <!-- 购物车为空结束 -->
+    <!-- 底部导航 -->
+    <script src="./js/jquery-1.8.2.min.js"></script>
+    <script src="./js/uib.min.js"></script>
+    <script src="./js/alert.js"></script>
+    <script src="./js/common.js"></script>
+    <script type="text/javascript" src="js/pbyt/cart.js"></script>
+    <script>
+    uib.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    </script>
+</body>
+
+</html>

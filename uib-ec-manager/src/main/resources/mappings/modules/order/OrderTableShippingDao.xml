@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableShippingDao">
+    
+	<sql id="orderTableShippingColumns">
+		a.id AS "id",
+		a.shipping_no AS "shippingNo",
+		a.address AS "address",
+		a.area AS "area",
+		a.consignee AS "consignee",
+		a.delivery_corp AS "deliveryCorp",
+		a.delivery_corp_code AS "deliveryCorpCode",
+		a.delivery_corp_url AS "deliveryCorpUrl",
+		a.freight AS "freight",
+		a.operator AS "operator",
+		a.phone AS "phone",
+		a.shipping_date AS "shippingDate",
+		a.shipping_method AS "shippingMethod",
+		a.tracking_no AS "trackingNo",
+		a.zip_code AS "zipCode",
+		a.order_no AS "orderNo",
+		a.exception_remarks AS "exceptionRemarks",
+		a.is_remarks AS "isRemarks",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTableShippingJoins">
+	</sql>
+    
+	<select id="get" resultType="OrderTableShipping">
+		SELECT 
+			<include refid="orderTableShippingColumns"/>
+		FROM order_table_shipping a
+		<include refid="orderTableShippingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findOrderShippingByOrderNo" resultType="OrderTableShipping">
+		SELECT 
+			<include refid="orderTableShippingColumns"/>
+		FROM order_table_shipping a
+		<include refid="orderTableShippingJoins"/>
+		WHERE a.order_no = #{orderNo} AND a.del_flag = 0
+	</select>
+	
+	<select id="findList" resultType="OrderTableShipping">
+		SELECT 
+			<include refid="orderTableShippingColumns"/>
+		FROM order_table_shipping a
+		<include refid="orderTableShippingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="shippingNo != null and shippingNo != ''">
+				AND a.shipping_no = #{shippingNo}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTableShipping">
+		SELECT 
+			<include refid="orderTableShippingColumns"/>
+		FROM order_table_shipping a
+		<include refid="orderTableShippingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table_shipping(
+			id,
+			shipping_no,
+			address,
+			area,
+			consignee,
+			delivery_corp,
+			delivery_corp_code,
+			delivery_corp_url,
+			freight,
+			operator,
+			phone,
+			shipping_date,
+			shipping_method,
+			tracking_no,
+			zip_code,
+			order_no,
+			exception_remarks,
+			is_remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{shippingNo},
+			#{address},
+			#{area},
+			#{consignee},
+			#{deliveryCorp},
+			#{deliveryCorpCode},
+			#{deliveryCorpUrl},
+			#{freight},
+			#{operator},
+			#{phone},
+			#{shippingDate},
+			#{shippingMethod},
+			#{trackingNo},
+			#{zipCode},
+			#{orderNo},
+			#{exceptionRemarks},
+			#{isRemarks},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table_shipping SET 	
+			shipping_no = #{shippingNo},
+			address = #{address},
+			area = #{area},
+			consignee = #{consignee},
+			delivery_corp = #{deliveryCorp},
+			delivery_corp_code = #{deliveryCorpCode},
+			delivery_corp_url = #{deliveryCorpUrl},
+			freight = #{freight},
+			operator = #{operator},
+			phone = #{phone},
+			shipping_date = #{shippingDate},
+			shipping_method = #{shippingMethod},
+			tracking_no = #{trackingNo},
+			zip_code = #{zipCode},
+			order_no = #{orderNo},
+			exception_remarks = #{exceptionRemarks},
+			is_remarks = #{isRemarks},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table_shipping SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

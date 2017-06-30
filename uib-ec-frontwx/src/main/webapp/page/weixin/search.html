@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>搜索</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/swipe-two.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
+</head>
+
+<body>
+
+<!-- 搜索 -->
+<div class="search-box">
+	<!-- div class="input-box w95">
+		<input id="w85" type="text" placeholder="搜索商品分类、名称、品牌、功效">
+		<a href="#" id="btnSearch" onclick="skip()">搜索</a>
+	 </div> -->
+	 
+	<div class="input-box-two">
+		<input id="shousuo" type="text" placeholder="搜索商品分类、名称、品牌、功效">
+		<a href="#" id="btnSearch" onclick="skip()" class="search-btn">搜索</a>
+	</div>
+</div>
+
+
+<!-- 搜索内容 -->
+<div class="search-cen mt3">
+	<h2>热门搜索</h2>
+	<div class="essential" id="keyword">
+	</div>
+	<h2>
+		<a href= "javascript:void(0)" onclick="clearSeachHis()">清除</a>
+		最近搜索</h2>
+	<div class="essential" id="cache">
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.CommDetailDao">
+    
+	<sql id="commDetailColumns">
+		a.id AS "id",
+		a.member_id AS "memberId",
+		a.avatar AS "avatar",
+		a.name AS "name",
+		a.amount AS "amount",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="commDetailJoins">
+	</sql>
+    
+    
+    <select id="querRecommendList" resultType="com.uib.ptyt.entity.RecommOrderDto" parameterType="Map">
+      select DATE_FORMAT(r.create_time, '%Y-%m-%d') AS creatTime,            		
+			r.product_id as  productId,
+			m.avatar AS avater,
+			d.original_name as fullName,
+			CONCAT(#{imageUrl},d.image) AS image,
+			o.quantity as quantity,
+			o.order_no as orderNo,
+			r.commission as commission,
+			  o.price as sellPice,
+			  m.name as memberName,
+			  r.recommend_member_id  as memberId
+			from recommend_product_log as r
+		LEFT JOIN  order_table_item  o ON r.order_no = o.order_no
+		LEFT JOIN mem_member AS m ON r.member_id=m.id
+		LEFT JOIN product AS d ON r.product_id=d.id
+			
+			where  1=1
+	<if test="memberId !=null and memberId!=''">
+		  and r.recommend_member_id=#{memberId}
+	</if>
+	     and r.del_flag='0' and r.is_settlement='2' AND o.order_type='1'
+    </select>
+</mapper>

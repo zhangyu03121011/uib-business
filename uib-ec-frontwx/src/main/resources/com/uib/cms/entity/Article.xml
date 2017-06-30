@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.cms.entity.Article">
+	<sql id="cmsArticleColumns">
+		a.id as "id",
+		a.category_id AS "categoryId",
+		a.title as "title",
+		a.link as "link",
+		a.color as "color",
+		a.image as "image",
+		a.keywords as "keywords",
+		a.description as "description",
+		a.weight AS "weight",
+		a.weight_date as "weightDate",
+		a.hits as "hits",
+		a.posid as "posid",
+		a.custom_content_view as "customContentView",
+		a.view_config as "viewConfig",
+		a.create_by as "createById",
+		a.create_date as "createDate",
+		a.update_by as "updateById",
+		a.update_date as "updateDate",
+		a.remarks as "remarks",
+		a.del_flag as "delFlag",
+		c.name as "categoryName"
+	</sql>
+	
+	<sql id="cmsArticleDtoColumns">
+		a.id as "id",
+		a.title as "title",
+		a.link as "link",
+		b.content as "content"
+	</sql>
+	
+	<sql id="cmsArticleDtoJoins">
+		LEFT JOIN cms_category c ON a.category_id = c.id 
+		JOIN cms_article_data b ON b.id = a.id
+	</sql>
+    <sql id="cmsArticleJoins">
+		join cms_category c on c.id = a.category_id
+	</sql>
+	<select id="get" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a
+		<include refid="cmsArticleJoins"/>
+		where a.id = #{id} and a.del_flag =0
+	</select>
+	
+	<select id="getCmsArticleByCategoryId" resultType="Article">
+		select 
+			<include refid="cmsArticleColumns"/>
+		from cms_article a
+		<include refid="cmsArticleJoins"/>
+		where c.id=#{categoryId} and a.del_flag =0
+	</select>
+	
+	<select id="getCmsArticlesByCmsCategoryNo" parameterType="String" resultType="Map">
+		select 
+		 <include refid="cmsArticleDtoColumns"/>
+		from cms_article a
+		<include refid="cmsArticleDtoJoins"/>
+		where c.cms_category_no=#{cmsCategoryNo} and a.del_flag =0 
+	</select>
+	
+	<select id="getCmsArticleByCmsCategoryNo" parameterType="String" resultType="Map">
+		select 
+		 a.title,b.content,a.id
+		from cms_article a 
+		<include refid="cmsArticleDtoJoins"/>
+		where c.cms_category_no=#{cmsCategoryNo} and a.del_flag =0 
+		AND a.create_date=(SELECT MAX(a.create_date) FROM cms_article)
+	</select>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.OrderPojo4Mobile">
+	<sql id="orderPojo4MobileColumns">
+		a.id AS "id",
+		a.order_no AS
+		"orderNo",
+		a.coupon_discount AS "couponDiscount",
+		a.fee AS "fee",
+		a.offset_amount AS "offsetAmount",
+		a.order_status AS "orderStatus",
+		a.payment_method_name AS "paymentMethodName",
+		a.payment_status AS
+		"paymentStatus",
+		a.promotion_discount AS "promotionDiscount",
+		a.shipping_method_name AS "shippingMethodName",
+		a.shipping_status AS
+		"shippingStatus",
+		a.tax AS "tax",
+		a.coupon_code AS "couponCode",
+		a.payment_method AS "paymentMethod",
+		a.shipping_method AS
+		"shippingMethod",
+		a.user_name AS "userName",
+		a.freight AS "freight",
+
+		o.id AS "oid",
+		o.full_name AS "fullName",
+		o.name AS "name",
+		o.price AS
+		"price",
+		o.quantity AS "quantity",
+		o.goods_no AS "goodsNo",
+		o.thumbnail
+		AS "thumbnail",
+		o.weight AS "weight",
+		o.order_no AS "oorderNo"
+	</sql>
+
+	<sql id="orderPojo4MobileJoins">
+
+	</sql>
+
+	<select id="seleOrderPojo4Mobiles" resultMap="orderPojo4MobileMap">
+		select
+		<include refid="orderPojo4MobileColumns"></include>
+		from order_table as a left join order_table_item as o ON
+		a.id=o.order_table_id
+		where a.del_flag='0'
+		<if test="userName!=null and userName!=''">
+			AND a.user_name = #{userName}
+		</if>
+		<if test="orderStatus!=null and orderStatus!=''">
+			AND a.order_status = #{orderStatus}
+		</if>
+	</select>
+
+	<resultMap type="com.uib.mobile.dto.OrderPojo4Mobile" id="orderPojo4MobileMap">
+		<id property="id" column="id" />
+		<result property="orderNo" column="orderNo" />
+		<result property="orderStatus" column="orderStatus" />
+		<result property="paymentStatus" column="paymentStatus" />
+		<result property="freight" column="freight" />
+		<result property="fee" column="fee" />
+		<result property="promotionDiscount" column="promotionDiscount" />
+		<result property="couponDiscount" column="couponDiscount" />
+		<result property="offsetAmount" column="offsetAmount" />
+		<result property="tax" column="tax" />
+		<collection property="list_ordertable_item" javaType="ArrayList"
+			ofType="com.uib.mobile.dto.OrderItemPojo4Mobile">
+			<id property="id" column="oid" />
+			<result property="goodsNo" column="goodsNo" />
+			<result property="fullName" column="fullName" />
+			<result property="name" column="name" />
+			<result property="price" column="price" />
+			<result property="thumbnail" column="thumbnail" />
+			<result property="quantity" column="quantity" />
+			<result property="orderNo" column="oorderNo" />
+			<!-- o.id AS "oid",
+		o.full_name AS "fullName",
+		o.name AS "name",
+		o.price AS
+		"price",
+		o.quantity AS "quantity",
+		o.goods_no AS "goodsNo",
+		o.thumbnail
+		AS "thumbnail",
+		o.weight AS "weight",
+		o.order_no AS "oorderNo" -->
+		</collection>
+	</resultMap>
+</mapper>

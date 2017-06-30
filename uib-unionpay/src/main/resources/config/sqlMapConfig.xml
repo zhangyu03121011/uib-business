@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.uib.union.payment.pojo.PaymentOrder" alias="paymentOrder" />
+		<typeAlias type="com.uib.union.payment.pojo.PaymentOrderLog" alias="paymentOrderLog" />
+		<typeAlias type="com.uib.union.merchant.pojo.MerchantInfo" alias="merchantInfo" />
+		<typeAlias type="com.uib.union.payment.pojo.RefundOrder" alias="refundOrder" />
+		<typeAlias type="com.uib.union.payment.pojo.CancelOrder" alias="cancelOrder" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/uib/union/payment/pojo/PaymentOrder.sqlMap.xml" />
+		<mapper resource="com/uib/union/payment/pojo/PaymentOrderLog.sqlMap.xml" />
+		<mapper resource="com/uib/union/merchant/pojo/MerchantInfo.sqlMap.xml" />
+		<mapper resource="com/uib/union/payment/pojo/RefundOrder.sqlMap.xml" />
+		<mapper resource="com/uib/union/payment/pojo/CancelOrder.sqlMap.xml" />
+	</mappers>
+</configuration>

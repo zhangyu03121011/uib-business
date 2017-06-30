@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>我的推广</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/popover.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body class="bg">
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+            <div class="title">我的推广</div>
+        </div>
+    </header>
+    <div class="app-body no-menu" id="addressListForm">
+        
+        <!-- 订单开始 
+        <div class="me-wrap">
+            <div class="flex-row me-order tuiguang">
+                <div class="flex-item">
+                    <span class="tg-shijian">推广时间：6月5日  14:22:34</span>
+                </div>
+                
+            </div>
+        <a class="product-detail flex-row-top" href="me-detail.html">
+            <img src="./images/cart_1.jpg" class="product">
+            <div class="flex-item detail">
+                <p class="title">
+                    乔丹男鞋男士运动鞋跑步鞋男夏季旅游鞋子复古慢跑鞋
+                </p>
+                <p class="specs">
+                    <span>颜色：黑色</span>
+                    <span>尺码：39</span>
+                </p>
+                <div class="flex-row price-nub">
+                    <span class="flex-item price">
+                        ￥58
+                    </span>
+                    <span class="flex-item number">
+                        X1
+                    </span>
+                </div>
+            </div>
+        </a>
+            <div class="flex-row me-pay">
+                 <div class="flex-item visit-trade">
+                    浏览量：1800
+                </div>
+                <div class="flex-item visit-trade">
+                   交易量：350
+                </div>
+            </div>
+        </div>
+                    订单结束 -->      
+    </div>
+    <!-- 右侧边导航开始 -->
+    <nav id="right-nav">
+        <a class="circle close" href="#">
+            <i class="iconfont icon-error"></i>
+        </a>
+        <div class="nav-wrap">
+            <a href="./index.html">
+                <i class="right-nav-icon iconfont icon-youhui"></i>
+                <div class="title">优品</div>
+            </a>
+            <a href="./products_list.html">
+                <i class="right-nav-icon iconfont icon-shangpin"></i>
+                <div class="title">商品</div>
+            </a>
+            <a href="./personal.html">
+                <i class="right-nav-icon iconfont icon-wo"></i>
+                <div class="title">我</div>
+            </a>            
+        </div>
+    </nav>
+    <!-- 底部导航 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/touch.js"></script>
+    <script type="text/javascript">
+    $(function() {
+       touch.on('.circle', 'touchstart', function() {
+            $(".circle").toggleClass('close');
+        });
+    });
+    </script>
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src='js/lib/mobile-select-area.js'></script>
+<script type="text/javascript" src="js/lib/dialog.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/tuiguang.js"></script>
+</html>

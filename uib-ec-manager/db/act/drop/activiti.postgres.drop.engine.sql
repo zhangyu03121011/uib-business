@@ -1,0 +1,11 @@
+drop table if exists act_ge_property cascade;
+drop table if exists act_ge_bytearray cascade;
+drop table if exists act_re_deployment cascade;
+drop table if exists act_re_model cascade;
+drop table if exists act_re_procdef cascade;
+drop table if exists act_ru_execution cascade;
+drop table if exists act_ru_job cascade;
+drop table if exists act_ru_task cascade;
+drop table if exists act_ru_identitylink cascade;
+drop table if exists act_ru_variable cascade;
+drop table if exists act_ru_event_subscr cascade;

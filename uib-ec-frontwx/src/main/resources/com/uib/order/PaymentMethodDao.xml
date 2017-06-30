@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.order.entity.PaymentMethod">
+    
+	<sql id="paymentMethodColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.order_no AS "orderTable.id",
+		a.method AS "method",
+		a.timeout AS "timeout",
+		a.icon AS "icon",
+		a.description AS "description",
+		a.content AS "content",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="paymentMethodJoins">
+	</sql>
+    
+	<select id="get" resultType="PaymentMethod">
+		SELECT 
+			<include refid="paymentMethodColumns"/>
+		FROM payment_method a
+		<include refid="paymentMethodJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getByMethodCode" resultType="PaymentMethod">
+		SELECT 
+			<include refid="paymentMethodColumns"/>
+		FROM payment_method a
+		<include refid="paymentMethodJoins"/>
+		WHERE a.method_code = #{methodCode}
+	</select>
+	
+	<select id="findList" resultType="PaymentMethod">
+		SELECT 
+			<include refid="paymentMethodColumns"/>
+		FROM payment_method a
+		<include refid="paymentMethodJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectAllPaymentMethods" resultType="PaymentMethod">
+		SELECT 
+			<include refid="paymentMethodColumns"/>
+		FROM payment_method a
+		<include refid="paymentMethodJoins"/>
+		<where>
+			a.del_flag = '0'
+		</where>		
+			ORDER BY a.update_date DESC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO payment_method(
+			id,
+			name,
+			order_no,
+			method,
+			timeout,
+			icon,
+			description,
+			content,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{orderTable.id},
+			#{method},
+			#{timeout},
+			#{icon},
+			#{description},
+			#{content},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE payment_method SET 	
+			name=#{name},
+			order_no=#{orderTable.id},
+			method = #{method},
+			timeout = #{timeout},
+			icon = #{icon},
+			description = #{description},
+			content = #{content},
+			update_by = #{updateBy},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE payment_method SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="queryPaymentMethod" parameterType="java.lang.String" resultType="PaymentMethod">
+		SELECT 
+			<include refid="paymentMethodColumns"/>
+		FROM payment_method a
+		<include refid="paymentMethodJoins"/>
+		<where>
+			a.del_flag = '0'
+			AND a.id=#{id}
+		</where>		
+			ORDER BY a.update_date DESC
+	</select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easypay.member.entity.Deposit">
+    
+	<sql id="depositColumns">
+		a.id AS "id",
+		a.balance AS "balance",
+		a.credit AS "credit",
+		a.debit AS "debit",
+		a.operator AS "operator",
+		a.type AS "type",
+		a.member_no AS "memberNo",
+		a.order_no AS "orderTable.id",
+		a.payment_no AS "orderTablePayment.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="depositJoins">
+	</sql>
+    
+	<select id="get" resultType="Deposit">
+		SELECT 
+			<include refid="depositColumns"/>
+		FROM deposit a
+		<include refid="depositJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Deposit">
+		SELECT 
+			<include refid="depositColumns"/>
+		FROM deposit a
+		<include refid="depositJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Deposit">
+		SELECT 
+			<include refid="depositColumns"/>
+		FROM deposit a
+		<include refid="depositJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO deposit(
+			id,
+			balance,
+			credit,
+			debit,
+			operator,
+			type,
+			member_no,
+			order_no,
+			payment_no,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{balance},
+			#{credit},
+			#{debit},
+			#{operator},
+			#{type},
+			#{memberNo},
+			#{orderTable.id},
+			#{orderTablePayment.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE deposit SET 	
+			balance = #{balance},
+			credit = #{credit},
+			debit = #{debit},
+			operator = #{operator},
+			type = #{type},
+			member_no = #{memberNo},
+			order_no = #{orderTable.id},
+			payment_no = #{orderTablePayment.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE deposit SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getAllDepositByUserName" parameterType="Object" resultType="deposit">
+		SELECT 
+		<include refid="depositColumns"></include>
+		from deposit a where a.member_no=#{id} ORDER BY a.create_date desc;
+	
+	</select>
+	
+</mapper>

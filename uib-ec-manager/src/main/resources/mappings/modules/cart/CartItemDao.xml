@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.cart.dao.CartItemDao">
+    
+	<sql id="cartItemColumns">
+		a.id AS "id",
+		a.cart_id AS "cartId",
+		a.product_id AS "productId",
+		a.specification_id AS "specificationId",
+		a.quantity AS "quantity",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate"
+	</sql>
+	
+	<sql id="cartItemJoins">
+	</sql>
+    
+	<select id="get" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cart_item(
+			id,
+			cart_id,
+			product_id,
+			specification_id,
+			quantity,
+			create_date,
+			modify_date
+		) VALUES (
+			#{id},
+			#{cartId},
+			#{productId},
+			#{specificationId},
+			#{quantity},
+			#{createDate},
+			#{modifyDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cart_item SET 	
+			cart_id = #{cartId},
+			product_id = #{productId},
+			specification_id = #{specificationId},
+			quantity = #{quantity},
+			modify_date = #{modifyDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM cart_item
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>订单详情</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+</head>
+
+<body>
+    <!-- 购物车列表开始  -->
+    <div class="body-content two-menu" style="padding-top:0px">
+        <!-- 购物地址选择后 -->
+        <div class="flex-row address-wrap" id="address">
+            <div class="icon-location">
+                <span class="iconfont icon-dingwei"></span>
+            </div>
+            <div class="flex-item">
+                <div class="name-tel flex-row">
+                    <div class="flex-item" id="consignee"></div>
+                    <div class="flex-item right" id="phone"></div>
+                </div>
+                <div class="flex-item" id="address_detail">
+                    	
+                </div>
+            </div>
+        </div>
+        <div class="me-wrap">
+            <div class="flex-row me-order">
+                <div class="flex-item">
+                    <span class="number">订单<font id="orderNo"></font></span>
+                </div>
+                <div class="align-right">
+                    <span class="tip" id="orderStatus"></span>
+                </div>
+            </div>
+            <div id="product-list">
+            	
+            </div>
+        </div>
+        
+        <div class="flex-row express">
+            <div class="flex-item me-express">
+                	支付方式
+            </div>
+            <div class="flex-item me-express align-right">
+                	微信支付
+            </div>
+        </div>
+
+        <div class="flex-row express">
+            <div class="me-express w240">
+                	配送信息
+            </div>
+            <div class="flex-item font-small" id="shippingMethod">
+                	
+            </div>
+        </div>
+        <div class="flex-row express">
+            <div class="flex-item me-express">
+               	 商品总额
+            </div>
+            <div class="flex-item me-express align-right amount" id="productAmount">
+            </div>
+        </div>
+        <div class="flex-row express">
+            <div class="flex-item me-express">
+               		 运费
+            </div>
+            <div class="flex-item me-express align-right amount">
+                	￥0.00
+            </div>
+        </div>
+        <div class="flex-row express">
+            <div class="me-express change">
+                实付款：<span class="amount" id="amount"></span>
+            </div>
+            <div class="flex-item font-small" id="createDate">
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+    <!-- 购物结算结束 -->
+   	<!-- 待付款 -->
+     <div class="receive flex-row me-pay" id="go_pay_div" style="display: none;">
+         <div class="flex-item align-right">
+             <a href="javascript:void(0)" class="me-btn" onclick="cancelledOrder()">取消订单</a>&nbsp&nbsp<a class="me-btn" href="#" onclick=payOrder()>去付款</a>
+         </div>
+     </div>
+     <!-- 已取消、已完成 -->
+     <div class=" receive flex-row me-pay" id="go_cancell_div" style="display: none;">
+         <div class="flex-item align-right">
+             <a class="me-btn" href="javascript:void(0)" onclick="deleteOrder()">删除订单</a>
+         </div>
+     </div>
+     <!-- 待收货 -->
+     <div class="receive" id="go_receive_div" style="display: none;">
+     	<button class="sbt" onclick="confirmReceive()">确认收货</button>
+     </div>
+    
+    <script src="./js/jquery.js"></script>
+    <script src="./js/touch.js"></script>
+     <script src="./js/alert.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/pbyt/order.js"></script>
+    <script src="./js/pbyt/me-detail.js"></script>
+    <script>
+    $(function() {
+        touch.on('.circle', 'touchstart', function() {
+            $(".circle").toggleClass('close');
+        });
+    	 
+        touch.on('.address-wrap', 'tap', function() {
+            $('.select-address').toggleClass('open');
+        });
+
+        touch.on('.address-item', 'tap', function() {
+            $("#select-address").hide();
+            $("#address").show();
+            $('.select-address').toggleClass('open');
+        });
+
+    });
+    </script>
+</body>
+
+</html>

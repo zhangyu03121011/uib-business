@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd
+">
+	<context:annotation-config />
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath*:system.properties</value>
+				<value>classpath*:mail.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding">
+      		<value>utf-8</value>
+    	</property>
+	</bean>
+	<bean id="SpringContextHolder" class="com.uib.common.utils.SpringContextHolder" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:messages_zh_CN</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
+		<property name="defaultLocale" value="messages_zh_CN" />
+	</bean>
+
+
+	<!-- 邮件发送器 163 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+			</props>
+		</property>
+	</bean>
+	
+
+	<!-- 邮件发送器 gmail 35. <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+		36. <property name="host" value="${mail.host}" /> 37. <property name="username" 
+		value="${mail.username}" /> 38. <property name="password" value="${mail.password}" 
+		/> 39. <property name="defaultEncoding" value="UTF-8"></property> 40. <property 
+		name="javaMailProperties"> 41. <props> 42. <prop key="mail.smtp.auth">${mail.smtp.auth}</prop> 
+		43. <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop> 44. <prop key="mail.smtp.port">465</prop> 
+		45. <prop key="mail.smtp.socketFactory.port">465</prop> 46. <prop key="mail.smtp.socketFactory.fallback">false</prop> 
+		47. <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> 
+		48. </props> 49. </property> 50. </bean> 51. -->
+
+
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="/templet" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="default.contentType">text/html; charset=utf-8</prop>
+				<prop key="output.encoding">utf-8</prop>
+				<prop key="input.encoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	
+
+	<context:component-scan base-package="com.uib"
+		annotation-config="false" />
+	<import resource="spring-mvc.xml" />
+	<!-- <import resource="spring-security.xml"/> -->
+	<import resource="spring-mybatis.xml" />
+	<!-- <import resource="spring-lucene.xml" /> -->
+	<import resource="spring-quartz.xml" />
+</beans>

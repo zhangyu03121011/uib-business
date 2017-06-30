@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+	default-lazy-init="true">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+		
+	 <!-- 加载dubbo配置 -->
+ 	<import resource="classpath:dubboConsumer.xml" />
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.uib" />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/static/**" location="/static/" />
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/order/**" />
+			<mvc:mapping path="/member/**" />
+			<bean id="memberInterceptor" class="com.uib.interceptor.MemberInterceptor" />
+		</mvc:interceptor>
+		<!-- app登录拦截 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/mobile/cart/**" />
+			<mvc:mapping path="/mobile/member/**" />
+			<mvc:mapping path="/mobile/favorite/**" />
+			<mvc:mapping path="/mobile/comment/**" />
+			<bean class="com.uib.interceptor.AppLoginInterceptor" />
+		</mvc:interceptor>
+		<!-- 微信公众号登录验证 -->
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/wechat/cart/**" /> -->
+<!-- 			<mvc:mapping path="/wechat/member/**" /> -->
+<!-- 			<mvc:mapping path="/wechat/comment/**" /> -->
+<!-- 			<bean class="com.uib.interceptor.WichatLoginInterceptor" /> -->
+<!-- 		</mvc:interceptor> -->
+		<!-- 访问拦截 打印日志 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/mobile/**" />
+			<bean class="com.uib.interceptor.LogInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Jackson转换器 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+	<!-- fastjson转换器 -->
+	<bean id="fastJsonHttpMessageConverter"
+		class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter" />
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="fastJsonHttpMessageConverter" /><!-- json转换器 -->
+			</list>
+		</property>
+	</bean>
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/page/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="32505856" /><!-- 上传文件大小限制为31M，31*1024*1024 -->
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+
+
+	<bean id="imageCaptchaService"
+		class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<property name="captchaEngine">
+			<bean class="com.uib.common.security.CaptchaEngine" />
+		</property>
+		<property name="minGuarantedStorageDelayInSeconds" value="3600" />
+	</bean>
+
+
+
+
+
+</beans>

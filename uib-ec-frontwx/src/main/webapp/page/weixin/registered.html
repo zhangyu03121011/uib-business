@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>注册</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!-- 注册框区域 -->
+<div class="main">
+	<form name="registerForm" id="registerForm">
+	    <div class="common-wrapper">
+	    	 <!-- 分享的商品Id -->
+<!-- 	    	 <input type="hidden" name="productId" id="productId"> -->
+	    	  <!-- 推存人Id -->
+<!-- 	    	 <input type="hidden" name="rmemberId" id="rmemberId"> -->
+	        <!-- 用户名 -->
+	        <div class="reg-name mb1"><input name="userName" id="userName" type="text" placeholder="请输入用户名(4-20个字符)"></div>
+	        <!-- 手机号 -->
+	        <div class="reg-name mb1"><input name="phone" id="phone" type="text" placeholder="请输入11位手机号"></div>
+	        <!-- 图形验证码 -->
+	        <div class="reg-name mb1">
+	            <div class="codetwo-left"><input name="" id="captcha_seq" type="text" placeholder="验证码"></div>
+	            <div class="codetwo-right"><img id="captchaImage" src=""/>看不清楚？<a href="javascript:void(0)" id="captcha_image_change">换一张</a></div>
+	        </div>
+	        <!-- 手机验证码 -->
+	        <div class="reg-name mb1">
+	            <div class="code-left"><input name="validateCode" id="validateCode" type="text" placeholder="请输入短信验证码"></div>
+	            <div class="code-right"><a href="javascript:void(0)" id="btnSendCode" onclick="receiveCodeClick(this)">获取验证码</a></div>
+	        </div>
+	        <!-- 密码 -->
+	        <div class="reg-name mb1">
+		        <input name="password" id="password" type="hidden" >
+		        <input name="password1" id="password1" type="password" placeholder="请输入密码(6-16个字符)">
+	        </div>
+	        <!-- 确认密码 -->
+	        <div class="reg-name mb2"><input id="password2" type="password" placeholder="确认密码(6-16个字符)"></div>
+	        <!-- 密码要求 -->
+	        <div class="pow-tip" style="dis"><span id="showmessage"></span></div>
+	        <!-- 协议 -->
+	        <div class="protocol-box"><input name="" type="checkbox" value="" checked id="agree">我已阅读并同意<a href="registerAgreement.html">《用户注册协议》</a></div>
+	        <!-- 按钮 -->
+	        <div class="reg-btn mb1 w100"><input id="submitBtn" type="button" value="立即注册"></div>
+	    </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/touch.min.js"></script>
+<script type="text/javascript" src="js/des/des.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
+</body>
+</html>

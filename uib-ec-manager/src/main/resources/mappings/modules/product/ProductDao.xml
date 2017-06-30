@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.ProductDao">
+
+	<sql id="productColumns">
+		a.id AS "id",
+		a.product_no AS "productNo",
+		a.allocated_stock
+		AS "allocatedStock",
+		a.cost AS "cost",
+		a.original_name AS "originalName",
+		a.full_name AS "fullName",
+		a.hits
+		AS "hits",
+		a.image AS "image",
+		a.introduction AS
+		"introduction",
+		a.is_gift AS "isGift",
+		a.is_list AS "isList",
+		a.pc_is_marketable AS
+		"pcIsMarketable",
+		a.app_is_marketable AS "appIsMarketable",
+		a.wx_is_marketable AS "wxIsMarketable",
+		a.is_top AS "isTop",
+		a.is_member_price AS "isMemberPrice",
+		a.app_home_show AS "appHomeShow",
+		a.wx_home_show AS "wxHomeShow",
+		a.hot_sell AS "hotSell",
+		a.newest AS
+		"newest",
+		a.promotion AS
+		"promotion",
+		a.keyword AS "keyword",
+		a.market_price AS "marketPrice",
+		a.memo AS "memo",
+		a.month_hits AS
+		"monthHits",
+		a.month_hits_date AS
+		"monthHitsDate",
+		a.month_sales AS
+		"monthSales",
+		a.month_sales_date AS
+		"monthSalesDate",
+		a.name AS "name",
+		a.point AS "point",
+		a.price AS
+		"price",
+		a.sales AS "sales",
+		a.score AS
+		"score",
+		a.score_count AS
+		"scoreCount",
+		a.seo_description AS
+		"seoDescription",
+		a.seo_keywords AS
+		"seoKeywords",
+		a.seo_title AS
+		"seoTitle",
+		a.stock AS "stock",
+		a.stock_memo AS "stockMemo",
+		a.total_score AS "totalScore",
+		a.unit AS
+		"unit",
+		a.week_hits AS
+		"weekHits",
+		a.week_hits_date AS "weekHitsDate",
+		a.week_sales AS
+		"weekSales",
+		a.week_sales_date AS "weekSalesDate",
+		a.weight AS "weight",
+		a.goods AS "goods",
+		a.supplier_id AS "supplierId",
+		a.product_category_no AS
+		"productCategoryNo",
+		a.proprietary AS "proprietary",
+		a.mechant_no AS
+		"merchantNo",
+		a.product_category_id AS "productCategoryId",
+		a.create_by
+		AS
+		"createBy.id",
+		a.brand_id AS "brandId",
+		a.create_date AS
+		"createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS
+		"updateDate",
+		a.remarks AS
+		"remarks",
+		a.del_flag AS "delFlag"
+	</sql>	
+	
+	<sql id="productJoins">
+	</sql>
+
+	<select id="get" resultType="Product">
+		SELECT
+		<include refid="productColumns" />
+		FROM product a
+		<include refid="productJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="Product">
+		SELECT
+		<include refid="productColumns" />
+		FROM product a
+			 LEFT JOIN   product_category pc   ON  a.product_category_id=pc.id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="productNo != null and productNo != ''">
+				AND a.product_no = #{productNo}
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name = #{fullName}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				AND a.keyword LIKE
+				<if test="dbName == 'oracle'">'%'||#{keyword}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{keyword}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{keyword},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.mechant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+			 AND  ( pc.id =#{productCategoryId}  OR  pc.parent_ids  LIKE  CONCAT('%,', #{productCategoryId}, ',%') )
+			</if>
+			<if test="pcIsMarketable!=null and pcIsMarketable!=''">
+				 AND a.pc_is_marketable=#{pcIsMarketable}
+			</if>
+			<if test="appIsMarketable!=null and appIsMarketable!=''">
+				 AND	a.pc_is_marketable=#{appIsMarketable}
+			</if>
+			<if test="wxIsMarketable!=null and wxIsMarketable!=''">
+				 AND	a.wx_is_marketable=#{wxIsMarketable}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Product">
+		SELECT
+		<include refid="productColumns" />
+		FROM product a
+		<include refid="productJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListItem" resultType="Product">
+		SELECT
+		<include refid="productColumns" />,pc.name as "productCategory.name",pc.id as "productCategory.id"
+		FROM product a
+			 LEFT JOIN   product_category pc   ON  a.product_category_id=pc.id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="specialId != null and specialId != ''">
+			AND a.id not in (select spr.product_id from special_product_ref as spr where spr.special_id = #{specialId})
+			</if>
+			<if test="productNo != null and productNo != ''">
+				AND a.product_no = #{productNo}
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name = #{fullName}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				AND a.keyword = #{keyword}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.mechant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+			 AND  ( pc.id =#{productCategoryId}  OR  pc.parent_ids  LIKE  CONCAT('%,', #{productCategoryId}, ',%') )
+			</if>
+			<if test="pcIsMarketable!=null and pcIsMarketable!=''">
+				 AND a.pc_is_marketable=#{pcIsMarketable}
+			</if>
+			<if test="appIsMarketable!=null and appIsMarketable!=''">
+				 AND	a.pc_is_marketable=#{appIsMarketable}
+			</if>
+			<if test="wxIsMarketable!=null and wxIsMarketable!=''">
+				 AND	a.wx_is_marketable=#{wxIsMarketable}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findByProductNo" resultType="Product">
+		SELECT
+		a.id,
+		a.product_no
+		AS productNo,
+		a.name
+		FROM product a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND
+		lower(a.product_no) = lower('productNo')
+
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product(
+		id,
+		product_no,
+		allocated_stock,
+		cost,
+		original_name,
+		full_name,
+		hits,
+		image,
+		introduction,
+		is_gift,
+		is_list,
+		pc_is_marketable,
+		app_is_marketable,
+		wx_is_marketable,
+		is_top,
+		is_member_price,
+		app_home_show,
+		wx_home_show,
+		hot_sell,
+		newest,
+		promotion,
+		keyword,
+		market_price,
+		memo,
+		month_hits,
+		month_hits_date,
+		month_sales,
+		month_sales_date,
+		name,
+		point,
+		price,
+		<!-- sales, -->
+		score,
+		score_count,
+		seo_description,
+		seo_keywords,
+		seo_title,
+		stock,
+		stock_memo,
+		total_score,
+		unit,
+		week_hits,
+		week_hits_date,
+		week_sales,
+		week_sales_date,
+		weight,
+		goods,
+		supplier_id,
+		product_category_no,
+		proprietary,
+		mechant_no,
+		product_category_id,
+		create_by,
+		brand_id,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{productNo},
+		#{allocatedStock},
+		#{cost},
+		#{originalName},
+		#{fullName},
+		#{hits},
+		#{image},
+		#{introduction},
+		#{isGift},
+		#{isList},
+		#{pcIsMarketable},
+		#{appIsMarketable},
+		#{wxIsMarketable},
+		#{isTop},
+		#{isMemberPrice},
+		#{appHomeShow},
+		#{wxHomeShow},
+		#{hotSell},
+		#{newest},
+		#{promotion},
+		#{keyword},
+		#{marketPrice},
+		#{memo},
+		#{monthHits},
+		#{monthHitsDate},
+		#{monthSales},
+		#{monthSalesDate},
+		#{name},
+		#{point},
+		#{price},
+		<!-- #{sales}, -->
+		#{score},
+		#{scoreCount},
+		#{seoDescription},
+		#{seoKeywords},
+		#{seoTitle},
+		#{stock},
+		#{stockMemo},
+		#{totalScore},
+		#{unit},
+		#{weekHits},
+		#{weekHitsDate},
+		#{weekSales},
+		#{weekSalesDate},
+		#{weight},
+		#{goods},
+		#{supplierId},
+		#{productCategoryNo},
+		#{proprietary},
+		#{merchantNo},
+		#{productCategoryId},
+		#{createBy.id},
+		#{brandId},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE product SET
+		product_no = #{productNo},
+		allocated_stock = #{allocatedStock},
+		cost = #{cost},
+		full_name =
+		#{fullName},
+		hits = #{hits},
+		image = #{image},
+		introduction =
+		#{introduction},
+		is_gift = #{isGift},
+		is_list = #{isList},
+		pc_is_marketable= #{pcIsMarketable},
+		app_is_marketable=
+		#{appIsMarketable},
+		wx_is_marketable= #{wxIsMarketable},
+		is_top =
+		#{isTop},
+		is_member_price = #{isMemberPrice},
+		app_home_show =
+		#{appHomeShow},
+		wx_home_show = #{wxHomeShow},
+		hot_sell =
+		#{hotSell},
+		newest =
+		#{newest},
+		promotion = #{promotion},
+		keyword =
+		#{keyword},
+		market_price =
+		#{marketPrice},
+		memo = #{memo},
+		month_hits =
+		#{monthHits},
+		month_hits_date = #{monthHitsDate},
+		month_sales =
+		#{monthSales},
+		month_sales_date = #{monthSalesDate},
+		name = #{name},
+		point = #{point},
+		price =
+		#{price},
+		sales = #{sales},
+		score = #{score},
+		score_count =
+		#{scoreCount},
+		seo_description = #{seoDescription},
+		seo_keywords =
+		#{seoKeywords},
+		seo_title = #{seoTitle},
+		stock =
+		#{stock},
+		stock_memo =
+		#{stockMemo},
+		total_score = #{totalScore},
+		unit =
+		#{unit},
+		week_hits =
+		#{weekHits},
+		week_hits_date = #{weekHitsDate},
+		week_sales =
+		#{weekSales},
+		week_sales_date = #{weekSalesDate},
+		weight =
+		#{weight},
+		goods =
+		#{goods},
+		supplier_id = #{supplierId},
+		product_category_no = #{productCategoryNo},
+		proprietary = #{proprietary},
+		mechant_no = #{merchantNo},
+		product_category_id = #{productCategoryId},
+		brand_id = #{brandId},
+		update_by =
+		#{updateBy.id},
+		update_date = #{updateDate},
+		remarks =
+		#{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE product SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE
+		id = #{id}
+	</update>
+	<update id="updateMarketable" parameterType="Map">
+		UPDATE product
+		<set>
+			<if test="pcIsMarketable!=null and pcIsMarketable !=''">
+				pc_is_marketable=#{pcIsMarketable},
+			</if>
+			<if test="appIsMarketable!=null and appIsMarketable!='' ">
+				app_is_marketable=#{appIsMarketable},
+			</if>
+			<if test="wxIsMarketable!=null and wxIsMarketable!='' ">
+				wx_is_marketable=#{wxIsMarketable},
+			</if>
+		</set>
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateFlag">
+		UPDATE product SET del_flag ="1"
+		WHERE id in
+		<foreach collection="array" index="index" item="item"   open="(" 	 separator=","    close=")">
+			#{item}
+		</foreach>
+		</update>
+	
+	<select id="findMarketableProduct" resultType="String">
+	 SELECT id FROM  product  WHERE  (pc_is_marketable='1'  OR   app_is_marketable='1'  OR wx_is_marketable='1' )  AND   id IN 
+		<foreach collection="array" index="index" item="item"  
+		 open="(" 	 separator=","    close=")"  >
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 查询商品表 不是 已完成 或者已取消的订单 -->
+	<select id="findNotFinishAndNotCancel"   resultType="String">
+		SELECT oti.goods_no    
+		FROM  order_table_item  oti  LEFT JOIN  order_table ot   ON oti .order_table_id= ot.id   
+		WHERE oti.del_flag='0'   AND  ot.del_flag='0'  AND   ot.order_status!='2'  AND  ot.order_status!='3' 
+     	AND  oti.goods_no  IN
+        <foreach collection="array" index="index" item="item"  	open="("   separator=","  close=")"  >
+			#{item}
+		</foreach> 
+	</select>
+
+
+	<update id="updateDelFlagByMap" parameterType="Map">
+		UPDATE product SET del_flag
+		="1",update_by=#{updateUserId},update_date=NOW()
+		<where>
+			goods=#{goodsId}
+		</where>
+	</update>
+
+	<select id="queryProductsByGoodsId" resultMap="ProductResultMap">
+		SELECT
+		a.id,
+		b.id AS "bId",
+		b.specification_id AS "specificationId",
+		b.product_id AS "productId"
+		FROM product AS a LEFT JOIN
+		product_specification_ref AS b ON a.id=b.product_id
+		<where>
+			b.product_id IN (
+			SELECT p.id FROM product AS p WHERE
+			p.goods=#{goodsId}
+			)
+		</where>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<!-- 查询商品价格与会员等级 -->
+	<select id="findProductpriceAndMemrank" resultMap="ProductResultMap">
+		SELECT
+		a.id,
+		f.id AS "fid",
+		f.product_id AS "productId",
+		f.sell_price AS "sellPrice",
+		f.b_supply_price AS "bSupplyPrice",
+		f.rank_id AS "rankId",
+		c.id AS "cid",
+		c.name AS "cname",
+		c.amount AS "amount",
+		c.is_defult AS "isDefult",
+		c.is_special AS "isSpecial",
+		c.scale AS "scale"
+		FROM product a LEFT JOIN
+		product_price_ref f ON a.id = f.product_id LEFT JOIN 
+		mem_rank c ON f.rank_id = c.id 
+		where a.id = #{productId}
+	</select>
+
+	<update id="batchUpdateGoods">
+		UPDATE product
+		<set>
+			goods=#{goodsId}
+		</set>
+		<where>
+			<choose>
+				<when test="pIds!=null and pIds.size()>0">
+					product.id IN
+					<foreach collection="pIds" item="pId" open="(" separator=","
+						close=")">
+						#{pId}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
+	</update>
+
+	<update id="batchUpdateProductFullName" parameterType="List">
+		UPDATE product p
+		<set>
+			p.`name` = CONCAT(p.original_name,' ',
+			(CASE id
+			<foreach collection="params" item="param" index="index">
+				WHEN #{param.paramKey} THEN
+				(SELECT GROUP_CONCAT(ps.`name` separator
+				' ')
+				FROM
+				<foreach collection="param.paramValue" item="specificationId"
+					open="(" separator="UNION" close=")" index="index">
+					SELECT p_s.`name`,#{index} AS ps_order FROM product_specification AS p_s WHERE p_s.id = #{specificationId}
+				</foreach> AS ps ORDER BY ps.ps_order )
+			</foreach>
+			END))
+		</set>
+		<where>
+			<choose>
+				<when test="params!=null and params.size()>0">
+					p.id IN
+					<foreach collection="params" item="param" open="("
+						separator="," close=")">
+						#{param.paramKey}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
+	</update>
+
+	<select id="countProductInProductCategory" parameterType="string"
+		resultType="int">
+		SELECT 
+			count(*) FROM product AS a 
+		<where>
+			a.del_flag = '0' AND (
+			a.product_category_id = #{productCategoryId} 
+			OR a.product_category_id IN (SELECT id FROM product_category AS p WHERE p.parent_ids LIKE CONCAT('%',#{productCategoryId},'%') AND p.del_flag='0'))
+		</where> 
+	</select>
+	
+	<delete id="batchDeleteByProductCategoryId" parameterType="String">
+		DELETE FROM product AS a 
+		<where>
+			a.product_category_id = #{productCategoryId} 
+			OR a.product_category_id IN (SELECT id FROM product_category AS p WHERE p.parent_ids LIKE CONCAT('%',#{productCategoryId},'%') AND p.del_flag='0')
+		</where> 
+	</delete>
+
+	<resultMap type="Product" id="ProductResultMap">
+		<id property="id" column="id" />
+		
+		<!-- 与商品价格表关联 -->
+		<collection property="productPriceRefList" javaType="ArrayList" ofType="com.uib.ecmanager.modules.product.entity.ProductPriceRef">
+			<id column="fid" property="id"/>
+	        <result column="productId" property="productId"/>
+	        <result column="sellPrice" property="sellPrice"/>
+	        <result column="bSupplyPrice" property="bSupplyPrice"/>
+	        <result column="rankId" property="rankId"/>       
+		</collection>
+				    		
+		<collection property="productSpecificationRefs" javaType="ArrayList"
+			ofType="com.uib.ecmanager.modules.product.entity.ProductSpecificationRef">
+			<id property="id" column="bId" />
+			<result property="specificationId" column="specificationId" />
+			<result property="productId" column="productId" />
+		</collection>	
+	</resultMap>
+							
+</mapper>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>登录</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="main">
+	<form id="loginForm">
+	    <div class="common-wrapper">
+	    	<h1>欢迎登录您的账户</h1>
+	        <!-- 手机号 -->
+	        <div class="reg-name mb1"><input name="userName" id="userName" type="text" placeholder="请输入您的用户名/手机号"></div>
+	        <!-- 密码 -->
+	        <div class="reg-name mb1"><input name="password" id="password" type="password" placeholder="密码请输入6-16个字符"></div>
+	        <!-- 图形验证码 -->
+	        <div class="reg-name mb1">
+	            <div class="codetwo-left"><input id="captcha_seq" name="" type="text" placeholder="验证码"></div>
+	            <div class="codetwo-right"><img id="captchaImage" src=""/>看不清楚？<a href="javascript:void(0)" id="captcha_image_change">换一张</a></div>
+	        </div>
+	        <!-- 快捷入口 -->
+	        <div class="quick-entry"><span><a href="forget-password.html">忘记密码</a></span>还没有账号？<a href="registered.html">立即注册</a></div>
+	        <div class="pow-tip" style="dis"><span id="showmessage"></span></div>
+	        <!-- 按钮 -->
+	        <div class="reg-btn mb1 w100"><a id="submitBtn">登录</a></div>
+	        <!-- 按钮 -->
+	        <div class="reg-btn mb1 w100"><a id="seeBtn" class="gray">暂不登录，先去看看</a></div>
+	    </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/des/des.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</body>
+</html>

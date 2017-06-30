@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.member.entity.MemMember">
+	<cache eviction="FIFO" flushInterval="5000" size="512" readOnly="true"></cache>
+
+	<resultMap type="memMember" id="memberMap">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="username" property="username" />
+		<result column="avatar" property="avatar" /> 
+		<result column="password" property="password" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="amount" property="amount" />
+		<result column="balance" property="balance" />
+		<result column="birth" property="birth" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="locked_date" property="lockedDate" />
+		<result column="login_failure_count" property="loginFailureCount" />
+		<result column="ogin_ip" property="oginIp" />
+		<result column="point" property="point" />
+		<result column="register_ip" property="registerIp" />
+		<result column="safe_key_expire" property="safeKeyExpire" />
+		<result column="safe_key_value" property="safeKeyValue" />
+		<result column="zip_code" property="zipCode" />
+		<result column="area" property="area" />
+		<result column="rank_id" property="rankId" />
+		<result column="id_card" property="idCard" />
+	</resultMap>
+		
+	
+	<resultMap type="memMember" id="memberCardMap">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="username" property="username" />
+		<result column="id_card" property="idCard" />
+		<result column="id_card_positive" property="idCardPositive" />
+		<result column="id_card_opposite" property="idCardOpposite" />
+		<result column="id_card_hand" property="idCardHand" />
+		<result column="approve_flag" property="approveFlag" />
+		<result column="audit_failure_description" property="auditFailureDescription" />
+		<result column="approve_date" property="approveDate" />
+		<result column="id_card_valid" property="idCardValid" />
+	</resultMap>
+	
+	
+	<select id="getApproveByUserName" parameterType="String" resultMap="memberCardMap">
+		SELECT id,real_name name,username,approve_date ,id_card,id_card_positive,id_card_opposite,id_card_hand,approve_flag,audit_failure_description,id_card_valid  FROM mem_member WHERE username = #{username}
+	</select>
+
+
+	<sql id="memMemberColumns">
+		a.id AS "id",
+		a.real_name AS "realName",
+		a.name AS "name",
+		a.avatar,
+		a.username AS "username",
+		a.password AS "password",
+		a.pay_password as payPassword,
+		a.pay_phone as payPhone,
+		a.phone AS "phone",
+		a.address AS "address",
+		a.amount AS "amount",
+		a.balance AS "balance",
+		a.birth AS "birth",
+		a.email AS "email",
+		a.gender AS "gender",
+		a.locked_date AS "lockedDate",
+		a.login_failure_count AS "loginFailureCount",
+		a.audit_failure_description AS "auditFailureDescription",
+		a.approve_date AS "approveDate",
+		a.approve_flag AS "approveFlag",
+		a.ogin_ip AS "oginIp",
+		a.point AS "point",
+		a.register_ip AS "registerIp",
+		a.safe_key_expire AS
+		"safeKeyExpire",
+		a.safe_key_value AS "safeKeyValue",
+		a.zip_code AS
+		"zipCode",
+		a.area AS "area",
+		a.rank_id AS "rankId",
+		a.id_card AS
+		"idCard",
+		a.is_enabled AS "isEnabled",
+		a.is_locked AS "isLocked",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks
+		AS "remarks",
+		a.del_flag AS "delFlag",
+		a.weixinName AS "weixinName",
+		a.user_type AS "userType",
+		a.sessionId as sessionId
+	</sql>
+
+	<sql id="memMemberJoins">
+	</sql>
+
+
+	<select id="getMemMemberByUsername" parameterType="string"
+		resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		WHERE a.username = #{username}
+	</select>
+	
+	<select id="getMemMemberByUsernameNew" parameterType="string" resultType="memMember">
+		SELECT
+			a.id AS "id",
+			a.phone AS "phone",
+			a.username AS "userName",
+			a.real_name AS "realName",
+			a.approve_flag AS "approveFlag",
+			a.id_card AS "idCard",
+			a.approve_date AS "approveDate",
+			a.audit_failure_description AS "auditFailureDescription",
+			a.commission as "commission",
+			a.balance AS "balance",
+			a.create_date AS "createDate"
+		FROM mem_member a
+		WHERE a.username = #{username}
+	</select>
+	
+	<select id="queryMemberByIdCard" parameterType="map"  resultType="int">
+		select count(1) from mem_member m where m.id_card=#{idCard} and m.id != #{userId}
+	</select>
+	
+	<select id="queryMemberInfo" parameterType="map"  resultType="int">
+		select count(1) from mem_member m where m.username=#{userName} and m.password=#{password}
+	</select>
+	
+	
+	<select id="memberLogin" parameterType="map"
+		resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		WHERE a.username = #{username} or a.phone = #{phone}
+	</select>
+	
+	<select id="getMemberByPhone" parameterType="string"
+		resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		WHERE  a.phone = #{phone}
+	</select>
+
+	<select id="get" resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="MemMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			<if test="isEnabled != null and isEnabled != ''">
+				AND a.is_enabled = #{isEnabled}
+			</if>
+			<if test="isLocked != null and isLocked != ''">
+				AND a.is_locked = #{isLocked}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY #{page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		<include refid="memMemberJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY #{page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<update id="updateSessionId">
+		update 
+			mem_member 
+		set 
+			sessionid=#{sessionId} 
+		where 
+			username = #{userName} or phone = #{phone}
+	</update>
+
+	<update id="updateCommission">
+		update mem_member set commission=#{commission} where id=#{memMemberId}
+	</update>
+
+
+	<insert id="saveMember" parameterType="memMember" statementType="CALLABLE"  useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+		INSERT INTO mem_member(
+			id,
+			username,
+			password,
+			pay_phone,
+			phone,
+			address,
+			amount,
+			balance,
+			birth,
+			email,
+			gender,
+			locked_date,
+			login_failure_count,
+			ogin_ip,
+			point,
+			register_ip,
+			safe_key_expire,
+			safe_key_value,
+			zip_code,
+			area,
+			rank_id,
+			id_card,
+			sessionid,
+			weixinName
+		) VALUES (
+			#{id},
+			#{username},
+			#{password},
+			#{payPhone},
+			#{phone},
+			#{address},
+			#{amount},
+			#{balance},
+			#{birth},
+			#{email},
+			#{gender},
+			#{lockedDate},
+			#{loginFailureCount},
+			#{oginIp},
+			#{point},
+			#{registerIp},
+			#{safeKeyExpire},
+			#{safeKeyValue},
+			#{zipCode},
+			#{area},
+			#{rankId},
+			#{idCard},
+			#{sessionId},
+			#{weixinName}
+		)
+		 ]]>
+	</insert>
+
+	<update id="update">
+		UPDATE mem_member SET
+		locked_date = #{lockedDate},
+		is_enabled = #{isEnabled},
+		is_locked = #{isLocked},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE
+		id = #{id}
+	</update>
+	
+	<update id="updatePassword" parameterType="map">
+		update mem_member set password=#{password} where username=#{username}
+	</update>
+	
+	<update id="updatePayPassword" parameterType="map">
+		update mem_member
+			<set>
+			<if test="payPassword != null and payPassword !='' ">
+				pay_password=#{payPassword}
+			</if>
+			</set> 
+			where id=#{id}
+	</update>
+
+	<select id="findApproveInfo" parameterType="String" resultType="Map">
+		SELECT * FROM mem_member WHERE id = #{id}
+	</select>
+	
+	<select id="getMemberbyCardId" parameterType="String" resultType="Map">
+		select id,approve_flag from mem_member WHERE id_card = #{idCard}
+	</select>
+
+	<update id="updateById" parameterType="Map">
+		update mem_member
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="payPhone != null">
+				pay_phone = #{payPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="balance != null">
+				balance = #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="birth != null">
+				birth = #{birth,jdbcType=TIMESTAMP},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=CHAR},
+			</if>
+			<if test="lockedDate != null">
+				locked_date = #{lockedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginFailureCount != null">
+				login_failure_count =
+				#{loginFailureCount,jdbcType=INTEGER},
+			</if>
+			<if test="oginIp != null">
+				ogin_ip = #{oginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="point != null">
+				point = #{point,jdbcType=VARCHAR},
+			</if>
+			<if test="registerIp != null">
+				register_ip = #{registerIp,jdbcType=VARCHAR},
+			</if>
+			<if test="safeKeyExpire != null">
+				safe_key_expire = #{safeKeyExpire,jdbcType=TIMESTAMP},
+			</if>
+			<if test="safeKeyValue != null">
+				safe_key_value = #{safeKeyValue,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				zip_code = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				area = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="rankId != null">
+				rank_id = #{rankId,jdbcType=VARCHAR},
+			</if>
+			<if test="isEnabled != null">
+				is_enabled = #{isEnabled,jdbcType=CHAR},
+			</if>
+			<if test="isLocked != null">
+				is_locked = #{isLocked,jdbcType=CHAR},
+			</if>
+			<if test="idCard != null">
+				id_card = #{idCard,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				real_name = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardPositive != null">
+				id_card_positive = #{idCardPositive,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardOpposite != null">
+				id_card_opposite = #{idCardOpposite,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardHand != null">
+				id_card_hand = #{idCardHand,jdbcType=VARCHAR},
+			</if>
+			<if test="approveFlag != null">
+				approve_flag = #{approveFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where sessionid = #{sessionId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="delete">
+		UPDATE mem_member SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="queryIsAuthByUserName" parameterType="String" resultMap="memberMap">
+		SELECT 
+			<include refid="memMemberColumns" />
+		FROM 
+			mem_member a 
+	 	JOIN 
+	 		mem_pre_author au 
+    	ON 
+    		a.id = au.userId
+		AND 
+			a.id = #{userId}
+		AND 
+			au.auth_flag = #{authFlag}
+	</select>
+	
+	<select id="verifyPassword" parameterType="map" resultType="int">
+		select count(1) from mem_member where username=#{userName} and pay_password=#{password}
+	</select>
+	
+	<!-- 根据sessionId查询用户信息 -->
+	<select id="getMemMemberBySessionId" parameterType="string" resultType="memMember">
+		SELECT
+		<include refid="memMemberColumns" />
+		FROM mem_member a
+		WHERE a.sessionId = #{sessionId}
+	</select>
+	
+	<insert id="saveMemberPreAuthInfo" parameterType="memMember" statementType="CALLABLE"  useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+		INSERT INTO mem_pre_author(
+			id,
+  			auth_flag,
+  			userId,
+  			create_date
+		) VALUES (
+			#{id},
+			#{authFlag},
+			#{memmemberId},
+			now()
+		)
+		]]>
+	</insert>
+	
+	<update id="updateMemberInfoById" parameterType="Map">
+		update mem_member
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="balance != null">
+				balance = #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="birth != null">
+				birth = #{birth,jdbcType=TIMESTAMP},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=CHAR},
+			</if>
+			<if test="lockedDate != null">
+				locked_date = #{lockedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginFailureCount != null">
+				login_failure_count =
+				#{loginFailureCount,jdbcType=INTEGER},
+			</if>
+			<if test="oginIp != null">
+				ogin_ip = #{oginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="point != null">
+				point = #{point,jdbcType=VARCHAR},
+			</if>
+			<if test="registerIp != null">
+				register_ip = #{registerIp,jdbcType=VARCHAR},
+			</if>
+			<if test="safeKeyExpire != null">
+				safe_key_expire = #{safeKeyExpire,jdbcType=TIMESTAMP},
+			</if>
+			<if test="safeKeyValue != null">
+				safe_key_value = #{safeKeyValue,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				zip_code = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				area = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="rankId != null">
+				rank_id = #{rankId,jdbcType=VARCHAR},
+			</if>
+			<if test="isEnabled != null">
+				is_enabled = #{isEnabled,jdbcType=CHAR},
+			</if>
+			<if test="isLocked != null">
+				is_locked = #{isLocked,jdbcType=CHAR},
+			</if>
+			<if test="idCard != null">
+				id_card = #{idCard,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				real_name = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardPositive != null">
+				id_card_positive = #{idCardPositive,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardOpposite != null">
+				id_card_opposite = #{idCardOpposite,jdbcType=VARCHAR},
+			</if>
+			<if test="idCardHand != null">
+				id_card_hand = #{idCardHand,jdbcType=VARCHAR},
+			</if>
+			<if test="approveFlag != null">
+				approve_flag = #{approveFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+			<if test="indate != null">
+				id_card_valid = #{indate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

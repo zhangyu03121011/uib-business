@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>商品列表</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <div class="flex-row search">
+                <div class="back">
+                    <a class=" iconfont icon-back" href="javascript:history.go(-1)"></a>
+                </div>
+                <div class="flex-item form">
+                    <form class="iconfont icon-sousuo" action="#">
+                        <input type="text" name="search" placeholder="搜索商品" />
+                    </form>
+                </div>
+                <div class="search-btn">
+                    <i class="iconfont icon-icon-search"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部导航结束 -->
+    <!-- 分类搜索开始 -->
+    <div class="body-content">
+        <div class="category">
+            <div class="category-title">
+                <div class="category-all"><a class="hover">全部</a></div>
+                <div class="flex-row">
+                    <div class="flex-item"><a href="#">女装女装女装</a></div>
+                    <div class="flex-item"><a href="#">汽车</a></div>
+                    <div class="flex-item"><a href="#">鞋包</a></div>
+                    <div class="flex-item"><a href="#">美妆</a></div>
+                    <div class="flex-item"><a href="#">男装</a></div>
+                </div>
+                <i class="iconfont icon-arrow-down category-icon" id="categoryShow"></i>
+            </div>
+            <div class="category-list">
+                <div class="pure pure-g">
+                    <div class="pure pure-u-1-4"><a href="#">全部全部全部全部全部全部</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">全部</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">全部全部</a></div>
+                    <div class="pure pure-u-1-4"><a class="hover" href="#">鞋包</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">美妆</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">汽车</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">鞋包</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">美妆</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">鞋包</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">美妆</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">汽车</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">鞋包</a></div>
+                    <div class="pure pure-u-1-4"><a href="#">美妆</a></div>
+                </div>
+            </div>
+            <!-- 分类搜索结束 -->
+            <div class="no-data">
+                <div class="no-data-logo">
+                    <span class="iconfont icon-sousuo"></span></div>
+                <p class="no-data-title">没有搜索结果</p>
+                <p class="no-data-title-s">没有找到相关的宝贝</p>
+            </div>
+        </div>
+        <!-- 底部导航开始 -->
+        <footer>
+            <div class='bottom-menu'>
+                <ul class='display-flex align-items-center'>
+                    <li class="flex-1 menu-item">
+                        <a href="./index.html">
+                            <i class="menu-icon iconfont icon-youhui"></i>
+                            <div class='text'>优品</div>
+                        </a>
+                    </li>
+                    <li class="flex-1 menu-item active">
+                        <a href="./products_list.html">
+                            <i type="tablet" class="menu-icon iconfont icon-shangpin"></i>
+                            <div class='text'>商品</div>
+                        </a>
+                    </li>
+                    <li class="flex-1 menu-item">
+                        <a href="./cart.html">
+                            <i class="menu-icon iconfont icon-gouwuche"></i>
+                            <div class='text'>购物车</div>
+                        </a>
+                    </li>
+                    <li class="flex-1 menu-item">
+                        <a href="./personal.html">
+                            <i type="user" class="menu-icon iconfont icon-wo"></i>
+                            <div class='text'>我</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <!-- 底部导航结束 -->
+        <script src="./js/jquery.js"></script>
+        <script src="./js/touch.js"></script>
+        <script src="./js/fixed.js"></script>
+        <script>
+        $(function() {
+            // home
+            touch.on('#categoryShow', 'touchstart', function(event) {
+                if ($(this).hasClass('icon-arrow-down')) {
+                    $(".category-list").show();
+                    $(this).removeClass("icon-arrow-down").addClass("icon-arrow-up");
+                } else {
+                    $(".category-list").hide();
+                    $(this).removeClass("icon-arrow-up").addClass("icon-arrow-down");
+                }
+            });
+        });
+        </script>
+</body>
+
+</html>

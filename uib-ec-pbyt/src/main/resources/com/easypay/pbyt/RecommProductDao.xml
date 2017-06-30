@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.RecommProductDao">
+    
+	<sql id="recommendProductColumns">
+		a.id AS "id",
+		a.recommend_member_id AS "recommMemberId",
+		a.product_id AS "productId",
+		a.view_count AS "viewCount",
+		a.userType AS "userType",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="recommendProductJoins">
+	</sql>
+    
+	
+	<insert id="insert">
+		INSERT INTO recommend_product(
+			id,
+			recommend_member_id,
+			product_id,
+			view_count,
+			create_time,
+			del_flag,
+			userType
+		) VALUES (
+			#{id},
+			#{recommMemberId},
+			#{productId},
+			#{viewCount},
+			now(),
+			#{delFlag},
+			#{userType}
+		)
+	</insert>
+	
+	<select id="getRecommProduct" resultType="RecommProduct" >
+		SELECT <include refid="recommendProductColumns"></include>
+		 FROM recommend_product a
+		where a.recommend_member_id=#{recommMemberId}
+		and a.product_id=#{productId} 
+
+	</select>
+	<select id="querRecommProductNum"   resultType="Map"  parameterType="Map">
+	   select o.quantity
+	   		from recommend_product_log a
+			LEFT JOIN order_table_item o
+  			on a.order_no=o.order_no
+	   where a.recommend_id=#{recommMemberId}
+	   <if test="productId!=null and productId!=''">
+	   and a.product_id=#{productId}		   
+	   </if>
+	</select>
+	<select id="queryRecommProduct" resultType="RecommProduct" parameterType="Map">
+		SELECT a.id,
+			   DATE_FORMAT(a.create_time, '%Y-%m-%d') AS createTime,
+		       b.original_name as fullName,
+		       a.view_count as viewCount,		
+		       CONCAT(#{imageUrl},b.image) AS image,
+		       a.recommend_member_id as recommMemberId,
+		       a.product_id  as  productId,
+		       
+		(SELECT sell_price FROM product_price_ref WHERE product_id=b.id AND rank_id=c.rank_id) pice 
+		FROM recommend_product a, product b, mem_member c
+	    WHERE a.product_id=b.id AND a.recommend_member_id=c.id
+        AND a.recommend_member_id=#{memberId}
+        and a.userType='2'
+        ORDER BY a.create_time DESC
+	</select>
+	
+	<update id="delete">
+		update recommend_product set del_flag = '1' WHERE id = #{id}
+	</update>
+	
+	<update id="updateViewCount">
+		update recommend_product set view_count = #{viewCount} WHERE recommend_member_id = #{recommMemberId} and product_id = #{productId}
+	</update>
+	
+	<select id="checkOnly" resultType="int">
+ 		select 
+	  		count(*) 
+		from 
+	  		recommend_product rpl 
+	  	where 
+	  		rpl.recommend_member_id=#{memberId} 
+	  	and 
+	  		rpl.product_id=#{productId}
+	</select>
+</mapper>

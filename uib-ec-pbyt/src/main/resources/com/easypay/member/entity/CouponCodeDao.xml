@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.member.entity.CouponCode">
+
+	<sql id="couponCodeColumns">
+		a.id AS "id",
+		a.coupon_id AS "coupon.id",
+		a.code AS "code",
+		a.is_used AS "isUsed",
+		a.used_date AS "usedDate",
+		a.member_id AS
+		"memMember.id",
+		a.create_date AS "createDate",
+		a.update_date AS
+		"updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="couponColumns">
+		c.id AS "cId",
+		c.begin_date AS "beginDate",
+		c.end_date AS
+		"endDate",
+		c.introduction AS "introduction",
+		c.is_exchange AS
+		"isExchange",
+		c.maximum_price AS "maximumPrice",
+		c.maximum_quantity AS
+		"maximumQuantity",
+		c.minimum_price AS "minimumPrice",
+		c.minimum_quantity AS "minimumQuantity",
+		c.name AS "name",
+		c.point AS
+		"point",
+		c.prefix AS "prefix",
+		c.sum AS "sum",
+		c.present_type AS
+		"presentType",
+		c.price_expression AS "priceExpression",
+		c.face_price AS
+		"facePrice",
+		c.need_consume_balance AS "needConsumeBalance",
+		c.coupon_source AS "couponSource",
+		c.create_by AS "createBy",
+		c.create_date AS "cCreateDate",
+		c.update_by AS "updateBy",
+		c.update_date AS "cUpdateDate",
+		c.remarks AS "cRemarks",
+		c.del_flag AS
+		"cDelFlag"
+	</sql>
+
+	<sql id="couponCodeJoins">
+		LEFT JOIN coupon b ON b.id = a.coupon_id
+	</sql>
+	<!-- 批量写入优惠券 -->
+	<insert id="insertList" parameterType="list">
+		INSERT INTO coupon_code(id,coupon_id,code,member_id,create_date)VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.id},#{item.couponId},#{item.code},#{item.memberId},NOW())
+		</foreach>
+	</insert>
+	<select id="get" resultType="CouponCode">
+		SELECT
+		<include refid="couponCodeColumns" />
+		FROM coupon_code a
+		<include refid="couponCodeJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="CouponCode">
+		SELECT
+		<include refid="couponCodeColumns" />
+		FROM coupon_code a
+		<include refid="couponCodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="coupon != null and coupon.id != null and coupon.id != ''">
+				AND a.coupon_id = #{coupon.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="CouponCode">
+		SELECT
+		<include refid="couponCodeColumns" />
+		FROM coupon_code a
+		<include refid="couponCodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getCouponByMemberId" parameterType="String"
+		resultType="couponCode">
+		SELECT
+		<include refid="couponCodeColumns" />
+		FROM coupon_code a
+		<include refid="couponCodeJoins" />
+		WHERE a.del_flag = 0 AND a.member_id = #{memberId}
+	</select>
+	
+	<select id="getCouponCodeByCouponCode" parameterType="String"
+		resultType="couponCode">
+		SELECT
+		<include refid="couponCodeColumns" />
+		FROM coupon_code a
+		<include refid="couponCodeJoins" />
+		WHERE a.del_flag = 0 AND a.code = #{code}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO coupon_code(
+		id,
+		coupon_id,
+		code,
+		is_used,
+		used_date,
+		member_id,
+		create_date,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{coupon.id},
+		#{code},
+		#{isUsed},
+		#{usedDate},
+		#{memMember.id},
+		#{createDate},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE coupon_code SET
+		coupon_id = #{coupon.id},
+		code = #{code},
+		is_used = #{isUsed},
+		used_date = #{usedDate},
+		member_id = #{memMember.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateIsUsedByCode"  parameterType="map">
+		UPDATE coupon_code SET is_used = #{isUsed} WHERE code=#{code}
+	</update>
+
+	<update id="delete">
+		UPDATE coupon_code SET
+		del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE coupon_id = #{coupon.id}
+			</otherwise>
+		</choose>
+	</update>
+	<select id="count" resultType="CouponCode">
+		SELECT
+
+		FROM coupon_code a
+		WHERE del_flag = #{DEL_FLAG_NORMAL} AND a.id = #{id}
+	</select>
+
+	<update id="setCouponCodeUsed" parameterType="java.lang.String">
+		UPDATE coupon_code
+		SET
+		is_used = 1,
+		used_date = now()
+		WHERE
+		code = #{code}
+	</update>
+	
+
+	<select id="getCouponCodeByCode" parameterType="java.lang.String"
+		resultMap="CouponCodeResultMap">
+		SELECT
+		<include refid="couponColumns" />
+		,
+		<include refid="couponCodeColumns" />
+		FROM coupon c LEFT JOIN coupon_code a ON a.coupon_id = c.id
+		WHERE
+		a.code=#{code} AND c.end_date> now() AND a.is_used=0
+	</select>
+
+	<resultMap type="com.uib.member.entity.CouponCode" id="CouponCodeResultMap">
+		<id property="id" column="id" />
+		<result property="coupon.id" column="coupon.id" />
+		<result property="code" column="code" />
+		<result property="isUsed" column="isUsed" />
+		<result property="usedDate" column="usedDate" />
+		<result property="memMember.id" column="memMember.id" />
+		<result property="createDate" column="createDate" />
+		<result property="updateDate" column="updateDate" />
+		<result property="remarks" column="remarks" />
+		<result property="delFlag" column="delFlag" />
+		<association property="coupon" javaType="com.uib.member.entity.Coupon"
+			resultMap="CouponResultMap" />
+	</resultMap>
+
+	<resultMap type="com.uib.member.entity.Coupon" id="CouponResultMap">
+		<id property="id" column="cId" />
+		<result property="beginDate" column="beginDate" />
+		<result property="endDate" column="endDate" />
+		<result property="introduction" column="introduction" />
+		<result property="isExchange" column="isExchange" />
+		<result property="maximumPrice" column="maximumPrice" />
+		<result property="maximumQuantity" column="maximumQuantity" />
+		<result property="minimumPrice" column="minimumPrice" />
+		<result property="minimumQuantity" column="minimumQuantity" />
+		<result property="name" column="name" />
+		<result property="point" column="point" />
+		<result property="prefix" column="prefix" />
+		<result property="sum" column="sum" />
+		<result property="presentType" column="presentType" />
+		<result property="priceExpression" column="priceExpression" />
+		<result property="facePrice" column="facePrice" />
+		<result property="needConsumeBalance" column="needConsumeBalance" />
+		<result property="couponSource" column="couponSource" />
+		<result property="remarks" column="cRemarks" />
+	</resultMap>
+</mapper>

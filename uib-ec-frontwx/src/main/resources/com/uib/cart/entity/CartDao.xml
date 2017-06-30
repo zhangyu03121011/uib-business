@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.cart.entity.Cart">
+
+	<sql id="cartColumns">
+		a.id AS "id",
+		a.cart_key AS "cartKey",
+		a.member_id AS
+		"memberId",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate"
+	</sql>
+
+	<sql id="cartItemColumns">
+		c.id AS "cId",
+		c.cart_id AS "cCartId",
+		c.product_id AS
+		"cProductId",
+		c.specification_id AS "cSpecificationId",
+		c.quantity AS
+		"cQuantity",
+		c.create_date AS "cCreateDate",
+		c.modify_date AS "cModifyDate",
+		c.price AS "cProductPrice"
+	</sql>
+
+	<sql id="memMemberColumns">
+		m.id AS "mId",
+		m.name AS "name",
+		m.username AS "username",
+		m.password AS "password",
+		m.phone AS "phone",
+		m.address AS "address",
+		m.amount AS "amount",
+		m.balance AS "balance",
+		m.birth AS "birth",
+		m.email AS "email",
+		m.gender AS "gender",
+		m.locked_date AS "lockedDate",
+		m.login_failure_count AS "loginFailureCount",
+		m.ogin_ip AS "oginIp",
+		m.point AS "point",
+		m.register_ip AS "registerIp",
+		m.safe_key_expire AS
+		"safeKeyExpire",
+		m.safe_key_value AS "safeKeyValue",
+		m.zip_code AS
+		"zipCode",
+		m.area AS "area",
+		m.rank_id AS "rankId",
+		m.id_card AS
+		"idCard",
+		m.is_enabled AS "isEnabled",
+		m.is_locked AS "isLocked",
+		m.create_by AS "createBy",
+		m.create_date AS "createDate",
+		m.update_by AS
+		"updateBy",
+		m.update_date AS "updateDate",
+		m.remarks
+		AS "remarks",
+		m.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="productColumns">
+		p.id AS "pId",
+		p.product_no AS "productNo",
+		p.allocated_stock AS "allocatedStock",
+		p.cost AS "cost",
+		p.full_name AS
+		"fullName",
+		p.hits AS "hits",
+		p.image AS "image",
+		p.introduction AS
+		"introduction",
+		p.is_gift AS "isGift",
+		p.is_list AS "isList",
+		p.pc_is_marketable AS "pcIsMarketable",
+		p.app_is_marketable as "appIsMarketable",
+		p.wx_is_marketable as "wxIsMarketable",
+		p.app_home_show as "appHomeShow",
+		p.wx_home_show as "wxHomeShow",
+		p.is_top AS "isTop",
+		p.is_member_price AS "isMemberPrice",
+		p.hot_sell AS "hotSell",
+		p.newest
+		AS "newest",
+		p.promotion AS "promotion",
+		p.keyword AS "keyword",
+		p.market_price AS "marketPrice",
+		p.memo AS "memo",
+		p.month_hits AS
+		"monthHits",
+		p.month_hits_date AS "monthHitsDate",
+		p.month_sales AS
+		"monthSales",
+		p.month_sales_date AS "monthSalesDate",
+		p.name AS "pName",
+		p.point AS "point",
+		p.price AS "price",
+		p.sales AS "sales",
+		p.score AS
+		"score",
+		p.score_count AS "scoreCount",
+		p.seo_description AS
+		"seoDescription",
+		p.seo_keywords AS "seoKeywords",
+		p.seo_title AS
+		"seoTitle",
+		p.stock AS "stock",
+		p.stock_memo AS "stockMemo",
+		p.total_score AS "totalScore",
+		p.unit AS "unit",
+		p.week_hits AS
+		"weekHits",
+		p.week_hits_date AS "weekHitsDate",
+		p.week_sales AS
+		"weekSales",
+		p.week_sales_date AS "weekSalesDate",
+		p.weight AS "weight",
+		p.goods AS "goods",
+		p.product_category_no AS "productCategoryNo",
+		p.proprietary AS "proprietary",
+		p.mechant_no AS "merchantNo",
+		p.product_category_id AS "productCategoryId",
+		p.brand_id AS "brandId",
+		p.remarks AS "pRemarks"
+	</sql>
+
+	<sql id="cartJoins">
+	</sql>
+
+	<select id="get" resultType="Cart">
+		SELECT
+		<include refid="cartColumns" />
+		FROM cart a
+		<include refid="cartJoins" />
+		WHERE a.id = #{id} AND a.del_flag = '0'
+	</select>
+
+	<select id="findList" resultType="Cart">
+		SELECT
+		<include refid="cartColumns" />
+		FROM cart a
+		<include refid="cartJoins" />
+		<where>
+			a.del_flag = '0'
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="cartKey != null and cartKey != ''">
+				AND a.cart_key = #{cartKey}
+			</if>
+			<if test="memberId != null and memberId != ''">
+				AND a.member_id = #{memberId}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="modifyDate != null and modifyDate != ''">
+				AND a.modify_date = #{modifyDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Cart">
+		SELECT
+		<include refid="cartColumns" />
+		FROM cart a
+		<include refid="cartJoins" />
+		<where>
+			a.del_flag = '0'
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="saveCart">
+		INSERT INTO cart(
+		id,
+		cart_key,
+		member_id,
+		create_date,
+		modify_date
+		) VALUES (
+		#{id},
+		#{cartKey},
+		#{memberId},
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+
+	<update id="updateCart">
+		UPDATE cart SET
+		cart_key = #{cartKey},
+		member_id =
+		#{memberId},
+		modify_date = #{modifyDate}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="removeCartById" parameterType="map">
+		DELETE FROM cart
+		WHERE
+		id = #{cartId}
+	</delete>
+
+	<select id="selectCartByMemberId" parameterType="map" resultMap="cartResultMap">
+		SELECT
+		<include refid="cartColumns" />
+		,
+		<include refid="cartItemColumns" />
+		,
+		<include refid="memMemberColumns" />
+		,
+		<include refid="productColumns"/>
+		FROM
+		cart_item c
+		LEFT JOIN cart a   ON a.id=c.cart_id
+		LEFT JOIN mem_member m ON m.id=a.member_id
+		LEFT JOIN product p ON p.id=c.product_id
+		WHERE
+			a.member_id = #{memberId}
+		AND a.del_flag = '0'
+		order by c.create_date asc
+	</select>
+
+	<select id="selectCart" parameterType="com.uib.cart.entity.Cart"
+		resultMap="cartResultMap">
+		SELECT
+		<include refid="cartColumns" />
+		,
+		<include refid="cartItemColumns" />
+		,
+		<include refid="memMemberColumns" />
+		,
+		<include refid="productColumns"/>
+		FROM
+		cart a
+		LEFT JOIN cart_item c ON a.id=c.cart_id
+		LEFT JOIN mem_member m ON m.id=a.member_id
+		LEFT JOIN product p ON p.id=c.product_id
+		<where>
+			a.del_flag = '0'
+			<if test="memberId!=null and memberId!=''">
+				AND a.member_id = #{memberId}
+			</if>
+			<if test="id!=null and id!=''">
+				AND a.id = #{id}
+			</if>
+			<if test="cartKey!=null and cartKey!=''">
+				AND a.cart_key = #{cartKey}
+			</if>
+		</where>
+	</select>
+
+	<resultMap type="com.uib.cart.entity.Cart" id="cartResultMap">
+		<id property="id" column="id" />
+		<result property="cartKey" column="cartKey" />
+		<result property="memberId" column="memberId" />
+		<result property="createDate" column="createDate" />
+		<result property="modifyDate" column="modifyDate" />
+		<association property="member"
+			javaType="com.uib.member.entity.MemMember" resultMap="menuMap" />
+		<collection property="cartItems" ofType="com.uib.cart.entity.CartItem"
+			javaType="ArrayList">
+			<id property="id" column="cId" />
+			<result property="cartId" column="cCartId" />
+			<result property="productId" column="cProductId" />
+			<result property="specificationId" column="cSpecificationId" />
+			<result property="quantity" column="cQuantity" />
+			<result property="createDate" column="cCreateDate" />
+			<result property="modifyDate" column="cModifyDate" />
+			<result property="productPrice" column="cProductPrice" />
+			<result property="marketPrice" column="marketPrice" />
+			<association property="product"
+				javaType="com.uib.product.entity.Product" resultMap="productResultMap" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="memMember" id="menuMap">
+		<result column="mId" property="id" />
+		<result column="name" property="name" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="amount" property="amount" />
+		<result column="balance" property="balance" />
+		<result column="birth" property="birth" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="locked_date" property="lockedDate" />
+		<result column="login_failure_count" property="loginFailureCount" />
+		<result column="ogin_ip" property="oginIp" />
+		<result column="point" property="point" />
+		<result column="register_ip" property="registerIp" />
+		<result column="safe_key_expire" property="safeKeyExpire" />
+		<result column="safe_key_value" property="safeKeyValue" />
+		<result column="zip_code" property="zipCode" />
+		<result column="area" property="area" />
+		<result column="rank_id" property="rankId" />
+		<result column="id_card" property="idCard" />
+	</resultMap>
+	<!-- a.remarks AS "pRemarks" -->
+	<resultMap type="Product" id="productResultMap">
+		<id property="id" column="pId" />
+		<result property="allocatedStock" column="allocatedStock" />
+		<result property="cost" column="cost" />
+		<result property="fullName" column="fullName" />
+		<result property="hits" column="hits" />
+		<result property="image" column="image" />
+		<result property="introduction" column="introduction" />
+		<result property="isGift" column="isGift" />
+		<result property="isList" column="isList" />
+<!-- 		<result property="isMarketable" column="isMarketable" /> -->
+		<result property="isTop" column="isTop" />
+		<result property="isMemberPrice" column="isMemberPrice" />
+		<result property="hotSell" column="hotSell" />
+		<result property="newest" column="newest" />
+		<result property="promotion" column="promotion" />
+		<result property="keyword" column="keyword" />
+		<result property="marketPrice" column="marketPrice" />
+		<result property="memo" column="memo" />
+		<result property="monthHits" column="monthHits" />
+		<result property="monthHitsDate" column="monthHitsDate" />
+		<result property="monthSales" column="monthSales" />
+		<result property="monthSalesDate" column="monthSalesDate" />
+		<result property="name" column="pName" />
+		<result property="point" column="point" />
+		<result property="price" column="price" />
+		<result property="sales" column="sales" />
+		<result property="score" column="score" />
+		<result property="scoreCount" column="scoreCount" />
+		<result property="seoDescription" column="seoDescription" />
+		<result property="seoKeywords" column="seoKeywords" />
+		<result property="seoTitle" column="seoTitle" />
+		<result property="stock" column="stock" />
+		<result property="stockMemo" column="stockMemo" />
+		<result property="totalScore" column="totalScore" />
+		<result property="unit" column="unit" />
+		<result property="weekHits" column="weekHits" />
+		<result property="weekHitsDate" column="weekHitsDate" />
+		<result property="weekSales" column="weekSales" />
+		<result property="weekSalesDate" column="weekSalesDate" />
+		<result property="weight" column="weight" />
+		<result property="goods" column="goods" />
+		<result property="productCategoryNo" column="productCategoryNo" />
+		<result property="proprietary" column="proprietary" />
+		<result property="merchantNo" column="merchantNo" />
+		<result property="productCategoryId" column="productCategoryId" />
+		<result property="brandId" column="brandId" />
+		<result property="remarks" column="pRemarks" />
+		<result property="wxIsMarketable" column="wxIsMarketable" />
+		
+	</resultMap>
+	
+	<select id="queryCartByUserName" parameterType="String" resultType="Map">
+		SELECT
+			m.id AS 'userId',
+			m.username AS 'userName',
+			c.id AS 'cartId',
+		  	c.cart_key AS 'cartKey',
+			COUNT(ci.product_id) AS 'count'
+		FROM mem_member m
+		LEFT JOIN cart c ON m.id = c.member_id
+		LEFT JOIN cart_item ci ON c.id = ci.cart_id
+		WHERE m.username = #{userName} 
+	</select>
+	
+	<select id="queryCartItemByUserNameAndProductId" parameterType="Map" resultType="Map">
+		<!-- SELECT
+			ci.id AS 'cartItemId',
+			ci.product_id,
+			ci.quantity,
+			m.id AS 'userId',
+			m.username AS 'userName',
+			c.id AS 'cartId',
+			c.del_flag AS 'delFlag'
+		FROM
+			cart_item ci
+		LEFT JOIN cart c ON ci.cart_id = c.id 
+		LEFT JOIN mem_member m ON c.id = ci.cart_id
+		WHERE
+			c.del_flag = '0'
+		AND ci.product_id = #{productId}
+		AND m.username = #{userName}
+		AND EXISTS( 
+			SELECT 1 FROM mem_member imem  
+			LEFT JOIN  cart ic ON imem.id = ic.member_id
+			WHERE ic.id = ci.cart_id
+		) -->
+		
+		
+		SELECT
+			ci.id AS 'cartItemId',
+			ci.product_id,
+			ci.quantity
+		FROM
+			cart_item ci
+		WHERE
+			ci.del_flag = '0'
+		AND ci.product_id = #{productId}
+		AND ci.cart_id = (
+			SELECT c.id FROM cart c
+			 WHERE c.member_id = (
+					SELECT m.id FROM mem_member m WHERE m.username = #{userName}
+				)
+		)
+	</select>
+</mapper>

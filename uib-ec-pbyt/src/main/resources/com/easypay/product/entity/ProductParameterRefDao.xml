@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.product.entity.ProductParameterRef">
+
+	<sql id="productParameterRefColumns">
+		a.id AS "id",
+		a.parameter_id AS "parameterId",
+		a.product_id
+		AS "productId",
+		a.parameter_value AS "parameterValue"
+	</sql>
+
+	<sql id="productParameterRefJoins">
+	</sql>
+
+	<select id="get" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		<where>
+
+			<if test="parameterId != null and parameterId != ''">
+				AND a.parameter_id = #{parameterId}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product_parameter_ref(
+		id,
+		parameter_id,
+		product_id,
+		parameter_value
+		) VALUES (
+		#{id},
+		#{parameterId},
+		#{productId},
+		#{parameterValue}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE
+		product_parameter_ref
+		SET
+		parameter_value =#{parameterValue}
+		WHERE
+		parameter_id = #{parameterId} AND product_id = #{productId}
+	</update>
+
+	<update id="delete">
+		DELETE FROM product_parameter_ref
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteFrom">
+		DELETE FROM product_parameter_ref
+		<where>
+			product_id=#{productId}
+			<if test="parameterIds!=null and parameterIds.size>0">
+				AND parameter_id IN
+				<foreach collection="parameterIds" item="parameterId" index="index"
+					open="(" separator="," close=")">
+					#{parameterId}
+				</foreach>
+			</if>
+		</where>
+	</update>
+
+	<select id="queryParameterIdsByProductId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT a.parameter_id FROM product_parameter_ref a WHERE
+		a.product_id=#{productId};
+	</select>
+
+	<select id="queryProductParameterRersByProductId" parameterType="java.lang.String" resultMap="productParameterRefMap">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		,a.parameter_id AS "parameterId",
+		a.product_id
+		AS "productId",
+		a.parameter_value AS "parameterValue",
+		p.id AS p_id,
+		p.`name` AS p_name,
+		p.parameter_group_id,
+		pp.`name` AS pp_name
+		FROM 
+			product_parameter_ref a RIGHT JOIN product_parameter p ON a.parameter_id=p.id RIGHT JOIN parameter_group pp ON p.parameter_group_id=pp.id
+		<include refid="productParameterRefJoins" />
+		WHERE 
+			a.product_id = #{productId}
+	</select>
+	
+	<resultMap type="com.uib.product.entity.ProductParameter" id="ParameterResultMap">
+		<id property="id" column="p_id"/>
+		<result property="name" column="p_name"/>
+		<result property="parameterGroup.id" column="parameter_group_id"/>
+		<result property="parameterGroup.name" column="pp_name"/>
+	</resultMap>
+	
+	<resultMap type="com.uib.product.entity.ProductParameterRef" id="productParameterRefMap">
+		<id property="id" column="id"/>
+		<result property="parameterId" column="parameterId"/>
+		<result property="productId" column="productId"/>
+		<result property="parameterValue" column="parameterValue"/>
+		<association property="productParameter" javaType="com.uib.product.entity.ProductParameter" resultMap="ParameterResultMap"/>
+	</resultMap>
+
+</mapper>

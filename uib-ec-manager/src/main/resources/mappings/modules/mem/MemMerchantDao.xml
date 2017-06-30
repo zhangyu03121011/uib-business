@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.mem.dao.MemMerchantDao">
+    
+	<sql id="memMerchantColumns">
+		a.id AS "id",
+		a.merchant_no AS "merchantNo",
+		a.merchant_name AS "merchantName",
+		a.register_date AS "registerDate",
+		a.effective_date AS "effectiveDate",
+		a.template_num AS "templateNum",
+		a.merchant_page AS "merchantPage",
+		a.contact_name AS "contactName",
+		a.email AS "email",
+		a.phone AS "phone",
+		a.member_id AS "memberId",
+		a.ext1 AS "ext1",
+		a.ext2 AS "ext2",
+		a.ext3 AS "ext3",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memMerchantJoins">
+	</sql>
+    
+	<select id="get" resultType="MemMerchant">
+		SELECT 
+			<include refid="memMerchantColumns"/>
+		FROM mem_merchant a
+		<include refid="memMerchantJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MemMerchant">
+		SELECT 
+			a.*
+		FROM mem_merchant a
+		<!-- 过滤admin -->
+		<if test="sqlMap.userId!=null and sqlMap.userId!=''">
+			JOIN user_merchant_map umm on a.merchant_no = umm.mer_Code
+		</if>
+		<where>
+			a.del_flag = 0
+			<if test="sqlMap.userId!=null and sqlMap.userId!=''">
+				AND umm.user_Id = #{sqlMap.userId}
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if test="merchantName != null and merchantName != ''">
+				AND a.merchant_name = #{merchantName}
+			</if>
+			<if test="registerDate != null and registerDate != ''">
+				AND a.register_date = #{registerDate}
+			</if>
+			<if test="effectiveDate != null and effectiveDate != ''">
+				AND a.effective_date = #{effectiveDate}
+			</if>
+			<if test="templateNum != null and templateNum != ''">
+				AND a.template_num = #{templateNum}
+			</if>
+			<if test="merchantPage != null and merchantPage != ''">
+				AND a.merchant_page = #{merchantPage}
+			</if>
+			<if test="contactName != null and contactName != ''">
+				AND a.contact_name = #{contactName}
+			</if>
+			<if test="email != null and email != ''">
+				AND a.email = #{email}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemMerchant">
+		SELECT 
+			<include refid="memMerchantColumns"/>
+		FROM mem_merchant a
+		<include refid="memMerchantJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mem_merchant(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mem_merchant SET 	
+			merchant_no = #{merchantNo},
+			merchant_name = #{merchantName},
+			register_date = #{registerDate},
+			effective_date = #{effectiveDate},
+			merchant_page = #{merchantPage},
+			contact_name = #{contactName},
+			email = #{email},
+			phone = #{phone},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE mem_merchant SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

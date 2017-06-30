@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.SpecialProductRefDao">
+    
+	<sql id="specialProductRefColumns">
+		a.id AS "id",
+		a.special_id AS "specialId",
+		a.product_id AS "product.id",
+		p.name AS "product.name",
+		p.product_no AS "product.productNo",
+		p.market_price AS "product.marketPrice",
+		p.product_category_id AS "product.productCategoryID",
+		pc.name AS "product.productCategory.name",
+		pc.id AS "product.productCategory.id"
+	</sql>
+	
+	<sql id="specialProductRefJoins">
+	left join special b on b.id = a.special_id join product p on p.id = a.product_id 
+	join product_category pc on pc.id = p.product_category_id
+	</sql>
+    
+	<select id="get" resultType="SpecialProductRef">
+		SELECT 
+			<include refid="specialProductRefColumns"/>
+		FROM special_product_ref a
+		<include refid="specialProductRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SpecialProductRef">
+		SELECT 
+			<include refid="specialProductRefColumns"/>
+		FROM special_product_ref a
+		<include refid="specialProductRefJoins"/>
+		<where>
+			a.special_id = #{specialId}
+			<if test="product !=null and product.name != null and product.name != ''">
+				AND p.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{product.name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{product.name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{product.name},'%')</if>
+			</if>
+			<if test="product !=null and product.productNo != null and product.productNo != ''">
+				AND p.product_no = #{product.productNo}
+			</if>
+			<if test="product !=null and product.keyword != null and product.keyword != ''">
+				AND p.keyword = #{product.keyword}
+			</if>
+			<if test="product !=null and product.productCategoryId != null and product.productCategoryId != ''">
+			 AND  ( pc.id =#{product.productCategoryId}  OR  pc.parent_ids  LIKE  CONCAT('%,', #{product.productCategoryId}, ',%') )
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SpecialProductRef">
+		SELECT 
+			<include refid="specialProductRefColumns"/>
+		FROM special_product_ref a
+		<include refid="specialProductRefJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO special_product_ref(
+			id,
+			special_id,
+			product_id
+		) VALUES (
+			#{id},
+			#{specialId},
+			#{productId}
+		)
+	</insert>
+	
+	<insert id="insertSpecialProductRef" useGeneratedKeys="true" parameterType="java.util.List">   
+        insert into special_product_ref (id,special_id,product_id)   
+        values  
+         <foreach collection="list" item="item" index="index" 
+            separator=","> (#{item.id},#{item.specialId},#{item.productId})
+        </foreach>  
+    </insert>  
+	
+	<update id="update">
+		UPDATE special_product_ref SET 	
+			special_id = #{specialId},
+			product_id = #{productId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteRef">
+		DELETE FROM special_product_ref
+		WHERE special_id = #{specialId}
+	</update>
+
+	<update id="delete">
+		DELETE FROM special_product_ref
+		WHERE id = #{id}
+	</update>
+	
+	<delete id = "batchDelete" parameterType = "java.lang.String">  
+         DELETE FROM special_product_ref WHERE product_id in  
+        <foreach item="productId" collection = "array" open="(" separator="," close=")">
+       			 #{productId}  
+        </foreach>  
+    </delete>  
+</mapper>

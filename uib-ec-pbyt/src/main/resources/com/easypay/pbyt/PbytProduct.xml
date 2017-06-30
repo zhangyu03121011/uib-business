@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.PbytProductDao">
+    
+	<sql id="productCategoryColumns">
+		a.id AS "id",
+		a.category_no AS "categoryNo",
+		a.orders AS "orders",
+		a.grade AS "grade",
+		a.name AS "name",
+		a.seo_description AS "seoDescription",
+		a.seo_keywords AS "seoKeywords",
+		a.seo_title AS "seoTitle",
+		a.image_path AS imagePath,
+		a.merchant_no AS "merchantNo",
+		a.parent_id AS "parentId",
+		a.create_by AS "createBy",
+		a.parent_ids AS "parentIds",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="productCategoryJoins">
+	</sql>
+    
+	<resultMap type="com.uib.mobile.dto.Category4Mobile" id="category4Mobile">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="imagePath" property="imagePath"/>
+		<result column="parentId" property="parentId"/>
+		<collection property="subCategorys" ofType="com.uib.mobile.dto.Category4Mobile" javaType="ArrayList">
+			<id column="pId" property="id"/>
+			<result column="pName" property="name"/>
+			<result column="pImagePath" property="imagePath"/>
+			<result column="pParentId" property="parentId"/>
+		</collection>
+	</resultMap>
+	
+	<select id="findProductList"  resultType="Map"  parameterType="Map">
+		SELECT 
+		p.id,
+		p.original_name fullName,
+		CONCAT(#{imageUrl},p.image) as image,
+		p.market_price marketPrice,
+		p.stock - p.allocated_stock AS stock,
+		p.product_category_id AS typeId,
+		pr.sell_price
+		FROM product p  
+		LEFT JOIN product_category pc 
+		ON p.product_category_id = pc.id
+		LEFT JOIN product_price_ref pr
+		on p.id = pr.product_id
+		<where>
+		   p.wx_is_marketable=1 and	p.del_flag='0'
+			 <if test="productCategoryName !=null and productCategoryName!=''">
+		 		<choose>
+			 		<when test="productCategoryName.indexOf('%') != 0">
+			 			AND p.original_name LIKE CONCAT('%',#{productCategoryName},'%') ESCAPE  '/'
+			 		</when>
+			 		<otherwise>
+			 			AND p.original_name LIKE CONCAT('%',#{productCategoryName},'%')
+			 		</otherwise>
+			 	</choose>
+			 </if>
+			 <if test="productCategoryId !=null and productCategoryId !=''">
+			 	 	and p.product_category_id =#{productCategoryId}
+			 </if>
+			  <if test="rankId !=null and rankId !=''">
+			 	 	and pr.rank_id =#{rankId}
+			 </if>			 
+		</where>
+		GROUP BY p.original_name
+		ORDER BY p.create_date DESC	
+		<if test="pageIndex !=null  and pageSize !=null ">
+		  LIMIT #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findProductList1"  resultType="Map"  parameterType="Map">
+		SELECT
+	pro.*
+FROM
+	(
+		SELECT
+			p.id,
+			p.create_date,
+			p.original_name fullName,
+			CONCAT(#{imageUrl},p.image) as image,
+			p.market_price marketPrice,
+			p.stock - p.allocated_stock AS stock,
+			p.product_category_id AS typeId,
+			pr.sell_price,
+			pr.rank_id
+		FROM
+			product p
+		LEFT JOIN product_category pc ON p.product_category_id = pc.id
+		LEFT JOIN product_price_ref pr ON p.id = pr.product_id
+		WHERE
+			p.wx_is_marketable = 1
+		AND p.del_flag = '0'
+		AND pr.rank_id = #{rankId}
+		 <if test="productCategoryName !=null and productCategoryName!=''">
+		 		<choose>
+			 		<when test="productCategoryName.indexOf('%') != 0">
+			 			AND p.original_name LIKE CONCAT('%',#{productCategoryName},'%') ESCAPE  '/'
+			 		</when>
+			 		<otherwise>
+			 			AND p.original_name LIKE CONCAT('%',#{productCategoryName},'%')
+			 		</otherwise>
+			 	</choose>
+		</if>
+		<if test="productCategoryId !=null and productCategoryId !=''">
+			 and p.product_category_id =#{productCategoryId}
+		 </if>
+		GROUP BY
+			p.original_name
+		ORDER BY
+			p.create_date DESC
+	) pro
+WHERE
+	pro.id NOT IN (
+		SELECT
+			ps.product_id
+		FROM
+			t_product_store ps
+		WHERE
+			ps.store_id = #{storeId}
+	)
+	<if test="pageIndex !=null  and pageSize !=null ">
+		  LIMIT #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findProductCategoryList" resultType="Map"  parameterType="Map">
+		select id,name from product_category pc where pc.grade = #{grade} and  pc.del_flag='0'
+		order BY pc.orders asc
+	</select>
+	
+	<insert id="addStoreProduct" parameterType="string">
+		INSERT INTO t_product_store
+			(
+			  id,
+			  product_id,
+			  store_id,
+			  create_time
+			)
+		values
+		 <foreach collection="productIds" item="item" index="index" separator="," > 
+		(
+			 #{id},
+			 #{item},
+			 #{storeId},
+			 #{createTime}
+		)
+		 </foreach>
+	</insert>
+	<select id="queryStoreByUserId" parameterType="Map" resultType="Map" >
+	  SELECT m.merchant_no as merchantNo,
+	         t.store_id as storeid
+	   from mem_merchant  m
+ 	   LEFT JOIN t_store_merchant_ref  t on m.merchant_no=t.merchant_no
+	   where member_id=#{memberId}
+	</select>
+	
+	<select id="queryProductAdress" parameterType="Map" resultType="Map">
+	  SELECT r.product_id AS productId,
+	  r.area_id AS areaId
+	   from product_area_ref r
+	   where r.area_id=#{areaId}
+	   and r.product_id=#{productId}
+	</select>
+</mapper>

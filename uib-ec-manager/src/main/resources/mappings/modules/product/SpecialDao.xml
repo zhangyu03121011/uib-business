@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.SpecialDao">
+    
+	<sql id="specialColumns">
+		a.id AS "id",
+		a.special_title AS "specialTitle",
+		a.special_article AS "specialArticle",
+		a.show_image AS "showImage",
+		a.sort AS "sort",
+		a.create_date AS "createDate",
+		a.begin_date AS "beginDate",
+		a.end_date AS "endDate",
+		a.update_date AS "updateDate",
+		a.update_flag AS "updateFlag"
+	</sql>
+	
+	<sql id="specialJoins">
+	LEFT JOIN special_product_ref b on a.id = b.special_id
+	</sql>
+    
+	<select id="get" resultType="Special">
+		SELECT 
+			<include refid="specialColumns"/>
+		FROM special a
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Special">
+		SELECT 
+			<include refid="specialColumns"/>,if(isnull(b.id),0,count(b.id))  as productCount 
+		FROM special a
+		<include refid="specialJoins"/>
+		<where>
+			<if test="after1BeginDate != null and after1BeginDate != '' and before1EndDate != null and before1EndDate != ''">
+				a.begin_date BETWEEN #{after1BeginDate} AND #{before1EndDate}
+			</if>
+			<if test="after2BeginDate != null and after2BeginDate != '' and before2EndDate != null and before2EndDate != ''">
+			AND a.end_date BETWEEN #{after2BeginDate} AND #{before2EndDate}
+			</if>
+			<if test="specialTitle != null and specialTitle != ''">
+				AND a.special_title LIKE
+				<if test="dbName == 'oracle'">'%'||#{specialTitle}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{specialTitle}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{specialTitle},'%')</if>
+			</if>
+		</where>
+		GROUP BY a.sort asc 
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getbysort" resultType="Integer">
+		SELECT 
+			COUNT(sort)
+		FROM special a
+		WHERE a.sort = #{sort}
+	</select>
+	
+	<select id="findAllList" resultType="Special">
+		SELECT 
+			<include refid="specialColumns"/>
+		FROM special a
+		<include refid="specialJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO special(
+			id,
+			special_title,
+			special_article,
+			show_image,
+			sort,
+			create_date,
+			begin_date,
+			end_date
+		) VALUES (
+			#{id},
+			#{specialTitle},
+			#{specialArticle},
+			#{showImage},
+			#{sort},
+			#{createDate},
+			#{beginDate},
+			#{endDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE special SET 	
+			special_title = #{specialTitle},
+			special_article = #{specialArticle},
+			show_image = #{showImage},
+			sort = #{sort},
+			begin_date = #{beginDate},
+			end_date = #{endDate},
+			update_date = #{updateDate},
+			update_flag = #{updateFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateFlag">
+		UPDATE special SET
+			update_flag = 1
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM special
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

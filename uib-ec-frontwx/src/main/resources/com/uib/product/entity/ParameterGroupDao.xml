@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.product.entity.ParameterGroup">
+
+	<sql id="parameterGroupColumns">
+		a.id AS "id",
+		a.group_no AS "groupNo",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.product_category_no AS "productCategoryNo",
+		a.merchant_no AS "merchantNo",
+		a.product_category_id AS
+		"productCategoryId",
+		a.create_by AS "createBy.id",
+		a.create_date AS
+		"createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS
+		"updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="parameterGroupJoins">
+	</sql>
+
+	<select id="get" resultType="ParameterGroup">
+		SELECT
+		<include refid="parameterGroupColumns" />
+		FROM parameter_group a
+		<include refid="parameterGroupJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ParameterGroup">
+		SELECT
+		<include refid="parameterGroupColumns" />
+		FROM parameter_group a
+		<include refid="parameterGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="groupNo != null and groupNo != ''">
+				AND a.group_no = #{groupNo}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="productCategoryNo != null and productCategoryNo != ''">
+				AND a.product_category_no = #{productCategoryNo}
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+				AND a.product_category_id = #{productCategoryId}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ParameterGroup">
+		SELECT
+		<include refid="parameterGroupColumns" />
+		FROM parameter_group a
+		<include refid="parameterGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryParameterGroupsByCategoryId" parameterType="map"
+		resultMap="parameterGroupResultMap">
+		SELECT a.id AS "id", a.orders AS "orders",
+			a.name AS "name", a.merchant_no AS	"merchantNo", 
+			a.product_category_id AS "productCategoryId", 
+			a.remarks AS "remarks",
+			p.id AS "pid",p.orders AS "porders",
+			p.`name` AS "pname",p.merchant_no AS "pmerchantNo",
+			p.remarks AS "premarks"
+		FROM 
+			parameter_group AS a LEFT JOIN product_parameter AS p ON a.id=p.parameter_group_id 
+		<where>
+			a.del_flag = '0'
+			<if test="categoryId!=null and categoryId!=''">
+				AND a.product_category_id=#{categoryId}
+			</if>
+		</where>
+		ORDER BY a.id DESC;
+	</select>
+	<resultMap type="com.uib.product.entity.ParameterGroup"
+		id="parameterGroupResultMap">
+		<id property="id" column="id" />
+		<result property="orders" column="orders" />
+		<result property="name" column="name" />
+		<result property="productCategoryId" column="productCategoryId" />
+		<result property="merchantNo" column="merchantNo" />
+		<result property="remarks" column="remarks" />
+		<collection property="productParameterList"
+			ofType="com.uib.product.entity.ProductParameter" javaType="ArrayList">
+			<id property="id" column="pid"/>
+			<result property="name" column="pname"/>
+			<result property="orders" column="porders"/>
+			<result property="merchantNo" column="pmerchantNo"/>
+			<result property="remarks" column="premarks"/>
+		</collection>
+
+	</resultMap>
+</mapper>

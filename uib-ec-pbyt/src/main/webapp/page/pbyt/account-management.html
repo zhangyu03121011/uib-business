@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title></title>
+</head>
+<body class="main-bg">
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.back(1)"></a>
+    <div class="title">账户管理</div>
+  </div>
+</header>
+<section class="app-body no-menu">
+	<div class="account-title">当前登录账号</div>
+	<ul class="allowance-details">
+		<li>
+			<div class="head-portrait"><img src="" id="image"/></div>
+			<div class="information">
+				<p class="name" id="name"></p>
+				<p class="date" id="rankName"></p>
+			</div>
+		</li>
+	</ul>
+	<div class="account-phone"><span id="phone"></span>绑定手机号码</div>
+</section>
+<button class="new-address-btn" id="change_phone">更换手机号</button>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/account-management.js"></script>
+</body>
+</html>

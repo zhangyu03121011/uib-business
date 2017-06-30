@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <title>首页</title>
+
+
+</head>
+<body class="add-zhuanti-page zhuanti-manage-piliang"> 
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+    <div class="title">全部专题</div>
+    <!-- <div class="right-text">完成</div> -->
+  </div>
+</header>
+<section class="app-body">
+  <ul class="list-container">
+    <div class="list-header">请选择您要代理的专题</div>
+     <input id="menu-index" type="hidden" value="0"/>
+     <input id="all-product-page" type="hidden" value="1"/>
+     <div id="all-product-ul"></div>
+   <!--  <li class="item">
+      <div class="select-label app-checkbox">
+        <input type="checkbox" name="" id="item_ID001" >
+        <label for="item_ID001" class="iconfont"></label>
+      </div>
+      <div class="pic"><img src="/images/big_product01.png"></div>
+      <div class="title display-flex">
+        <div class="text flex-1">七月霸屏清单</div>
+        <div class="more">MORE>></div>
+
+      </div>
+      <p class="content">有口皆碑毫无合集 剁手也要囤个够</p>
+    </li> -->
+   <!--  <li class="item">
+      <div class="select-label app-checkbox">
+        <input type="checkbox" name="" id="item_ID002">
+        <label for="item_ID002" class="iconfont"></label>
+      </div>
+      <div class="pic"><img src="/images/big_product01.png"></div>
+      <div class="title display-flex">
+        <div class="text flex-1">七月霸屏清单</div>
+        <div class="more">MORE>></div>
+
+      </div>
+      <p class="content">有口皆碑毫无合集 剁手也要囤个够</p>
+    </li> -->
+  </ul>
+  
+
+</section>
+<section class="bottom-control">
+  <div class="app-checkbox">
+    <input type="checkbox" name="" id="select-all-btn">
+    <label for="select-all-btn" class="iconfont"></label>
+    <span>全选</span>
+  </div>
+  
+    <button class="del-product-btn" onclick="deleteprod()">删除商品</button>
+ 
+</section>
+
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+
+<!-- <script type="text/javascript">
+  $(function(){
+    var $allBtn= $('#select-all-btn');
+    $allBtn.on('change',function(){
+      if($allBtn.prop('checked')){
+        $('.item input').prop('checked',true);
+      }else{
+        $('.item input').prop('checked',false);
+      }
+    })
+  })
+</script>
+ -->
+
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src='js/zhuantiDelete.js'></script>
+</html>

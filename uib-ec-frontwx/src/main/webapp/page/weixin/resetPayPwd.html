@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>修改支付密码</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="change-password">
+	<!-- 原密码 -->
+    <div class="sn-block">
+    <div class="input-a wbox bt">
+        <span class="label">原&nbsp;密&nbsp;&nbsp;码</span>
+        <div class="wbox-flex ml60">
+        <input class="input-none" name="" placeholder="请输入原密码" type="password" id="oldPwd">
+        </div>
+      </div>
+    </div>
+    <!-- 新密码 -->
+  <div class="sn-block">
+    <div class="input-a wbox bt">
+        <span class="label">修改密码</span>
+        <div class="wbox-flex ml60">
+        <input class="input-none" name="" placeholder="请设置6~16位密码" type="password" id="password">
+        </div>
+    </div>
+  </div>
+   	<!-- 重复密码 -->
+    <div class="sn-block">
+    <div class="input-a wbox bt">
+        <span class="label">重复密码</span>
+        <div class="wbox-flex ml60">
+        <input class="input-none" name="" placeholder="请再次输入密码" type="password" id="checkPassword"/>
+        </div>
+      </div>
+    </div>
+    <div class="forget-link"><a href="forget-payPassword.html">忘记支付密码？</a></div>
+    <!-- 按钮 -->
+    <div class="mt2">
+    <a class="add-btn red-btn" href="javaScript:void(0)" id="submit">确定</a>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/des/des.js"></script>
+<script type="text/javascript" src="js/ticket.js"></script>
+<script type="text/javascript" src="js/ticketctl.js"></script>
+<script type="text/javascript" src="js/resetPayPwd.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>编辑店铺商品</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/popover.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+            <div class="title">热销商品</div>
+            <div class="right-text" id="complete"><a href="#">完成</a></div>
+        </div>
+    </header>
+    <!-- 购物车列表开始  -->
+    <div class="body-content two-menu" id="productData">
+        
+    </div>
+    <li class='scrimg' style="display:none;"><p class='load_tip' align='center'>正在努力加载数据...</p></li>
+    <!-- 购物车列表结束 -->
+    <!-- 购物结算开始 -->
+    <div class="account submit-order">
+        <div class="flex-row">
+            <div class="flex-item">
+                <div class="app-checkbox">
+                    <input type="checkbox" name="checkAll" id='set-default-all'>
+                    <label class="iconfont" for="set-default-all"></label>
+                    <span>全选</span>
+                </div>
+            </div>
+            <div>
+                <a href="#" id="del" class="calc">删除商品</a>
+            </div>
+        </div>
+    </div>
+    <!-- 购物结算结束 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/uib.js"></script>
+    <script>
+    uib.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    </script>
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="js/alert.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	 <script src="./js/products-batch.js"></script>
+</body>
+
+</html>

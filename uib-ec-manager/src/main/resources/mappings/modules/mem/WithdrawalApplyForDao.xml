@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.mem.dao.WithdrawalApplyForDao">
+    
+	<sql id="withdrawalApplyForColumns">
+		a.id AS "id",
+		a.apply_username AS "applyUsername",
+		a.apply_phone AS "applyPhone",
+		a.card_person_name AS "cardPersonName",
+		a.card_no AS "cardNo",
+		a.apply_amount AS "applyAmount",
+		a.apply_status AS "applyStatus",
+		a.apply_date AS "applyDate",
+		a.bank_name AS "bankName",
+		a.branch_bank_name AS "branchBankName",
+		a.province_city AS "provinceCity",
+		a.bank_trade_no AS "bankTradeNo",
+		a.dispose_date AS "disposeDate",
+		a.remark AS "remark",
+		a.operator AS "operator",
+		a.member_id AS "memberId",
+		a.is_default AS "isDefault",
+		a.flag AS "flag"
+	</sql>
+	
+	<sql id="withdrawalApplyForJoins">
+	</sql>
+    
+	<select id="get" resultType="WithdrawalApplyFor">
+		SELECT 
+			<include refid="withdrawalApplyForColumns"/>
+		FROM withdrawal_apply_for a
+		<include refid="withdrawalApplyForJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WithdrawalApplyFor">
+		SELECT 
+			<include refid="withdrawalApplyForColumns"/>
+		FROM withdrawal_apply_for a
+		<include refid="withdrawalApplyForJoins"/>
+		<where>
+		    <if test="memberId != null and memberId != ''">
+				AND a.member_id = #{memberId} 
+			</if>
+			<if test="isDefault != null and isDefault != ''">
+				AND a.is_default = #{isDefault} 
+			</if>
+			<if test="applyUsername != null and applyUsername != ''">
+				AND a.apply_username LIKE 
+				<if test="dbName == 'oracle'">'%'||#{applyUsername}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{applyUsername}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{applyUsername},'%')</if>
+			</if>			
+			<if test="applyPhone != null and applyPhone != ''">
+				AND a.apply_phone = #{applyPhone}
+			</if>
+			<if test="applyStatus != null and applyStatus != ''">
+				AND a.apply_status = #{applyStatus}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				AND a.apply_date &gt;= #{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND a.apply_date &lt;= #{endDate}
+			</if>
+			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				AND a.apply_date &gt;= #{startDate} AND a.apply_date &lt;= #{endDate}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = ${flag}
+			</if>
+		</where> ORDER BY a.apply_date DESC
+		<!-- <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose> -->
+	</select>
+	
+	<select id="findListItem" resultType="WithdrawalApplyFor">
+		SELECT 
+			<include refid="withdrawalApplyForColumns"/>
+		FROM withdrawal_apply_for a
+		<include refid="withdrawalApplyForJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO withdrawal_apply_for(
+			id,
+			apply_username,
+			apply_phone,
+			card_person_name,
+			card_no,
+			apply_amount,
+			apply_status,
+			apply_date,
+			bank_name,
+			branch_bank_name,
+			province_city,
+			bank_trade_no,
+			dispose_date,
+			remark,
+			operator
+		) VALUES (
+			#{id},
+			#{applyUsername},
+			#{applyPhone},
+			#{cardPersonName},
+			#{cardNo},
+			#{applyAmount},
+			#{applyStatus},
+			#{applyDate},
+			#{bankName},
+			#{branchBankName},
+			#{provinceCity},
+			#{bankTradeNo},
+			#{disposeDate},
+			#{remark},
+			#{operator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE withdrawal_apply_for SET 	
+			apply_username = #{applyUsername},
+			apply_phone = #{applyPhone},
+			card_person_name = #{cardPersonName},
+			card_no = #{cardNo},
+			apply_amount = #{applyAmount},
+			apply_status = #{applyStatus},
+			apply_date = #{applyDate},
+			bank_name = #{bankName},
+			branch_bank_name = #{branchBankName},
+			province_city = #{provinceCity},
+			bank_trade_no = #{bankTradeNo},
+			dispose_date = #{disposeDate},
+			remark = #{remark},
+			operator = #{operator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM withdrawal_apply_for
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

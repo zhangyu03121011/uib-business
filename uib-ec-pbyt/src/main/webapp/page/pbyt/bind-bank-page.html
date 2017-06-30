@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" type="text/css" href="css/frozen.css">
+<link rel="stylesheet" type="text/css" href="js/lib/mobile-select-area.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <title>填写存储卡信息</title>
+
+
+</head>
+<body class="address-edit-page">
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.back(1)"></a>
+    <div class="title">填写存储卡信息</div>
+    <!--<div class="right-text">保存</div>-->
+  </div>
+</header>
+<section class="app-body no-menu ">
+  <div class="ui-form form-content">
+      <form id="bindBankForm" name="bindBankForm">
+        <!-- 表单中的隐藏域 -->
+        <input type="hidden" id="isDefault" name="isDefault"/>
+        <input type="hidden" id="flag" name="flag"/>
+        <div class="ui-form-item">
+            <label for="#">持卡人姓名</label>
+            <input type="text" value="" id="cardPersonName" name="cardPersonName" placeholder="请输入持卡人的姓名">
+        </div>
+        <div class="ui-form-item select-toggle">
+            <label for="#">所属银行</label>
+            <span id="bankName" id="bankName" ></span>
+            <input type="hidden" name="bankName" id="bankName1"/> 
+            <i class="arrow-right iconfont icon-icon103-copy"></i>
+        </div>
+        <div class="ui-form-item ">
+            <label for="#">银行卡号</label>
+            <input type="text" value="" id="cardNo" name="cardNo" placeholder="请输入您的银行卡号">
+        </div>
+       <div class="ui-form-item ">
+            <label for="#">手机号</label>
+            <input type="text" value="" id="applyPhone" name="applyPhone" placeholder="请输入您的手机号">
+        </div>
+
+        <div class="ui-form-item select-item">
+            <label for="#">所属省市</label>
+            <span class="un-change data-input" id="provinceCity" >请选择所在的省市</span>
+            <input type="hidden" name="provinceCity" id="provinceCity1"/>
+            <i class="arrow-right iconfont icon-icon103-copy"></i>
+            <input  type="hidden" id="districtName2" value="广东 深圳" data-value="12,124,3269">
+        </div>
+        
+        <div class="ui-form-item">
+            <label for="#">分行</label>
+            <input type="text" value="" name="branchBankName" id="branchBankName" placeholder="请输入办卡分行">
+        </div>
+
+    </form>
+</div>
+
+<section class='select-part'>
+    <div class="select-title cl">
+        <!-- <button class="ok-btn">确定</button> -->
+    </div>
+    <ul class="select-list" id="select_list">
+        <li class=''>中国工商银行</li>
+        <li class=''>招商银行</li> 
+        <li class=''>中国农业银行</li>
+        <li class=''>中国建设银行</li>
+        <li class=''>中国银行</li>
+        <li class=''>中国民生银行</li>
+        <li class=''>中国光大银行</li>
+        <li class=''>中信银行 </li>
+        <li class=''>交通银行</li>
+        <li class=''>兴业银行</li>
+        <li class=''>中国人民银行</li>
+        <li class=''>华夏银行</li>
+        <li class=''>中国邮政储蓄银行</li>
+        <li class=''>平安银行</li>
+    </ul>
+</section>
+
+<div>
+    <button class="new-address-btn" onclick="submit();">下一步</button>
+</div>
+
+</section>
+
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src='js/lib/mobile-select-area.js'></script>
+<script type="text/javascript" src="js/lib/dialog.js"></script>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/bind-bank-page.js"></script>
+<script type="text/javascript"></script>
+</html>

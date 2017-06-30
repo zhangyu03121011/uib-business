@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uib.union.payment.pojo.PaymentOrder">
+	
+	
+	
+	<resultMap type="paymentOrder" id="paymentOrderMap">
+		<result property="id" column="ID"  />
+		<result property="bankId" column="BANK_ID" />
+		<result property="paymentNo" column="PAYMENT_NO" />
+		<result property="merchantCode" column="MERCHANT_CODE" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="orderAmt" column="ORDER_AMT" />
+		<result property="goodsName" column="GOODS_NAME" />
+		<result property="goodsDesc" column="GOODS_DESC" />
+		<result property="mailUserName" column="MAIL_USER_NAME" />
+		<result property="curType" column="CUR_TYPE" />
+		<result property="bankCode" column="BANK_CODE" />
+		<result property="returnUrl" column="RETURN_URL" />
+		<result property="notifyUrl" column="NOTIFY_URL" />
+		<result property="remark" column="REMARK" />
+		<result property="tranStat" column="TRAN_STAT" />
+		<result property="tranDate" column="Tran_Date" />
+		<result property="payMethod" column="PAY_METHOD" />	
+		<result property="threePaymentNo" column="THREE_PAYMENT_NO" />
+		<result property="queryId" column="QUERY_ID" />
+		
+	</resultMap>
+	
+	<sql id="PaymentOrder_Column_List">
+	  ID, PAYMENT_NO,MERCHANT_CODE,ORDER_NO,ORDER_AMT,GOODS_NAME,GOODS_DESC,MAIL_USER_NAME,CUR_TYPE,BANK_ID,RETURN_URL,NOTIFY_URL,REMARK,TRAN_STAT,Tran_Date,PAY_METHOD,THREE_PAYMENT_NO,QUERY_ID
+	</sql>
+
+	<select id="getPaymentOrderByPaymentNo" parameterType="String" resultMap="paymentOrderMap" >
+	    SELECT <include refid="PaymentOrder_Column_List"/> 
+	    FROM PAYMENT_ORDER porder WHERE porder.PAYMENT_NO = #{paymentNo} 
+	</select>
+	
+	<select id="getPaymentOrderByOrderNo" parameterType="map" resultMap="paymentOrderMap" >
+	    SELECT <include refid="PaymentOrder_Column_List"/> 
+	    FROM PAYMENT_ORDER porder WHERE  porder.ORDER_NO = #{orderNo}  and porder.MERCHANT_CODE = #{merchantCode}
+	</select>
+	
+	<update id="updatePaymentOrder" parameterType="map">
+	    UPDATE PAYMENT_ORDER pay 
+	    <set>
+	        <if test="threePaymentNo != null and threePaymentNo != ''">
+	            pay.THREE_PAYMENT_NO = #{threePaymentNo, jdbcType=VARCHAR}, 
+	        </if>
+	        
+	        <if test="tranStat != null and tranStat != ''">
+	            pay.TRAN_STAT = #{tranStat, jdbcType=VARCHAR},
+	        </if>
+	        <if test="tranDate != null and tranDate != ''">
+	            pay.TRAN_DATE = #{tranDate},
+	        </if>
+	        <if test="queryId != null and queryId != ''">
+	            pay.QUERY_ID = #{queryId},
+	        </if>
+	    </set>
+	    where pay.PAYMENT_NO = #{paymentNo}
+	</update>
+	
+	<insert id="savePaymentOrder" parameterType="paymentOrder"
+		statementType="CALLABLE">
+		<![CDATA[
+		INSERT INTO PAYMENT_ORDER
+		  (
+          PAYMENT_NO,
+          MERCHANT_CODE,
+          ORDER_NO,
+          ORDER_AMT,
+          GOODS_NAME,
+          GOODS_DESC,
+          MAIL_USER_NAME,
+          CUR_TYPE,
+          BANK_ID,
+          RETURN_URL,
+          NOTIFY_URL,
+          REMARK,
+          TRAN_STAT,
+          Tran_Date,
+          PAY_METHOD,
+          THREE_PAYMENT_NO)
+		VALUES(#{paymentNo,jdbcType=VARCHAR},
+		#{merchantCode,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},
+		#{orderAmt,jdbcType=NUMERIC},#{goodsName,jdbcType=VARCHAR},
+		#{goodsDesc,jdbcType=VARCHAR},#{mailUserName,jdbcType=VARCHAR},
+		#{curType,jdbcType=VARCHAR},#{bankId,jdbcType=VARCHAR},
+		#{returnUrl,jdbcType=VARCHAR},#{notifyUrl,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},#{tranStat,jdbcType=VARCHAR},#{tranDate,jdbcType=TIMESTAMP},
+		#{payMethod,jdbcType=VARCHAR},#{threePaymentNo,jdbcType=VARCHAR})
+		 ]]>
+	</insert>
+	
+</mapper>

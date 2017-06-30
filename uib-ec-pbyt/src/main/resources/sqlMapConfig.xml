@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 
+	    plugins在配置文件中的位置必须符合要求，否则会报错，顺序如下:
+	    properties?, settings?, 
+	    typeAliases?, typeHandlers?, 
+	    objectFactory?,objectWrapperFactory?, 
+	    plugins?, 
+	    environments?, databaseIdProvider?, mappers?
+	-->
+	
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		
+	</settings>
+	
+	
+	
+	
+	<!-- 类型别名 -->
+	<typeAliases>
+		<typeAlias alias="memMember" type="com.uib.member.entity.MemMember" />
+		<typeAlias alias="memMerchant" type="com.uib.member.entity.MemMerchant" />
+		<typeAlias alias="Commission" type="com.uib.mobile.dto.Commission" />
+		
+		<!--<typeAlias alias="memRank" type="com.uib.member.entity.MemRank" />  -->
+		<typeAlias alias="orderTable" type="com.uib.order.entity.OrderTable" />
+		<typeAlias alias="orderTableItem"  type="com.uib.order.entity.OrderTableItem"/>
+		
+		<typeAlias alias="ProductCategory" type="com.uib.product.entity.ProductCategory" />
+		<typeAlias alias="Advertisement" type="com.uib.ad.entity.Advertisement" />
+		<typeAlias alias="AdvertisementPosition" type="com.uib.ad.entity.AdvertisementPosition" />
+		
+		<typeAlias alias="deposit"  type="com.uib.member.entity.Deposit"/>
+		<typeAlias alias="Article" type="com.uib.cms.entity.Article" />
+		<typeAlias alias="ArticleData" type="com.uib.cms.entity.ArticleData" />
+		
+		<typeAlias alias="Navigation" type="com.uib.navigation.entity.Navigation" />
+		<typeAlias alias="Product" type="com.uib.product.entity.Product"/>
+		<typeAlias alias="Brand" type="com.uib.product.entity.Brand"/>
+		<typeAlias alias="SpecificationGroup" type="com.uib.product.entity.SpecificationGroup"/>
+		<typeAlias alias="PropertyGroup" type="com.uib.product.entity.PropertyGroup"/>
+		<typeAlias type="com.uib.product.entity.ParameterGroup" alias="ParameterGroup"/>
+		<typeAlias alias="MemReceiver" type="com.uib.member.entity.MemReceiver" />
+		<typeAlias type="com.uib.product.entity.ProductImageRef" alias="ProductImageRef"/>
+		<typeAlias type="com.uib.product.entity.ProductSpecification" alias="ProductSpecification"/>
+		<typeAlias type="com.uib.product.entity.ProductParameterRef" alias="ProductParameterRef"/>
+		<typeAlias type="com.uib.product.entity.ProductComment" alias="ProductComment"/>
+		<typeAlias type="com.uib.product.entity.ProductCommentImg" alias="productCommentImg"/>
+		
+		<typeAlias type="com.uib.cart.entity.Cart" alias="Cart"/>
+		<typeAlias type="com.uib.cart.entity.CartItem" alias="CartItem"/>
+		<typeAlias type="com.uib.order.entity.ShippingMethod" alias="ShippingMethod"/>
+		<typeAlias type="com.uib.order.entity.PaymentMethod" alias="PaymentMethod"/>
+		<typeAlias type="com.uib.order.entity.DeliveryCorporation" alias="DeliveryCorporation"/>
+		<typeAlias type="com.uib.order.entity.OrderTableShipping" alias="OrderTableShipping"/>
+		<typeAlias type="com.uib.order.entity.OrderTableShippingItem" alias="OrderTableShippingItem"/>
+		<typeAlias type="com.uib.order.entity.OrderShippingRef" alias="OrderShippingRef"/>
+		
+		<typeAlias alias="Coupon" type="com.uib.member.entity.Coupon" />
+		<typeAlias alias="CouponCode" type="com.uib.member.entity.CouponCode" />
+		<typeAlias alias="Area" type="com.uib.member.entity.Area" />
+		<typeAlias alias="memberLoginStatus" type="com.uib.member.entity.MemberLoginStatus" />
+		
+		<typeAlias alias="HotSearch" type="com.uib.cms.entity.HotSearch" />
+		<typeAlias alias="memberFavoriteProduct" type="com.uib.product.entity.MemberFavoriteProduct" />
+		<typeAlias alias="CompliainApplication" type="com.uib.mobile.dto.ComplaintApplicationDto" />
+		<typeAlias alias="UserComplaintAttrMap" type="com.uib.mobile.dto.UserComplaintAttrMap" />
+		<typeAlias alias="TbAttachment" type="com.uib.mobile.dto.TbAttachment" />
+		<typeAlias alias="OrderCommissionSettleLog" type="com.uib.order.entity.OrderCommissionSettleLog" />
+		
+		<!-- 微信dto -->
+		<typeAlias alias="CartInfo4Wechat" type="com.uib.weixin.dto.CartInfo4Wechat" />
+		<typeAlias alias="RecommProduct" type="com.uib.ptyt.entity.RecommProduct" />
+		
+	</typeAliases>
+	
+	<plugins>
+	    <!-- com.github.pagehelper为PageHelper类所在包名 -->
+	    <plugin interceptor="com.github.pagehelper.PageHelper">
+	        <property name="dialect" value="mysql"/>
+	        <!-- 该参数默认为false -->
+	        <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
+	        <!-- 和startPage中的pageNum效果一样-->
+	        <property name="offsetAsPageNum" value="true"/>
+	        <!-- 该参数默认为false -->
+	        <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+	        <property name="rowBoundsWithCount" value="true"/>
+	        <!-- 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 -->
+	        <!-- （相当于没有执行分页查询，但是返回结果仍然是Page类型）-->
+	        <property name="pageSizeZero" value="true"/>
+	        <!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 -->
+	        <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+	        <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
+	        <property name="reasonable" value="true"/>
+	        <!-- 3.5.0版本可用 - 为了支持startPage(Object params)方法 -->
+	        <!-- 增加了一个`params`参数来配置参数映射，用于从Map或ServletRequest中取值 -->
+	        <!-- 可以配置pageNum,pageSize,count,pageSizeZero,reasonable,不配置映射的用默认值 -->
+	        <property name="params" value="pageNum=start;pageSize=limit;pageSizeZero=zero;reasonable=heli;count=contsql"/>
+	    </plugin>
+    </plugins>
+    
+    <mappers>
+		<mapper resource="com/easypay/member/entity/MemMember.xml" />
+		<mapper resource="com/easypay/member/entity/MemMerchant.xml" />
+	    <!-- <mapper resource="com/easypay/member/entity/MemRank.xml" /> -->
+		
+		<mapper resource="com/easypay/product/entity/ProductCategory.xml" />
+		
+		<mapper resource="com/easypay/ad/Advertisement.xml" />
+		<mapper resource="com/easypay/ad/AdvertisementPosition.xml" />
+		<mapper resource="com/easypay/cms/entity/Article.xml" />
+		<mapper resource="com/easypay/cms/entity/ArticleData.xml" />
+		<mapper resource="com/easypay/member/entity/Deposit.xml"/>
+		
+		<mapper resource="com/easypay/navigation/entity/Navigation.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductServiceDao.xml" />
+		<mapper resource="com/easypay/product/entity/BrandDao.xml"/>
+		<mapper resource="com/easypay/product/entity/SpecificationGroupDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductParameterRefDao.xml"/>
+		<mapper resource="com/easypay/product/entity/PropertyGroupDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ParameterGroupDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductImageRefDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductSpecificationDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductCommentDao.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductCommentImgDao.xml"/>
+		<mapper resource="com/easypay/product/entity/MemberFavoriteProduct.xml"/>
+		
+		<mapper resource="com/easypay/cart/entity/CartDao.xml"/>
+		<mapper resource="com/easypay/cart/entity/CartItemDao.xml"/>
+		<mapper resource="com/easypay/cart/entity/CartItemInfoDao.xml"/>
+		<mapper resource="com/easypay/order/DeliveryCorporationDao.xml"/>
+		<mapper resource="com/easypay/order/PaymentMethodDao.xml"/>
+		<mapper resource="com/easypay/order/ShippingMethodDao.xml"/>
+		<mapper resource="com/easypay/order/OrderTableShippingDao.xml"/>
+		<mapper resource="com/easypay/order/OrderTableShippingItemDao.xml"/>
+		<mapper resource="com/easypay/order/OrderShippingRefDao.xml"/>
+		<mapper resource="com/easypay/order/OrderTable.xml"/>
+		<mapper resource="com/easypay/order/OrderTableItem.xml"/>
+		<mapper resource="com/easypay/order/BalancePayLogDao.xml"/>
+		<mapper resource="com/easypay/order/OrderCommissionSettleLogDao.xml"/>
+		
+		<mapper resource="com/easypay/member/entity/MemReceiver.xml"/>
+		<mapper resource="com/easypay/member/entity/CouponDao.xml"/>
+		<mapper resource="com/easypay/member/entity/CouponCodeDao.xml"/>
+		<mapper resource="com/easypay/member/entity/AreaDao.xml"/>
+		<mapper resource="com/easypay/member/entity/MemberLoginStatus.xml"/>
+		<mapper resource="com/easypay/mobile/entity/RecommendProductLogDao.xml"/>
+		<mapper resource="com/easypay/mobile/entity/Commission.xml"/>
+		<mapper resource="com/easypay/cms/entity/HotSearchDao.xml"/>
+		<mapper resource="com/easypay/mobile/entity/CommentDao.xml"/>
+		<mapper resource="com/easypay/mobile/entity/ComplainApplicationDao.xml"/>
+		<mapper resource="com/easypay/mobile/entity/TbAttrachmentDao.xml"/>
+		<mapper resource="com/easypay/mobile/entity/UserComplaintAttrMapDao.xml"/>
+
+		
+		<mapper resource="com/easypay/mobile/entity/Pay.xml"/>
+		<mapper resource="com/easypay/mobile/entity/CartPojo4Mobile.xml"/>
+		<mapper resource="com/easypay/product/entity/ProductPropertyDao.xml"/>
+		
+		<!-- 微信mapper -->
+		<mapper resource="com/easypay/weixin/entity/CartInfoDao.xml"/>
+		
+		<mapper resource="com/easypay/pbyt/StoreDao.xml"/>
+		<mapper resource="com/easypay/pbyt/MemRankDao.xml"/>
+		<mapper resource="com/easypay/pbyt/PbytProduct.xml"/>
+		<mapper resource="com/easypay/pbyt/SpecialDao.xml"/>
+		<mapper resource="com/easypay/pbyt/CommDetailDao.xml"/>
+		<mapper resource="com/easypay/pbyt/MemMemberDao.xml"/>
+		<mapper resource="com/easypay/pbyt/DrawalsRecordDao.xml"/>
+		<mapper resource="com/easypay/pbyt/RecommProductDao.xml" />
+		<mapper resource="com/easypay/pbyt/MemMerchantDao.xml"/>
+		<mapper resource="com/easypay/pbyt/OrderTableReturnsDao.xml"/>
+	</mappers>
+	
+	
+</configuration>

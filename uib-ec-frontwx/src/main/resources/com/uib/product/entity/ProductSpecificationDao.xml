@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.product.entity.ProductSpecification">
+
+	<sql id="productSpecificationColumns">
+		a.id AS "id",
+		a.specification_no AS "specificationNo",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.file_path AS "filePath",
+		a.specification_group_no AS "specificationGroupNo",
+		a.merchant_no AS
+		"merchantNo",
+		a.specification_group_id AS "SpecificationGroup.id",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks
+		AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="productSpecificationJoins">
+		LEFT JOIN specification_group b ON b.id =
+		a.specification_group_id
+	</sql>
+
+	<select id="get" resultType="ProductSpecification">
+		SELECT
+		<include refid="productSpecificationColumns" />
+		FROM product_specification a
+		<include refid="productSpecificationJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ProductSpecification">
+		SELECT
+		<include refid="productSpecificationColumns" />
+		FROM product_specification a
+		<include refid="productSpecificationJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if
+				test="SpecificationGroup != null and SpecificationGroup.id != null and SpecificationGroup.id != ''">
+				AND a.specification_group_id = #{SpecificationGroup.id}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ProductSpecification">
+		SELECT
+		<include refid="productSpecificationColumns" />
+		FROM product_specification a
+		<include refid="productSpecificationJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product_specification(
+		id,
+		specification_no,
+		orders,
+		name,
+		file_path,
+		specification_group_no,
+		merchant_no,
+		specification_group_id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{specificationNo},
+		#{orders},
+		#{name},
+		#{filePath},
+		#{specificationGroupNo},
+		#{merchantNo},
+		#{SpecificationGroup.id},
+		#{createBy},
+		#{createDate},
+		#{updateBy},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE product_specification SET
+		orders = #{orders},
+		name = #{name},
+		file_path = #{filePath},
+		update_by = #{updateBy},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE product_specification SET
+		del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE specification_group_id = #{SpecificationGroup.id}
+			</otherwise>
+		</choose>
+	</update>
+
+	<select id="getSpecificationByGroupIds" resultMap="specificationGroupResultMap">
+		SELECT g.id AS group_id,g.content_type AS content_type,s.id AS
+		specification_id,s.name AS
+		specification_name FROM specification_group
+		g RIGHT JOIN
+		product_specification s ON g.id=s.specification_group_id
+		<if test="ids!=null and ids !=''">
+			WHERE g.id IN
+			<foreach collection="ids" index="index" item="id" open="("
+				separator="," close=")">
+				#{id}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="querySpecificationsByProductId" parameterType="java.lang.String"
+		resultType="ProductSpecification">
+		SELECT
+		<include refid="productSpecificationColumns" />
+		FROM product_specification a LEFT JOIN product_specification_ref p ON a.id=p.specification_id
+		<where>
+			p.product_id=#{productId}
+		</where>
+	</select>
+
+	<resultMap
+		type="com.uib.product.entity.SpecificationGroup"
+		id="specificationGroupResultMap">
+		<id property="id" column="group_id" />
+		<result property="contentType" column="content_type" />
+		<collection property="productSpecificationList"
+			ofType="com.uib.product.entity.ProductSpecification"
+			javaType="ArrayList">
+			<result property="id" column="specification_id" />
+			<result property="name" column="specification_name" />
+		</collection>
+	</resultMap>
+
+</mapper>

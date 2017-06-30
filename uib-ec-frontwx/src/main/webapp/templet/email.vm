@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+<div style="margin: 10px auto;padding: 0;width: 800px;font: 12px/1.5 Arial,'宋体',sans-serif;">
+        <div style="margin: 0;padding: 0;height: 100px;background-color:#c42931;">
+        <a href="#" style="margin:0;padding: 0;" target="_blank"><img src="${systemPath}/static/images/e_logo.png" title="联保网" style="margin: 0;padding: 0;float: left;border: 0 none;display: block;"></a></div>
+        <div style="margin: 0;padding: 20px;color: #666;background: #fafafa;">
+            <div style="margin: 0;padding: 0;height: 200px;">
+                <h2 style=" margin: 0;padding: 0;font-size: 16px ; ;;font-weight: 700;margin-bottom: 15px;color: #666; ">亲爱的联保用户</h2>
+                <p style=" margin: 0;padding: 0;margin-bottom: 20px ; ;;text-indent: 3em; ">您正在进行安全验证，请在校验码输入框中输入：<span style="border-bottom:1px dashed #ccc;z-index:1" t="7" onclick="return false;" data="409056"> ${validateCode}</span>，以完成操作。</p>
+                
+                <p style=" margin: 0;padding: 0;margin-bottom: 20px ; ;;text-indent: 3em; ">注意：此操作可能会修改您的密码、登录邮箱或绑定手机。如非本人操作，请及时登录并修改密码以保证账户安全。（工作人员不会向您索取此校验码，请勿泄漏！）</p>
+            </div>
+            <div style="margin: 0;padding: 0;padding-top: 30px;">
+              <img src="${systemPath}/static/images/e_tishi.png" style="margin: 0;padding: 0;display: block;margin-bottom: 10px;">
+                <p style=" margin: 0;padding: 0;margin-bottom: 8px ; ;;height: 20px;line-height: 20px; "><img src="${systemPath}/static/images/e_dot1.png" style="margin: 0;padding: 0;vertical-align: top;margin-right: 5px;">防诈骗提示：联保客服热线为<span style="border-bottom:1px dashed #ccc;z-index:1" t="7" onclick="return false;" data="400-900-900">400-900-900</span>。请勿听信其他自称联保客服的私人电话，谨防诈骗。</p>
+                <p style=" margin: 0;padding: 0;margin-bottom: 8px ; ;;height: 20px;line-height: 20px; "><img src="${systemPath}/static/images/e_dot2.png" style="margin: 0;padding: 0;vertical-align: top;margin-right: 5px;">本邮件由系统自动发出，请勿直接回复。</p>
+            </div>
+        </div>
+        <div  style="margin: 0;padding: 0;height: 60px;background-color: #c42931;padding-top: 10px;">
+            <p style="margin: 0;padding: 0;color: #FFF;text-align: center;line-height: 22px;">该邮件由联保系统发出，请勿直接回复。如有任何疑问，请拨打客服中心热线：<span style="margin: 0;padding: 0;color: #FCB000;"><span style="border-bottom:1px dashed #ccc;z-index:1" t="7" onclick="return false;" data="400-900-900">400-900-900</span></span></p>
+            <p style="margin: 0;padding: 0;color: #FFF;text-align: center;line-height: 22px;">所有的商标与品牌是各自持有者的财产。Copyright &nbsp;©&nbsp; <span style="border-bottom:1px dashed #ccc;z-index:1" t="7" onclick="return false;" data="2006-2013">2006-2015</span> 联保科技</p>
+        </div>
+</div>
+</body>
+</html>

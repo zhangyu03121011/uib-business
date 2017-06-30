@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<link rel="stylesheet" type="text/css" href="js/lib/swiper-3.3.1.change.css">
+
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <title>我的店铺</title>
+
+
+</head>
+<body class="mystore-page "> <!-- 此处切换edit类编辑开关 -->
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+    <div class="title" id="pageTitle"></div>
+    <div class="right-text">编辑</div>
+  </div>
+</header>
+<section class="app-body no-menu ">
+  <!-- 首页banner -->
+    <div id="bannerDiv" class="banner-container no-data-toggle">
+        <a id="editBanner" class="edit-label" href="#">编辑</a>
+        <!-- 没有数据模板 -->
+        <div class="banner-edit no-data">
+            <p class="tip">您还没有添加banner图</p>
+            <div class="add-now" id="add-now-banner">立即添加</div>
+        </div>
+        <!--  有数据模板 -->
+        <div class="banner has-data">
+            <img id="image" src="" />
+        </div>
+    </div>
+  
+
+<!-- 店铺介绍 -->
+    <div id="storeInfo" class="introduce-container no-data-toggle">
+        <!-- 没有数据模板 -->
+        <div class="info-edit no-data" style="position:relative;">
+            <a id="editStore1" class="edit-label" href="#">编辑</a>
+            <div class="display-flex align-item-center ">
+                <div class="logo">
+                    <img src="./images/store-logo.jpg">
+                </div>
+                <div class="info flex-1">
+                    <input type="text" disabled="disabled"/>
+                    <textarea class="text" disabled="disabled"></textarea>
+                    <p class="tips">最多输入35个字</p>
+                </div>
+            </div>
+        </div>
+        <!-- 有数据模板 -->
+        <div class="has-data">
+            <div class="mystore-introduce display-flex align-items-center ">
+            <a id="editStore2" class="edit-label" href="#">编辑</a>
+            <div class="story-icon">
+                <img id="logo" src="./images/store-logo.jpg">
+            </div>
+            <div class="story-detail flex-1">
+                <h3 id="name" class="title"></h3>
+                <p id="explain" class="text"></p>
+            </div>
+        </div>
+        </div>
+    </div>
+  
+    <!--  热销产品part -->
+    <div id="productInfo" class="hot-product-part-container no-data-toggle">
+    <!-- 没有数据模板 -->
+    <div class="hot-product-edit no-data" style="position:relative;">
+      <a id="editProduct1" class="edit-label" href="#">编辑</a>
+      <div class="header display-flex align-items-center">
+          <div class="line"></div>
+          <div class="title flex-1">热销商品</div>
+          <div class="line"></div>
+      </div>
+      <div class="edit-body">
+          <div class="content">
+              <p class="tip">您还没有添加任何商品</p>
+            <div class="add-now" id="add-now-product">立即添加</div>
+          </div>
+      </div>
+  </div>
+   
+    <!--   有数据模板 -->
+    <div class="hot-sale-part has-data">
+    	<a id="editProduct2" class="edit-label" href="#">编辑</a>
+        <div class="header display-flex align-items-center">
+            <div class="left-line"></div>
+            <div class="title">热销产品</div>
+            <div class="right-line"></div>
+            <div class="more flex-1" id="productMore">MORE>></div>
+        </div>
+
+        <div id="productData" class="product-box-row cl">
+            
+            
+        </div>
+
+        
+    </div>
+    </div>
+     
+  
+
+
+  <!-- 热门专题 -->
+  <div id="specialInfo" class="hot-special-part-container no-data-toggle">
+      <!-- 没有数据模板 -->
+    <div class="hot-product-edit no-data">
+      <div class="header display-flex align-items-center">
+          <div class="line"></div>
+          <div class="title flex-1">热门专题</div>
+          <div class="line"></div>
+      </div>
+      <div class="edit-body">
+          <div class="content">
+              <p class="tip">您还没有添加任何专题</p>
+            <div class="add-now" id="add-now-zhuanti">立即添加</div>
+          </div>
+      </div>
+  </div>
+<!--   有数据模板 -->
+
+    <div class="hot-special-part has-data">
+    <a class="edit-label" id="editSpecial" href="#">编辑</a>
+         <div class="header display-flex align-items-center">
+            <div class="left-line"></div>
+            <div class="title">热门专题</div>
+            <div class="right-line"></div>
+            <div class="more flex-1" id="specialMore"></div> 
+        </div>
+        <div id="specialData" class="activity-list">
+          
+          
+        </div>
+         <li class='scrimg' style="display:none;"><p class='load_tip' align='center'>正在努力加载数据...</p></li>
+    </div>
+  </div>
+  
+<section class='go-top-btn'></section>
+</section>
+
+</body>
+<script type="text/javascript" src="js/lib/jquery220m.js"></script>
+<script type="text/javascript" src="js/lib/touch.min.js"></script>
+<script type="text/javascript" src="js/lib/swiper-3.3.1.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src='js/mystore-page.js'></script>
+
+
+</html>

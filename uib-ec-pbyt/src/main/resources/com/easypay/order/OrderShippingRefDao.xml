@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.order.entity.OrderShippingRef">
+    
+	<sql id="orderShippingRefColumns">
+		a.id AS "id",
+		a.shipping_id AS "orderTableShipping.id",
+		a.order_tabel_id AS "orderTabelId"
+	</sql>
+	
+	<sql id="orderShippingRefJoins">
+		LEFT JOIN order_table_shipping b ON b.id = a.shipping_id
+	</sql>
+    
+	<select id="get" resultType="OrderShippingRef">
+		SELECT 
+			<include refid="orderShippingRefColumns"/>
+		FROM order_shipping_ref a
+		<include refid="orderShippingRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderShippingRef">
+		SELECT 
+			<include refid="orderShippingRefColumns"/>
+		FROM order_shipping_ref a
+		<include refid="orderShippingRefJoins"/>
+		<where>
+			
+			<if test="orderTableShipping.id != null and orderTableShipping.id != ''">
+				AND a.shipping_id = #{orderTableShipping.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderShippingRef">
+		SELECT 
+			<include refid="orderShippingRefColumns"/>
+		FROM order_shipping_ref a
+		<include refid="orderShippingRefJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_shipping_ref(
+			id,
+			shipping_id,
+			order_tabel_id
+		) VALUES (
+			#{id},
+			#{orderTableShipping.id},
+			#{orderTabelId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_shipping_ref SET 	
+			shipping_id = #{orderTableShipping.id},
+			order_tabel_id = #{orderTabelId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM order_shipping_ref
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE shipping_id = #{orderTableShipping.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<delete id="remove">
+		DELETE FROM order_shipping_ref
+		<where>
+			<choose>
+				<when test="id !=null and id != ''">
+					id = #{id}
+				</when>
+				<when test="orderTabelId!=null and orderTabelId!=''">
+					order_tabel_id=#{orderTabelId}
+				</when>
+				<when test="shippingId!=null and shippingId!=''">
+					shipping_id=#{shippingId}
+				</when>
+				<when test="orderNo!=null and orderNo!=''">
+					order_tabel_id=(SELECT id FROM order_table WHERE order_no=#{orderNo} LIMIT 0,1)
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+	
+</mapper>

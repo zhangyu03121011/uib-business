@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.ecmanager.modules.product.dao.ProductParameterRefDao">
+
+	<sql id="productParameterRefColumns">
+		a.id AS "id",
+		a.parameter_id AS "parameterId",
+		a.product_id
+		AS "productId",
+		a.parameter_value AS "parameterValue"
+	</sql>
+
+	<sql id="productParameterRefJoins">
+	</sql>
+
+	<select id="get" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		<where>
+
+			<if test="parameterId != null and parameterId != ''">
+				AND a.parameter_id = #{parameterId}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product_parameter_ref(
+		id,
+		parameter_id,
+		product_id,
+		parameter_value
+		) VALUES (
+		#{id},
+		#{parameterId},
+		#{productId},
+		#{parameterValue}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE
+		product_parameter_ref
+		SET
+		parameter_value =#{parameterValue}
+		WHERE
+		parameter_id = #{parameterId} AND product_id = #{productId}
+	</update>
+
+	<update id="delete">
+		DELETE FROM product_parameter_ref
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteFrom">
+		DELETE FROM product_parameter_ref
+		<where>
+				product_id=#{productId}
+			<if test="parameterIds!=null and parameterIds.size>0">
+				AND parameter_id IN
+				<foreach collection="parameterIds" item="parameterId" index="index"
+					open="(" separator="," close=")">
+					#{parameterId}
+				</foreach>
+			</if>
+		</where>
+	</update>
+
+	<select id="queryParameterIdsByProductId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT a.parameter_id FROM product_parameter_ref a WHERE
+		a.product_id=#{productId};
+	</select>
+
+	<select id="queryProductParameterRersByProductId" parameterType="java.lang.String" resultType="ProductParameterRef">
+		SELECT
+		<include refid="productParameterRefColumns" />
+		FROM 
+			product_parameter_ref a
+		<include refid="productParameterRefJoins" />
+		WHERE 
+			a.product_id = #{productId}
+	</select>
+
+</mapper>

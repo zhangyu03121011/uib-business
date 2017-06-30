@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.order.entity.OrderTableItem">
+	<sql id="orderTableItemColumns">
+		a.id AS "id",
+		a.order_table_id AS "orderTable.id",
+		a.full_name AS "fullName",
+		a.is_gift AS "isGift",
+		a.name AS "name",
+		a.price AS "price",
+		a.quantity AS "quantity",
+		a.return_quantity AS "returnQuantity",
+		a.shipped_quantity AS "shippedQuantity",
+		a.goods_no AS "goodsNo",
+		a.thumbnail AS "thumbnail",
+		a.weight AS "weight",
+		a.order_no AS "orderNo",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.is_comment AS "isComment"
+	</sql>
+	
+	<sql id="orderTableItemJoins">
+		LEFT JOIN order_table b ON b.id = a.order_table_id
+	</sql>
+	
+	<select id="findByOrderTableId"   parameterType="String"	 resultType="OrderTableItem">
+	SELECT
+	DISTINCT pc.id  AS cid,
+	oti.id,
+	oti.full_name AS "fullName",
+	oti.goods_no AS "goodsNo",
+	oti.thumbnail AS "thumbnail",
+	oti.create_date AS "createDate"
+	FROM  	order_table_item oti LEFT JOIN 	product_comment  pc ON oti.id = pc.order_table_item_id
+	WHERE  oti.order_table_id=#{orderTableId}  and oti.del_flag='0';
+	</select>
+	
+	
+	<select id="queryProductSales" parameterType="map" resultType="OrderTableItem">
+		select
+		  <include refid="orderTableItemColumns"/>
+		from order_table_item a where a.order_no=#{orderNo}
+	</select>
+    
+	
+	<select id="get" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderTable != null and orderTable.id != null and orderTable.id != ''">
+				AND a.order_table_id = #{orderTable.id}
+			</if>
+			<if test="isGift != null and isGift != ''">
+				AND a.is_gift = #{isGift}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY #{page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY #{page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table_item(
+			id,
+			order_table_id,
+			full_name,
+			is_gift,
+			name,
+			price,
+			quantity,
+			return_quantity,
+			shipped_quantity,
+			goods_no,
+			thumbnail,
+			weight,
+			order_no,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderTable.id},
+			#{fullName},
+			#{isGift},
+			#{name},
+			#{price},
+			#{quantity},
+			#{returnQuantity},
+			#{shippedQuantity},
+			#{goodsNo},
+			#{thumbnail},
+			#{weight},
+			#{orderNo},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	<update id="update">
+		UPDATE order_table_item SET 	
+			order_table_id = #{orderTable.id},
+			full_name = #{fullName},
+			is_gift = #{isGift},
+			name = #{name},
+			price = #{price},
+			quantity = #{quantity},
+			return_quantity = #{returnQuantity},
+			shipped_quantity = #{shippedQuantity},
+			goods_no = #{goodsNo},
+			thumbnail = #{thumbnail},
+			weight = #{weight},
+			order_no = #{orderNo},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			is_comment = #{isComment}
+		WHERE id = #{id}
+	</update>
+	<update id="delete">
+		UPDATE order_table_item SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_id = #{orderTable.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<update id="updateOrderPriceByorderItemNo" parameterType="orderTableItem">
+		update order_table_item set price=#{price} where id = #{id}
+	</update>
+	
+	<update id="updateIsCommentByorderItemNo">
+		update order_table_item set is_comment=1 where id = #{id}
+	</update>
+	
+	<select id="getAllOrderTableItemByOrderNo" parameterType="Object" resultType="orderTableItem">
+		select 
+		<include refid="orderTableItemColumns"></include>,p.wx_is_marketable AS "wxIsMarketable", p.stock- p.allocated_stock AS stock
+		from order_table_item a  left join product p on a.goods_no = p.id  where order_no=#{orderNo}
+	</select>
+</mapper>

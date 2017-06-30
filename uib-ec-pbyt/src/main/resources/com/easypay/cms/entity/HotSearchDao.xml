@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace="com.uib.cms.dao.HotSearchDao"> -->
+<mapper namespace="com.uib.cms.entity.HotSearch">
+    
+	<sql id="hotSearchColumns">
+		a.id AS "id",
+		a.keyword AS "keyword",
+		a.del_flag AS "delFlag",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<sql id="hotSearchJoins">
+	</sql>
+    
+	<select id="getById" resultType="HotSearch">
+		SELECT 
+			<include refid="hotSearchColumns"/>
+		FROM cms_hot_search a
+		<include refid="hotSearchJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	
+	<select id="getHotSearchList" resultType="HotSearch" parameterType="java.lang.Integer">
+		SELECT 
+			<include refid="hotSearchColumns"/>
+		FROM cms_hot_search a
+		<include refid="hotSearchJoins"/>
+		<where>
+			a.del_flag = 0
+		</where>
+		order by a.create_time desc 
+		<if test="_parameter != null and _parameter != ''">
+			LIMIT 0,#{_parameter}
+		</if>
+	</select>
+	
+	<select id="findList" resultType="HotSearch">
+		SELECT 
+			<include refid="hotSearchColumns"/>
+		FROM cms_hot_search a
+		<include refid="hotSearchJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HotSearch">
+		SELECT 
+			<include refid="hotSearchColumns"/>
+		FROM cms_hot_search a
+		<include refid="hotSearchJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cms_hot_search(
+			id,
+			keyword,
+			del_flag,
+			create_time
+		) VALUES (
+			#{id},
+			#{keyword},
+			#{delFlag},
+			#{createTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cms_hot_search SET 	
+			keyword = #{keyword},
+			create_time = #{createTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE cms_hot_search SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

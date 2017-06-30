@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableRefundsDao">
+    
+	<sql id="orderTableRefundsColumns">
+		a.id AS "id",
+		a.refund_no AS "refundNo",
+		a.order_table_id AS "orderTable.id",
+		a.account AS "account",
+		a.amount AS "amount",
+		a.bank AS "bank",
+		a.method AS "method",
+		a.operator AS "operator",
+		a.payee AS "payee",
+		a.payment_method AS "paymentMethod",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTableRefundsJoins">
+		LEFT JOIN order_table b ON b.id = a.order_table_id
+	</sql>
+    
+	<select id="get" resultType="OrderTableRefunds">
+		SELECT 
+			<include refid="orderTableRefundsColumns"/>
+		FROM order_table_refunds a
+		<include refid="orderTableRefundsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTableRefunds">
+		SELECT 
+			<include refid="orderTableRefundsColumns"/>
+		FROM order_table_refunds a
+		<include refid="orderTableRefundsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="refundNo != null and refundNo != ''">
+				AND a.refund_no = #{refundNo}
+			</if>
+			<if test="orderTable != null and orderTable.id != null and orderTable.id != ''">
+				AND a.order_table_id = #{orderTable.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTableRefunds">
+		SELECT 
+			<include refid="orderTableRefundsColumns"/>
+		FROM order_table_refunds a
+		<include refid="orderTableRefundsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table_refunds(
+			id,
+			refund_no,
+			order_table_id,
+			account,
+			amount,
+			bank,
+			method,
+			operator,
+			payee,
+			payment_method,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{refundNo},
+			#{orderTable.id},
+			#{account},
+			#{amount},
+			#{bank},
+			#{method},
+			#{operator},
+			#{payee},
+			#{paymentMethod},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table_refunds SET 	
+			refund_no = #{refundNo},
+			order_table_id = #{orderTable.id},
+			account = #{account},
+			amount = #{amount},
+			bank = #{bank},
+			method = #{method},
+			operator = #{operator},
+			payee = #{payee},
+			payment_method = #{paymentMethod},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table_refunds SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_id = #{orderTable.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

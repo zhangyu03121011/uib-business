@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.Commission">
+	
+	<select id="findByName" parameterType="Map" resultType="Commission">
+		<!-- SELECT
+				m.username AS 'to_user_id',
+				m.phone AS 'phone',
+				rp.create_time AS 'create_date',
+				p.price * p.comm_percent / 100 AS 'commission'
+		FROM
+			recommend_product_log rp
+		LEFT JOIN product p ON rp.product_id = p.id
+		LEFT JOIN mem_member m ON rp.recommend_member_id = m.id
+		WHERE
+			rp.member_id = #{fromUserId}
+			AND rp.is_settlement = #{isSettle} -->
+			
+			SELECT
+				m.username AS 'to_user_id',
+				m.phone AS 'phone',
+				rp.create_time AS 'create_date',
+				p.price * p.comm_percent / 100 AS 'commission',
+				rp.id AS 'id',
+				p.price AS 'price',
+				P.id AS 'productId',
+				m.username AS 'username',
+				rp.create_time AS 'createDate',
+				rp.del_flag  AS 'delFlag',
+				P.comm_percent AS commPercent,
+				rp.member_id AS 'toUserId',
+				rp.recommend_member_id AS 'fromUserId'
+		FROM
+			recommend_product_log rp
+		LEFT JOIN product p ON rp.product_id = p.id
+		LEFT JOIN mem_member m ON rp.recommend_member_id = m.id
+		WHERE
+			rp.member_id = #{fromUserId}
+			AND rp.is_settlement = #{isSettle}
+	</select>
+	
+	<delete id="deleteCommissionById">  
+	   DELETE
+		FROM
+			recommend_product_log
+		WHERE id IN  
+	    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">   
+	        #{item}   
+	    </foreach>  
+	</delete>
+</mapper>

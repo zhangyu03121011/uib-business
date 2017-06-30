@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.SpecialDao">
+
+	<sql id="specialColumns">
+		s.id AS "id",
+		CONCAT(#{imageUrl},s.show_image) AS "showImage",
+		s.special_title AS "specialTitle",
+		s.special_article AS "specialArticle"
+	</sql>
+
+
+	<select id="findSpecialByPage" parameterType="map" resultType="map">
+		SELECT
+			s.id AS "specialId",
+			CONCAT(#{imageUrl},s.show_image) AS "mainImage",
+			s.special_article AS "specialArticle",
+			s.special_product_count AS "count",
+			s.special_title AS "specialTitle"
+		FROM
+			special s
+		where  s.begin_date &lt; now() AND s.end_date > now()
+		ORDER BY s.sort
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findSpecialProd" parameterType="map" resultType="map">
+		SELECT
+			spf.special_id AS "specialId",
+			p.id AS "id",
+			p.original_name AS "originalName",
+			P.full_name AS "fullName",
+			CONCAT(#{imageUrl},P.image) AS "productImage",
+			p.market_price AS "marketPrice",
+			P.price AS "price",
+			ppr.sell_price AS "sellprice",
+			ppr.B_supply_price AS "BSupplyPrice"
+		FROM
+			product p
+		LEFT JOIN special_product_ref spf ON p.id = spf.product_id
+		LEFT JOIN product_price_ref ppr ON p.id = ppr.product_id
+		<where>
+			ppr.rank_id = #{rankId} AND
+			p.wx_is_marketable ='1' AND
+			spf.special_id <![CDATA[<>'']]>
+		</where>
+		ORDER BY
+			p.create_date DESC
+	</select>
+	
+	<select id="findProductById" parameterType="map" resultType="map">
+		SELECT
+			p.id AS "productId",
+			p.original_name AS "originalName",
+			P.full_name AS "fullName",
+			CONCAT(#{imageUrl},P.image) AS "productImage",
+			p.market_price AS "marketPrice",
+			P.price AS "price",
+			ppr.sell_price AS "sellprice",
+			ppr.B_supply_price AS "BSupplyPrice"
+		FROM
+			special s
+		LEFT JOIN special_product_ref spf ON s.id = spf.special_id
+		LEFT JOIN product p ON p.id = spf.product_id
+		LEFT JOIN product_price_ref ppr ON p.id = ppr.product_id
+		<where>
+			s.id =#{specialId} AND ppr.rank_id = #{rankId} AND p.wx_is_marketable ='1' 
+		</where>
+		ORDER BY p.create_date  DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findSpecialById" parameterType="map" resultType="map">
+		SELECT
+			s.id AS "specialId",
+			CONCAT(#{imageUrl},s.show_image) AS "mainImage",
+			s.special_title AS "specialTitle",
+			s.special_article AS "specialArticle"
+		FROM
+			special s
+		<where>
+			s.id =#{specialId}
+		</where>
+	</select>
+	
+	<select id="findSpecialUserId" parameterType="map" resultType="com.uib.ptyt.entity.Special">
+		SELECT
+			<include refid="specialColumns"></include>
+		FROM
+			special s
+		LEFT JOIN special_merchant_ref smf ON s.id = smf.special_id
+		LEFT JOIN mem_merchant mm ON smf.merchant_id = mm.id
+		<where>
+			mm.del_flag = '0'
+		AND mm.member_id = #{userId}
+		</where>
+		ORDER BY
+			smf.create_date DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>	
+	</select>
+	
+	<delete id="deleteMySpecials" parameterType="map" statementType="CALLABLE">  
+	   DELETE
+		FROM
+			special_merchant_ref
+		WHERE merchant_id = #{merchantId} and special_id IN  
+	    <foreach collection="specialIdList" index="index" item="item" open="(" separator="," close=")">   
+	        #{item}   
+	    </foreach>  
+	</delete>
+	<!-- <delete id="deleteMySpecials" parameterType="list">  
+	   <foreach collection="list" item="SpecialMerchantRef" index="index" open="begin" close=";end;" separator=";">  
+              DELETE
+				FROM
+					special_merchant_ref
+				WHERE merchant_id = #{SpecialMerchantRef.merchantId} and special_id = #{SpecialMerchantRef.specialId}
+        </foreach >  
+	</delete> -->
+	
+	<insert id="addMySpecials" parameterType="java.util.List">
+			
+		<foreach collection="list" item="item" index="index" separator=";">
+		INSERT INTO special_merchant_ref(
+						id,
+						special_id,
+						merchant_id,
+						create_date
+					) VALUES
+        	(#{item.id},
+        	#{item.specialId},
+        	#{item.merchantId},
+        	#{item.createDate}) 
+    	</foreach> 
+	</insert>
+</mapper>

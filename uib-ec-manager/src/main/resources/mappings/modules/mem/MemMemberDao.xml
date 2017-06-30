@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.mem.dao.MemMemberDao">
+    
+	<sql id="memMemberColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.username AS "username",
+		a.password AS "password",
+		a.phone AS "phone",
+		a.address AS "address",
+		a.amount AS "amount",
+		a.balance AS "balance",
+		a.birth AS "birth",
+		a.email AS "email",
+		a.gender AS "gender",
+		a.locked_date AS "lockedDate",
+		a.login_failure_count AS "loginFailureCount",
+		a.ogin_ip AS "oginIp",
+		a.point AS "point",
+		a.register_ip AS "registerIp",
+		a.safe_key_expire AS "safeKeyExpire",
+		a.safe_key_value AS "safeKeyValue",
+		a.zip_code AS "zipCode",
+		a.area AS "area",
+		a.rank_id AS "memRank.id",
+		a.id_card AS "idCard",
+		a.real_name AS "realName",
+		a.id_card_positive AS "idCardPositive",
+		a.id_card_opposite AS "idCardOpposite",
+		a.id_card_valid	  AS	"idCardValid",
+		a.id_card_hand AS "idCardHand",
+		a.approve_flag AS "approveFlag",
+		a.approve_date AS "approveDate",
+		a.audit_failure_description AS "auditFailureDescription",
+		a.is_enabled AS "isEnabled",
+		a.is_locked AS "isLocked",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.user_type AS "userType",
+		a.commission AS "commission",
+		a.sumamount AS "sumamount"
+	</sql>
+	
+	<sql id="memRankColumns">
+		b.id AS "bid",
+		b.name AS "bname",
+		b.amount AS "bamount",
+		<!-- b.is_defult AS "isDefult", -->
+		b.is_special AS "isSpecial",
+		b.scale AS "scale"
+	</sql>
+	
+	<sql id="memMemberJoins">
+	</sql>
+    
+	<select id="get" resultMap="memMemberResultMap">
+		SELECT 
+			<include refid="memMemberColumns"/>,
+			<include refid="memRankColumns"/>
+		FROM mem_member a 
+		LEFT JOIN mem_rank b ON a.rank_id = b.id
+		<include refid="memMemberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultMap="memMemberResultMap">
+		SELECT 
+			<include refid="memMemberColumns"/>,
+			<include refid="memRankColumns"/>
+		FROM mem_member a 
+		LEFT JOIN mem_rank b ON a.rank_id = b.id
+		<include refid="memMemberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="username != null and username != ''">
+				AND a.username LIKE 
+					<if test="dbName == 'oracle'">'%'||#{username}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{username}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{username},'%')</if>
+			</if>
+			<!-- <choose>
+				<when test="approveFlag==null">
+				</when>
+				<when test="approveFlag==''">
+					AND ISNULL(approve_flag)
+				</when>
+				<otherwise>
+					AND a.approve_flag=#{approveFlag}
+				</otherwise>
+			</choose> -->
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			
+			<if test="approveFlag != null and approveFlag != ''">
+				AND a.approve_flag = #{approveFlag}
+			</if>
+			
+			<if test="userType != null and userType != ''">
+				AND a.user_type = #{userType}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="memRank != null">
+				<if test="memRank.name != null and memRank.name != ''">
+					AND b.name = #{memRank.name}
+				</if>
+			</if>
+			<!-- <if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			<if test="isEnabled != null and isEnabled != ''">
+				AND a.is_enabled = #{isEnabled}
+			</if> -->
+			<if test="isLocked != null and isLocked != ''">
+				AND a.is_locked = #{isLocked}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 会员审核列表 -->
+	<select id="findMemApproveList" resultMap="memMemberResultMap">
+		SELECT 
+		a.id AS "id",
+		a.username AS "username",
+		a.phone AS "phone",
+		a.amount AS "amount",
+		a.rank_id AS "memRank.id",
+		a.id_card AS "idCard",
+		a.approve_flag AS "approveFlag",
+		a.is_locked AS "isLocked",
+		a.remarks AS "remarks",
+		a.user_type AS "userType",
+		b.id AS "bid",
+		b.name AS "bname",
+		a.sumamount AS "sumamount"		
+		FROM mem_member a 
+		LEFT JOIN mem_rank b ON a.rank_id = b.id		
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and  
+			a.approve_flag is not null 
+			<if test="username != null and username != ''">
+				AND a.username LIKE 
+					<if test="dbName == 'oracle'">'%'||#{username}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{username}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{username},'%')</if>
+			</if>			
+			<if test="approveFlag != null and approveFlag != ''">
+				AND a.approve_flag = #{approveFlag}
+			</if>
+			<if test="userType != null and userType != ''">
+				AND a.user_type = #{userType}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="memRank != null">
+				<if test="memRank.name != null and memRank.name != ''">
+					AND b.name = #{memRank.name}
+				</if>
+			</if>
+			<if test="isLocked != null and isLocked != ''">
+				AND a.is_locked = #{isLocked}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemMember">
+		SELECT 
+			<include refid="memMemberColumns"/>
+		FROM mem_member a
+		<include refid="memMemberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mem_member(
+			id,
+			name,
+			username,
+			password,
+			phone,
+			address,
+			amount,
+			balance,
+			birth,
+			email,
+			gender,
+			locked_date,
+			login_failure_count,
+			ogin_ip,
+			point,
+			register_ip,
+			safe_key_expire,
+			safe_key_value,
+			zip_code,
+			area,
+			rank_id,
+			id_card,
+			real_name,
+			id_card_positive,
+			id_card_opposite,
+			id_card_hand,
+			approve_flag,
+			approve_date,
+			audit_failure_description,
+			is_enabled,
+			is_locked,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			user_type
+		) VALUES (
+			#{id},
+			#{name},
+			#{username},
+			#{password},
+			#{phone},
+			#{address},
+			#{amount},
+			#{balance},
+			#{birth},
+			#{email},
+			#{gender},
+			#{lockedDate},
+			#{loginFailureCount},
+			#{oginIp},
+			#{point},
+			#{registerIp},
+			#{safeKeyExpire},
+			#{safeKeyValue},
+			#{zipCode},
+			#{area},
+			#{memRank.id},
+			#{idCard},
+			#{realName},
+			#{idCardPositive},
+			#{idCardOpposite},
+			#{idCardHand},
+			#{approveFlag},
+			#{approveDate},
+			#{auditFailureDescription},
+			#{isEnabled},
+			#{isLocked},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{userType}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mem_member SET 	
+			locked_date = #{lockedDate},
+			is_enabled = #{isEnabled},
+			is_locked = #{isLocked},
+			approve_flag = #{approveFlag},
+			approve_date = #{approveDate},
+			audit_failure_description = #{auditFailureDescription},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			commission = #{commission},
+			user_type = #{userType}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE mem_member SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+		
+	</update>
+	
+	<update id="updateById">
+		UPDATE mem_member SET
+			commission = #{commission},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 会员表与会员等级表关联 -->
+	<resultMap type="MemMember" id="memMemberResultMap">
+	    <id column="id" property="id"/>
+		<id property="name" column="name" />
+		<id property="username" column="username" />
+		<id property="password" column="password" />
+		<id property="phone" column="phone" />
+		<id property="address" column="address" />
+		<id property="amount" column="amount" />
+		<id property="balance" column="balance" />
+		<id property="birth" column="birth" />
+		<id property="email" column="email" />
+		<id property="gender" column="gender" />
+		<id property="lockedDate" column="lockedDate" />
+		<id property="loginFailureCount" column="loginFailureCount" />
+		<id property="oginIp" column="oginIp" />
+		<id property="point" column="point" />
+		<id property="registerIp" column="registerIp" />
+		<id property="safeKeyExpire" column="safeKeyExpire" />
+		<id property="safeKeyValue" column="safeKeyValue" />
+		<id property="zipCode" column="zipCode" />
+		<id property="area" column="area" />
+		<id property="memRank.id" column="memRank.id" />
+		<id property="idCard" column="idCard" />
+		<id property="realName" column="realName" />
+		<id property="idCardPositive" column="idCardPositive" />
+		<id property="idCardOpposite" column="idCardOpposite" />
+		<id property="idCardValid" column="idCardValid" />
+		<id property="idCardHand" column="idCardHand" />
+		<id property="approveFlag" column="approveFlag" />
+		<id property="approveDate" column="approveDate" />
+		<id property="auditFailureDescription" column="auditFailureDescription" />
+		<id property="isEnabled" column="isEnabled" />
+		<id property="isLocked" column="isLocked" />
+		<id property="createBy.id" column="createBy.id" />
+		<id property="createDate" column="createDate" />
+		<id property="updateBy.id" column="updateBy.id" />
+		<id property="updateDate" column="updateDate" />
+		<id property="remarks" column="remarks" />
+		<id property="delFlag" column="delFlag" />
+		<id property="userType" column="userType" />
+		<id property="commission" column="commission" />
+	    <id property="sumamount" column="sumamount" />
+	    <association property="memRank" javaType="com.uib.ecmanager.modules.mem.entity.MemRank">
+	        <id column="bid" property="id"/>
+	        <result column="bname" property="name"/>
+	        <result column="bamount" property="amount"/>
+	     <!--    <result column="isDefult" property="isDefult"/> -->
+	        <result column="isSpecial" property="isSpecial"/>
+	        <!-- <result column="scale" property="scale"/> -->
+	    </association>
+	</resultMap>
+		
+</mapper>

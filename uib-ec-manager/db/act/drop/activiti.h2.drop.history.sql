@@ -1,0 +1,24 @@
+drop table if exists act_hi_procinst cascade constraints;
+drop table if exists act_hi_actinst cascade constraints;
+drop table if exists act_hi_varinst cascade constraints;
+drop table if exists act_hi_taskinst cascade constraints;
+drop table if exists act_hi_detail cascade constraints;
+drop table if exists act_hi_comment cascade constraints;
+drop table if exists act_hi_attachment cascade constraints;
+drop table if exists act_hi_identitylink cascade constraints;
+
+drop index if exists act_idx_hi_pro_inst_end;
+drop index if exists act_idx_hi_pro_i_buskey;
+drop index if exists act_idx_hi_act_inst_start;
+drop index if exists act_idx_hi_act_inst_end;
+drop index if exists act_idx_hi_detail_proc_inst;
+drop index if exists act_idx_hi_detail_act_inst;
+drop index if exists act_idx_hi_detail_time;
+drop index if exists act_idx_hi_detail_name;
+drop index if exists act_idx_hi_detail_task_id;
+drop index if exists act_idx_hi_procvar_proc_inst;
+drop index if exists act_idx_hi_procvar_name_type;
+drop index if exists act_idx_hi_act_inst_procinst;
+drop index if exists act_idx_hi_ident_lnk_user;
+drop index if exists act_idx_hi_ident_lnk_task;
+drop index if exists act_idx_hi_ident_lnk_procinst;

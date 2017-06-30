@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderReturnsRefDao">
+    
+	<sql id="orderReturnsRefColumns">
+		a.id AS "id",
+		a.return_id AS "orderTableReturns.id",
+		a.order_tabel_id AS "orderTabelId"
+	</sql>
+	
+	<sql id="orderReturnsRefJoins">
+		LEFT JOIN order_table_returns b ON b.id = a.return_id
+	</sql>
+    
+	<select id="get" resultType="OrderReturnsRef">
+		SELECT 
+			<include refid="orderReturnsRefColumns"/>
+		FROM order_returns_ref a
+		<include refid="orderReturnsRefJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderReturnsRef">
+		SELECT 
+			<include refid="orderReturnsRefColumns"/>
+		FROM order_returns_ref a
+		<include refid="orderReturnsRefJoins"/>
+		<where>
+			
+			<if test="orderTableReturns.id != null and orderTableReturns.id != ''">
+				AND a.return_id = #{orderTableReturns.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findReturnsRefByOrderNo" resultType="OrderReturnsRef">
+		SELECT
+			<include refid="orderReturnsRefColumns"/>
+		FROM order_returns_ref a
+		WHERE a.order_tabel_id = #{orderNo}
+	</select>
+	
+	<select id="findAllList" resultType="OrderReturnsRef">
+		SELECT 
+			<include refid="orderReturnsRefColumns"/>
+		FROM order_returns_ref a
+		<include refid="orderReturnsRefJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_returns_ref(
+			id,
+			return_id,
+			order_tabel_id
+		) VALUES (
+			#{id},
+			#{orderTableReturns.id},
+			#{orderTabelId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_returns_ref SET 	
+			return_id = #{orderTableReturns.id},
+			order_tabel_id = #{orderTabelId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM order_returns_ref
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE return_id = #{orderTableReturns.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

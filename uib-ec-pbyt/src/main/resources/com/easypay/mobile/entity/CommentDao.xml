@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.CommentDto">
+	
+	<sql id="productCommentColumns">
+		id,
+		is_guests,
+		score,
+		order_table_item_id,
+		product_id,
+		member_id,
+		create_date
+	</sql>
+	
+	<sql id="productCommentJoins">
+	</sql>
+    
+	
+	<insert id="saveComment" parameterType="com.uib.mobile.dto.CommentDto" statementType="CALLABLE"  useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO product_comment(
+			id,
+			is_guests,
+			score,
+			order_table_item_id,
+			product_id,
+			member_id,
+			content,
+			create_date
+		) VALUES (
+			#{id},
+			#{isGuests},
+			#{score},
+			#{orderTableItemId},
+			#{productId},
+			#{memberId},
+			#{content},
+			now()
+		)
+	</insert>
+
+
+
+</mapper>

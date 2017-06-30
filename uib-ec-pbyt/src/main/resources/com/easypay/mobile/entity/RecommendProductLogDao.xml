@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.RecommendProductLog">
+    <sql id="recommendProductLogColumns">
+		a.id AS "id",
+		a.recommend_id AS "recommendId",
+		a.member_id AS "memberId",
+		a.recommend_member_id AS "recommendMemberId",
+		a.product_id AS "productId",
+		a.cartItem_id AS "cartItemId",
+		a.order_no AS "orderNo",
+		a.is_settlement AS "settlement",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.commission AS "commission",
+		m.avatar AS "avatar",
+		m.name AS "name"
+	</sql>
+	
+	<sql id="recommendProductLogJoins">
+	    left join mem_member m on m.id=a.member_id
+	</sql>
+    
+	 <select id="queryRecommendDetail" parameterType="Map" resultType="map">
+        select
+               a1.id as "id",
+               a1.commission as "commission",
+               DATE_FORMAT(a1.create_time,'%Y-%m-%d') AS "createTime",
+               m1.name as "name",
+               m1.avatar as "avatar"
+        from recommend_product_log a1
+        left join mem_member m1 on m1.id=a1.member_id
+        where	
+			a1.del_flag='0' and a1.is_settlement =2 and a1.commission>0
+		<if test="memberId !=null  and memberId !='' ">
+		    and a1.recommend_member_id=#{memberId} or a1.member_id=#{memberId}
+		</if>
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+    </select>   
+	
+	<insert id="insert">
+		INSERT INTO recommend_product_log(
+			id,
+			recommend_id,
+			member_id,
+			recommend_member_id,
+			product_id,
+			cartItem_id,
+			order_no,
+			userType,
+			create_time,
+			del_flag
+		) VALUES (
+			#{id},
+			#{recommendId},
+			#{memberId},
+			#{recommendMemberId},
+			#{productId},
+			#{cartItemId},
+			#{orderNo},
+			#{recommendUserType},
+			#{createTime},
+			#{delFlag}
+		)
+	</insert>
+	
+	<select id="checkOnly" resultType="int">
+	  select count(*) from 
+	  	recommend_product_log rpl 
+	  	where rpl.member_id=#{memberId} 
+	  	and rpl.product_id=#{rMemberId}
+	  	and rpl.recommend_member_id=#{productId}
+	</select>
+	
+	<select id="queryrMemberId" parameterType="Map" resultType="Map">
+		SELECT rpl.recommend_member_id as id FROM recommend_product_log rpl 
+		where rpl.member_id=#{memberId}
+		and rpl.product_id=#{productId} 
+		and rpl.is_settlement=0 
+		order by rpl.create_time desc  
+		limit #{number}
+	</select>
+	
+	<update id="updateIsSettlement">
+	update recommend_product_log rpl 
+		set is_settlement=1,order_no=#{orderNo}
+		where rpl.cartItem_id=#{cartItemId} 
+	</update>
+	
+	<update id="delete">
+		DELETE FROM recommend_product_log
+		WHERE id = #{id}
+	</update>
+	
+	
+	<select id="querySettleRecords" resultType="com.uib.mobile.dto.RecommendProductLog">
+		SELECT 
+		  rpl.id AS 'id',
+   		  ot.`order_no`  AS 'orderNo',
+   		  oti.quantity AS 'quantity',
+		  rpl.recommend_member_id AS 'recommendMemberId',
+	      rpl.`member_id` AS 'memberId',  
+		  DATE_FORMAT(ot.update_date, '%Y-%m-%d') AS 'paymentDate',
+		  p.price AS 'price',
+		  ppf.sell_price AS 'sellPrice',
+		  ppf.B_supply_price AS 'BSupplyPrice',
+		  rpl.userType AS 'recommendUserType'
+		FROM
+		  recommend_product_log rpl 
+		  INNER JOIN order_table ot 
+		    ON rpl.order_no = ot.order_no 
+	     INNER JOIN order_table_item oti
+	     	ON oti.`order_no` = ot.`order_no`
+		  INNER JOIN product p 
+		    ON rpl.product_id = p.id 
+		  INNER JOIN product_price_ref ppf 
+		    ON p.id = ppf.product_id
+		   INNER JOIN mem_member mm
+		    ON mm.`id` = rpl.`recommend_member_id`
+		WHERE rpl.is_settlement = '1' 
+			AND oti.order_type ='1'
+		  AND mm.`rank_id` = ppf.`rank_id` 
+		  AND ot.order_status = '2' 
+	      AND DATE_SUB(CURDATE(), INTERVAL 7 DAY)  &gt; date(ot.update_date)
+	</select>
+	
+	<select id="queryOrderSettleRecords" resultType="com.uib.mobile.dto.RecommendProductLog">
+		SELECT 
+  		  ot.`order_no`  AS 'orderNo',
+  		  oti.quantity AS 'quantity',
+		  mm.id AS 'memberId',
+		  DATE_FORMAT(ot.update_date, '%Y-%m-%d') AS 'paymentDate',
+		  p.price AS 'price',
+		  ppf.sell_price AS 'sellPrice',
+		  ppf.B_supply_price AS 'BSupplyPrice' 
+		FROM
+		  order_table ot 
+		  INNER JOIN order_table_item oti 
+		    ON oti.`order_no` = ot.`order_no` 
+		  INNER JOIN product p 
+		    ON p.`id` = oti.`goods_no` 
+		  INNER JOIN product_price_ref ppf 
+		    ON p.id = ppf.product_id 
+		  INNER JOIN mem_member mm 
+		    ON mm.`id` = ot.`member_no`
+		WHERE oti.is_settlement = '1'
+			AND oti.order_type ='1' 
+		  AND mm.`rank_id` = ppf.`rank_id` 
+		  AND ot.order_status = '2' 
+	      AND DATE_SUB(CURDATE(), INTERVAL 7 DAY)  &gt; date(ot.update_date)
+	</select>
+	<!-- 推荐人佣金批量更新 -->
+	<update id="batchSettleCommission" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";" > 
+			<if test="item.recommendUserType ==1">
+				 update mem_member 
+            <set>       
+                update_date = now()
+            </set>
+            where id = #{item.recommendMemberId}
+			</if>
+			<if test="item.recommendUserType ==2">
+				 update mem_member 
+            <set>       
+                commission = commission + #{item.commission},
+                balance = balance + #{item.commission},
+                sumamount = sumamount+#{item.commission},
+                 update_date = now()
+            </set>
+            where id = #{item.recommendMemberId}
+			</if>
+			<if test="item.recommendUserType ==3">
+				 update mem_member 
+            <set>       
+                 update_date = now()
+            </set>
+            where id = #{item.recommendMemberId}
+			</if>
+        </foreach>
+	</update>
+		<!-- 被推荐人佣金批量更新 -->
+	<update id="batchMemSettleCommission" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";" > 
+            <if test="item.userType ==1">
+	            update mem_member 
+	            <set>       
+	                sumamount = sumamount+#{item.commission}
+	            </set>
+	            where id = #{item.memberId}
+			</if>
+			<if test="item.userType ==2">
+				update mem_member 
+	            <set>       
+	                sumamount = sumamount+#{item.commission},
+                 	commission = commission+#{item.commission}
+	            </set>
+	            where id = #{item.memberId}
+			</if>
+			<if test="item.userType ==3">
+				update mem_member 
+	            <set>       
+	                sumamount = sumamount+#{item.commission}
+	            </set>
+	            where id = #{item.memberId}
+			</if>
+        </foreach>
+	</update>
+	
+	<update id="batchUpdateIsSettlement" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";">
+		  <if test="item.userType ==1">
+		  	update recommend_product_log rpl 
+				<set>
+					is_settlement=2
+				</set>
+				where rpl.id=#{item.id}
+		   </if>
+		   <if test="item.userType ==2">
+			  update recommend_product_log rpl 
+				<set>
+					is_settlement=2,
+					commission = commission+#{item.commission}
+				</set>
+				where rpl.id=#{item.id}
+		   </if>
+		   <if test="item.userType ==3">
+		  		update recommend_product_log rpl 
+				<set>
+					is_settlement=2
+				</set>
+				where rpl.id=#{item.id}
+		   </if>
+			
+		</foreach>
+	</update>
+	<!-- 更新被推荐人等级 -->
+	<update id="batchUpdateMemberRank">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";"> 
+			update mem_member mm 
+			<set>
+				rank_id=#{item.rankId}
+			</set>
+				where mm.id=#{item.id}
+		</foreach>
+	</update>
+
+	<update id="batchUpdateOrderSettlement">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";"> 
+			update order_table_item oti 
+			<set>
+				is_settlement = 2
+			</set>
+				where oti.order_no=#{item.orderNo}
+		</foreach>
+	</update>
+	
+	<select id="queryId" parameterType="java.util.List" resultType="com.uib.mobile.dto.RecommendProductLog">
+		<foreach collection="list" item="item" index="index" open="(" separator=") union all ("  close=")"> 
+			SELECT rpl.id,#{item.orderNo} AS 'orderNo'
+			  FROM recommend_product_log rpl
+			 WHERE rpl.is_settlement = 0
+			   AND rpl.product_id =#{item.productId}
+			   AND rpl.member_id = #{item.memberId}
+			 ORDER BY rpl.create_time DESC  
+			 LIMIT #{item.number} 
+		</foreach>
+	</select>
+	
+	<update id="batchUpdateIsNotSettlement" parameterType="java.util.List" >
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";"> 
+			UPDATE recommend_product_log
+			<set>
+				is_settlement = 1,
+				order_no = #{item.orderNo}
+			</set>
+				WHERE is_settlement = 0
+				AND	  id = #{item.id}
+		</foreach>
+	</update>
+	
+</mapper>

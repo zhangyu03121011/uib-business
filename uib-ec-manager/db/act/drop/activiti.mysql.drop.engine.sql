@@ -1,0 +1,11 @@
+drop table if exists act_ge_property;
+drop table if exists act_ru_variable;
+drop table if exists act_ge_bytearray;
+drop table if exists act_re_deployment;
+drop table if exists act_re_model;
+drop table if exists act_ru_identitylink;
+drop table if exists act_ru_task;
+drop table if exists act_re_procdef;
+drop table if exists act_ru_execution;
+drop table if exists act_ru_job; 
+drop table if exists act_ru_event_subscr;

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableReturnsItemDao">
+
+	<sql id="orderTableReturnsItemColumns">
+		a.id AS "id",
+		a.order_table_returns_id AS
+		"orderTableReturns.id",
+		a.product_no AS "productNo",
+		a.name AS "name",
+		a.quantity AS "quantity",
+		a.return_no AS "returnNo",
+		a.create_by AS
+		"createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS
+		"updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.image AS image,
+		b.return_no AS
+		"orderTableReturns.returnNo"
+	</sql>
+
+	<sql id="orderTableReturnsItemJoins">
+		LEFT JOIN order_table_returns b ON b.id =
+		a.order_table_returns_id
+	</sql>
+
+	<select id="get" resultType="OrderTableReturnsItem">
+		SELECT
+		<include refid="orderTableReturnsItemColumns" />
+		FROM order_table_returns_item a
+		<include refid="orderTableReturnsItemJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="OrderTableReturnsItem">
+		SELECT
+		<include refid="orderTableReturnsItemColumns" />
+		FROM order_table_returns_item a
+		<include refid="orderTableReturnsItemJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if
+				test="orderTableReturns != null and orderTableReturns.id != null and orderTableReturns.id != ''">
+				AND a.order_table_returns_id = #{orderTableReturns.id}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="OrderTableReturnsItem">
+		SELECT
+		<include refid="orderTableReturnsItemColumns" />
+		FROM order_table_returns_item a
+		<include refid="orderTableReturnsItemJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO order_table_returns_item(
+		id,
+		order_table_returns_id,
+		product_no,
+		name,
+		quantity,
+		return_no,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{orderTableReturns.id},
+		#{productNo},
+		#{name},
+		#{quantity},
+		#{returnNo},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE order_table_returns_item SET
+		order_table_returns_id = #{orderTableReturns.id},
+		product_no =
+		#{productNo},
+		name = #{name},
+		quantity = #{quantity},
+		return_no =
+		#{returnNo},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE order_table_returns_item SET
+		del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_returns_id = #{orderTableReturns.id}
+			</otherwise>
+		</choose>
+	</update>
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.UserComplaintAttrMap">	
+	<cache eviction="FIFO" flushInterval="5000" size="512" readOnly="true"></cache>	
+	
+	<resultMap type="UserComplaintAttrMap" id="UserComplaintAttrMap">
+		<result column="id" property="id"/>
+		<result column="complaint_id" property="complaintId"/>
+		<result column="attachment_id" property="attachmentId"/>	
+	</resultMap>
+	
+	<sql id="UserComplaintAttrMapColumns">
+		a.id AS "id",
+		a.complaint_id AS "complaintId",
+		a.attachment_id AS "attachmentId"
+	</sql>
+	
+	<insert id="save">
+		INSERT INTO user_complaint_attr_map(
+			id,
+			complaint_id,
+			attachment_id
+		) VALUES (
+			#{id},
+			#{complaintId},
+			#{attachmentId}		
+		)
+	</insert>
+	
+	
+	
+	
+		
+</mapper>

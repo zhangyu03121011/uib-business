@@ -1,0 +1,24 @@
+if exists (select name from sysindexes where name = 'act_idx_hi_pro_inst_end') drop index act_hi_procinst.act_idx_hi_pro_inst_end;
+if exists (select name from sysindexes where name = 'act_idx_hi_pro_i_buskey') drop index act_hi_procinst.act_idx_hi_pro_i_buskey;
+if exists (select name from sysindexes where name = 'act_idx_hi_act_inst_start') drop index act_hi_actinst.act_idx_hi_act_inst_start;
+if exists (select name from sysindexes where name = 'act_idx_hi_act_inst_end') drop index act_hi_actinst.act_idx_hi_act_inst_end;
+if exists (select name from sysindexes where name = 'act_idx_hi_detail_proc_inst') drop index act_hi_detail.act_idx_hi_detail_proc_inst;
+if exists (select name from sysindexes where name = 'act_idx_hi_detail_act_inst') drop index act_hi_detail.act_idx_hi_detail_act_inst;
+if exists (select name from sysindexes where name = 'act_idx_hi_detail_time') drop index act_hi_detail.act_idx_hi_detail_time;
+if exists (select name from sysindexes where name = 'act_idx_hi_detail_name') drop index act_hi_detail.act_idx_hi_detail_name;
+if exists (select name from sysindexes where name = 'act_idx_hi_detail_task_id') drop index act_hi_detail.act_idx_hi_detail_task_id;
+if exists (select name from sysindexes where name = 'act_idx_hi_procvar_proc_inst') drop index act_hi_varinst.act_idx_hi_procvar_proc_inst;
+if exists (select name from sysindexes where name = 'act_idx_hi_procvar_name_type') drop index act_hi_varinst.act_idx_hi_procvar_name_type;
+if exists (select name from sysindexes where name = 'act_idx_hi_act_inst_procinst') drop index act_hi_actinst.act_idx_hi_act_inst_procinst;
+if exists (select name from sysindexes where name = 'act_idx_hi_ident_lnk_user') drop index act_hi_identitylink.act_idx_hi_ident_lnk_user;
+if exists (select name from sysindexes where name = 'act_idx_hi_ident_lnk_task') drop index act_hi_identitylink.act_idx_hi_ident_lnk_task;
+if exists (select name from sysindexes where name = 'act_idx_hi_ident_lnk_procinst') drop index act_hi_identitylink.act_idx_hi_ident_lnk_procinst;
+
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_procinst') drop table act_hi_procinst;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_actinst') drop table act_hi_actinst;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_varinst') drop table act_hi_varinst;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_taskinst') drop table act_hi_taskinst;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_detail') drop table act_hi_detail;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_comment') drop table act_hi_comment;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_attachment') drop table act_hi_attachment;
+if exists (select table_name from information_schema.tables where table_name = 'act_hi_identitylink') drop table act_hi_identitylink;

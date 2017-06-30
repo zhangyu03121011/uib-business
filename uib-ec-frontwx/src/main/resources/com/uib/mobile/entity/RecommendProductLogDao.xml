@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.mobile.dto.RecommendProductLog">
+    
+	<sql id="recommendProductLogColumns">
+		a.id AS "id",
+		a.member_id AS "memberId",
+		a.recommend_member_id AS "recommendMemberId",
+		a.product_id AS "productId",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="recommendProductLogJoins">
+	</sql>
+    
+	
+	<insert id="insert">
+		INSERT INTO recommend_product_log(
+			id,
+			member_id,
+			recommend_member_id,
+			product_id,
+			order_no,
+			create_time,
+			del_flag
+		) VALUES (
+			#{id},
+			#{memberId},
+			#{recommendMemberId},
+			#{productId},
+			#{orderNo},
+			#{createTime},
+			#{delFlag}
+		)
+	</insert>
+	
+	<select id="checkOnly" resultType="int">
+	  select count(*) from 
+	  	recommend_product_log rpl 
+	  	where rpl.member_id=#{memberId} 
+	  	and rpl.product_id=#{rMemberId}
+	  	and rpl.recommend_member_id=#{productId}
+	</select>
+	
+	<select id="queryrMemberId" parameterType="Map" resultType="Map">
+		SELECT rpl.recommend_member_id as id FROM recommend_product_log rpl 
+		where rpl.member_id=#{memberId}
+		and rpl.product_id=#{productId} 
+		and rpl.is_settlement=0 
+		order by rpl.create_time desc  
+		limit #{number}
+	</select>
+	
+	<update id="updateIsSettlement">
+	update recommend_product_log rpl 
+		set is_settlement=1,order_no=#{orderNo}
+		where rpl.member_id=#{memberId} 
+		and rpl.recommend_member_id=#{rMemberId}
+		and rpl.product_id=#{productId}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM recommend_product_log
+		WHERE id = #{id}
+	</update>
+	
+	
+	<select id="querySettleRecords" resultType="com.uib.mobile.dto.RecommendProductLog">
+		SELECT
+			rpl.id AS 'id',
+			rpl.recommend_member_id AS 'recommendMemberId',
+			DATE_FORMAT(ot.update_date, '%Y-%m-%d') AS 'paymentDate',
+			p.comm_percent AS 'commPercent',
+			p.price AS 'price'
+		FROM  recommend_product_log rpl
+		INNER JOIN order_table ot ON rpl.order_no = ot.order_no
+		INNER JOIN product p ON rpl.product_id = p.id
+		WHERE rpl.is_settlement = '1'
+		  AND ot.order_status = '2'
+		  AND DATE_SUB(CURDATE(), INTERVAL 15 DAY) &gt; date(ot.update_date)
+	</select>
+	
+	<update id="batchSettleCommission" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator="" > 
+            update mem_member 
+            <set>       
+                commission = commission + #{item.commission},
+                balance = balance + #{item.commission}
+            </set>
+            where id = #{item.recommendMemberId}
+        </foreach>
+	</update>
+	
+	<update id="batchUpdateIsSettlement" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";"> 
+			update recommend_product_log rpl 
+			<set>
+				is_settlement=2
+			</set>
+				where rpl.id=#{item.id}
+		</foreach>
+	</update>
+	
+	<select id="queryId" parameterType="java.util.List" resultType="com.uib.mobile.dto.RecommendProductLog">
+		<foreach collection="list" item="item" index="index" open="(" separator=") union all ("  close=")"> 
+			SELECT rpl.id,#{item.orderNo} AS 'orderNo'
+			  FROM recommend_product_log rpl
+			 WHERE rpl.is_settlement = 0
+			   AND rpl.product_id =#{item.productId}
+			   AND rpl.member_id = #{item.memberId}
+			 ORDER BY rpl.create_time DESC  
+			 LIMIT #{item.number} 
+		</foreach>
+	</select>
+	
+	<update id="batchUpdateIsNotSettlement" parameterType="java.util.List" >
+		<foreach collection="list" item="item" index="index" open="" close=";" separator=";"> 
+			UPDATE recommend_product_log
+			<set>
+				is_settlement = 1,
+				order_no = #{item.orderNo}
+			</set>
+				WHERE is_settlement = 0
+				AND	  id = #{item.id}
+		</foreach>
+	</update>
+	
+</mapper>

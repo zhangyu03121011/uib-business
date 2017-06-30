@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.product.entity.ProductProperty">
+	
+	<select id="queryProductPropertyById" resultType="Map">
+		SELECT
+			pp.id AS 'propertyId',
+			pp.name AS 'propertyName',
+			pg.name AS 'groupName'
+			FROM
+				product_property pp
+			LEFT JOIN product_property_ref ppr ON pp.id = ppr.property_id
+			LEFT JOIN property_group pg ON pp.group_id = pg.id
+			WHERE
+				ppr.product_id = #{productId}
+	</select>
+	
+</mapper>

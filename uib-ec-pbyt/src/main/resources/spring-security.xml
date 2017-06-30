@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+                http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+                http://www.springframework.org/schema/security   
+                http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<!-- filters="none" 不过滤这些资源 -->
+	<security:http pattern="/static/**" security="none" />
+	
+
+	<!-- Spring-Security 的配置 -->
+		<security:http use-expressions="true" access-denied-page="/common/403.jsp">
+
+		<security:intercept-url pattern="/f/member/login" access="permitAll" />
+		<security:intercept-url pattern="/f/common/**" access="permitAll" />
+
+		<!-- login-page:默认指定的登录页面. authentication-failure-url:出错后跳转页面. default-target-url:成功登陆后跳转页面 -->
+		<security:form-login login-page="/f/index" authentication-failure-url="/f/member/loginPage?error=1" default-target-url="/f/index" />
+			
+		<!-- invalidate-session：指定在退出系统时是否要销毁Session。logout-success-url：退出系统后转向的URL。logout-url：指定了用于响应退出系统请求的URL。其默认值为：/j_spring_security_logout。 -->
+		<security:logout invalidate-session="true"
+			logout-success-url="/f/index" logout-url="/j_spring_security_logout" />
+			
+		<!-- max-sessions:允许用户帐号登录的次数。范例限制用户只能登录一次。exception-if-maximum-exceeded: 
+			默认为false，此值表示：用户第二次登录时，前一次的登录信息都被清空。当exception-if-maximum-exceeded="true"时系统会拒绝第二次登录。 -->
+		<security:session-management invalid-session-url="/f/member/loginPage">
+			<security:concurrency-control
+				error-if-maximum-exceeded="false" max-sessions="1" />
+		</security:session-management>
+		
+		<security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter" />
+
+	</security:http>
+	
+	<bean id="myFilter" class="com.easypay.common.filter.MyFilterSecurityInter">
+		<property name="authenticationManager" ref="authenticationManager"></property>
+		<property name="accessDecisionManager" ref="myAccessDecisionManagerBean"></property>
+		<property name="securityMetadataSource" ref="securityMetadataSource"></property>
+	</bean>
+	
+	<!-- 认证配置, 使用userDetailsService提供的用户信息 -->
+	<security:authentication-manager alias="authenticationManager">  
+        <security:authentication-provider ref="authenticationProvider" />   
+    </security:authentication-manager> 
+    
+    <bean id="authenticationProvider" class="com.easypay.common.security.CostomDaoAuthenticationProvider"> 
+	    <property name="userDetailsService" ref="customUserDetailsService" /> 
+	    <property name="hideUserNotFoundExceptions" value="false" /> 
+	    <property name="passwordEncoder" ref="passwordEncoder"></property>
+	</bean>
+	<!-- <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider"> 
+	    <property name="userDetailsService" ref="customUserDetailsService" /> 
+	    <property name="hideUserNotFoundExceptions" value="false" /> 
+	    <property name="passwordEncoder" ref="passwordEncoder"></property>
+	</bean> -->
+	 
+	<bean id="customUserDetailsService" class="com.easypay.common.security.CustomUserDetailsService" />
+	
+	<!--访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<bean id="myAccessDecisionManagerBean" class="com.easypay.common.filter.MyAccessDecisionManager"></bean>
+	<!--资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色访问     -->
+	<bean id="securityMetadataSource" class="com.easypay.common.filter.MyInvocationSecurityMetadataSource"></bean>
+	
+	<!-- 对密码进行MD5编码 -->
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+		
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list><value>classpath:messages_zh_CN</value></list>
+        </property>
+    </bean>	
+    
+	<bean id="imageCaptchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<property name="captchaEngine">
+			<bean class="com.easypay.common.security.CaptchaEngine" />
+		</property>
+		<property name="minGuarantedStorageDelayInSeconds" value="3600" />
+	</bean>
+</beans>  

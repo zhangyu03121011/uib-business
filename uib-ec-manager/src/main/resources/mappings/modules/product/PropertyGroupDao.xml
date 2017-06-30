@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.product.dao.PropertyGroupDao">
+
+	<sql id="propertyGroupColumns">
+		a.id AS "id",
+		a.group_no AS "groupNo",
+		a.orders AS "orders",
+		a.name AS "name",
+		a.product_category_no AS "productCategoryNo",
+		a.merchant_no AS "merchantNo",
+		a.is_filtre AS "isFiltre",
+		a.product_category_id AS "productCategoryId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		p.name AS "productCategoryName"
+	</sql>
+
+	<sql id="propertyGroupJoins">
+		 LEFT JOIN product_category P ON A.product_category_id = P.id
+	</sql>
+
+	<select id="get" resultType="PropertyGroup">
+		SELECT
+		<include refid="propertyGroupColumns" />
+		FROM property_group a
+		<include refid="propertyGroupJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="PropertyGroup">
+		SELECT
+		<include refid="propertyGroupColumns" />
+		FROM property_group a
+		<include refid="propertyGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="groupNo != null and groupNo != ''">
+				AND a.group_no = #{groupNo}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="productCategoryNo != null and productCategoryNo != ''">
+				AND a.product_category_no = #{productCategoryNo}
+			</if>
+			<if test="merchantNo != null and merchantNo != ''">
+				AND a.merchant_no = #{merchantNo}
+			</if>
+			<if test="productCategoryId != null and productCategoryId != ''">
+				AND a.product_category_id = #{productCategoryId}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="PropertyGroup">
+		SELECT
+		<include refid="propertyGroupColumns" />
+		FROM property_group a
+		<include refid="propertyGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryParentAddPropertyGroups" parameterType="java.lang.String" resultMap="propertyGroupResult">
+		SELECT 
+		<include refid="propertyGroupColumns" />
+			,CASE WHEN a.id IN(SELECT property_group_id FROM category_property_group_ref a WHERE a.category_id=#{categoryId}) THEN 1 ELSE 0 END AS selected,
+			a.pId,a.pName,pOrders,
+			CASE WHEN a.pId IN (SELECT a.property_id FROM category_property_group_ref a WHERE a.category_id=#{categoryId}) THEN 1 ELSE 0 END AS pSelected
+		FROM(
+			SELECT 
+				a.*,p.id AS pId,p.`name` AS pName,p.orders AS pOrders 
+			FROM 
+				property_group AS a LEFT JOIN product_property AS p ON a.id = p.group_id
+			WHERE 
+				a.product_category_id=#{parentId} AND a.del_flag = '0'
+			UNION 
+			SELECT 
+				a.*,p.id AS pId,p.`name` AS pName,p.orders AS pOrders
+			FROM property_group a 
+				LEFT JOIN category_property_group_ref AS b ON a.id=b.property_group_id
+				LEFT JOIN product_property AS p ON a.id = p.group_id
+			WHERE 
+				b.category_id = #{parentId} AND a.del_flag = '0') AS a 
+		ORDER BY 
+			a.orders,a.id,a.pOrders,a.pId,pSelected
+	</select>
+	
+	<select id="queryPropertyGroupsByCategoryId" parameterType="java.lang.String" resultMap="propertyGroupResult">
+		SELECT 
+		<include refid="propertyGroupColumns" />
+			,p.id AS "pId",p.orders AS "pOrders",p.`name` AS "pName"
+		FROM
+		property_group AS a LEFT JOIN product_property AS p ON a.id=p.group_id
+		LEFT JOIN product_category pc on a.product_category_id = pc.id
+		<where>
+			a.del_flag = '0'
+			<if test="categoryId!=null and categoryId!=''">
+				AND (a.product_category_id=#{categoryId}
+				OR EXISTS( SELECT c.property_group_id FROM category_property_group_ref AS c WHERE c.category_id=#{categoryId} AND a.id=c.property_group_id AND p.id=c.property_id))
+			</if>
+		</where>
+		order by pc.grade,a.orders,a.id,p.orders,p.id;
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO property_group(
+		id,
+		group_no,
+		orders,
+		name,
+		product_category_no,
+		merchant_no,
+		is_filtre,
+		product_category_id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES
+		(
+		#{id},
+		#{groupNo},
+		#{orders},
+		#{name},
+		#{productCategoryNo},
+		#{merchantNo},
+		#{isFiltre},
+		#{productCategoryId},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE property_group SET
+		group_no = #{groupNo},
+		orders = #{orders},
+		name = #{name},
+		product_category_no = #{productCategoryNo},
+		merchant_no = #{merchantNo},
+		is_filtre = #{isFiltre},
+		product_category_id = #{productCategoryId},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE property_group SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="batchDeleteByProductCategoryId" parameterType="String">
+		UPDATE property_group AS a,product_property AS b SET
+		a.del_flag = '1',b.del_flag = '1'
+		<where>
+			a.product_category_id=#{productCategoryId} AND a.id=b.group_id
+		</where>
+	</update>
+	
+	<insert id="saveCategoryPropertyGroupRef">
+		INSERT INTO category_property_group_ref(id,property_group_id,category_id,property_id) VALUES
+		<foreach collection="propertyGroupIdBeans" item="item" separator=",">
+			<foreach collection="item.paramValue" item="propertyId" separator=",">
+				((SELECT REPLACE(UUID(),'-','')),#{item.paramKey},#{categoryId},#{propertyId})
+			</foreach>
+		</foreach>
+	</insert>
+	
+	<delete id="deleteByCategoryId" parameterType="java.lang.String">
+		DELETE FROM category_property_group_ref WHERE category_property_group_ref.category_id=#{categoryId}
+	</delete>
+	
+	<resultMap type="PropertyGroup" id="propertyGroupResult">
+		<id property="id" column="id"/>
+		<result property="groupNo" column="groupNo"/>
+		<result property="orders" column="orders"/>
+		<result property="name" column="name"/>
+		<result property="productCategoryNo" column="productCategoryNo"/>
+		<result property="merchantNo" column="merchantNo"/>
+		<result property="isFiltre" column="isFiltre"/>
+		<result property="productCategoryId" column="productCategoryId"/>
+		<result property="selected" column="selected"/>
+		<collection property="productPropertyList" javaType="ArrayList" 
+			ofType="com.uib.ecmanager.modules.product.entity.ProductProperty">
+			<id property="id" column="pId"/>
+			<result property="name" column="pName"/>
+			<result property="orders" column="pOrders"/>
+			<result property="selected" column="pSelected"/>
+		</collection>
+	</resultMap>
+</mapper>

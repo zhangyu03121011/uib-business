@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.ecmanager.modules.product.dao.SpecificationGroupDao">
+
+	<sql id="specificationGroupColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.group_no AS "groupNo",
+		a.content_type AS "contentType",
+		a.orders AS "orders",
+		a.product_category_no AS "productCategory.categoryNo",
+		a.merchant_no AS
+		"merchantNo",
+		a.product_category_id AS "productCategory.id",
+		a.create_by
+		AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS
+		"updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="specificationGroupColumns4ResultMap">
+		a.id AS "id",
+		a.name AS "name",
+		a.group_no AS "groupNo",
+		a.content_type AS "contentType",
+		a.orders AS "orders",
+		a.product_category_no AS "productCategoryNo",
+		a.merchant_no AS
+		"merchantNo",
+		a.product_category_id AS "productCategoryId",
+		a.create_by
+		AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS
+		"delFlag"
+	</sql>
+
+	<sql id="productSpecificationColumns4ResultMap">
+		b.id AS "bId",
+		b.specification_no AS "bSpecificationNo",
+		b.orders AS "bOrders",
+		b.name AS "bName",
+		b.file_path AS "bFilePath",
+		b.specification_group_no AS "bSpecificationGroupNo",
+		b.merchant_no AS
+		"bMerchantNo",
+		b.specification_group_id AS "bSpecificationGroupId",
+		b.create_by AS "bCreateById",
+		b.create_date AS "bCreateDate",
+		b.update_by AS "bUpdateById",
+		b.update_date AS "bUpdateDate",
+		b.remarks
+		AS "bRemarks",
+		b.del_flag AS "bDelFlag"
+	</sql>
+
+	<sql id="specificationGroupJoins">
+	</sql>
+
+	<select id="get" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<include refid="specificationGroupJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		,pc.name AS "productCategory.name"
+		FROM specification_group a
+			 LEFT JOIN   product_category pc   ON  a.product_category_id=pc.id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="productCategory!=null and productCategory.id!=null and productCategory.id!=''">
+			  AND  ( pc.id =#{productCategory.id}  
+			  		OR  pc.id IN(SELECT id
+								FROM product_category pp
+								WHERE LOCATE(pp.id, (SELECT ppp.parent_ids
+													FROM product_category ppp
+													WHERE ppp.id = #{productCategoryId}
+								)) > 1))
+			</if>
+			<if test="contentType!=null">
+				AND a.content_type = #{contentType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.orders
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<include refid="specificationGroupJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO specification_group(
+		id,
+		name,
+		group_no,
+		content_type,
+		orders,
+		product_category_no,
+		merchant_no,
+		product_category_id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{name},
+		#{groupNo},
+		#{contentType},
+		#{orders},
+		#{productCategory.categoryNo},
+		#{merchantNo},
+		#{productCategory.id},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE specification_group SET
+		name = #{name},
+		content_type = #{contentType},
+		orders = #{orders},
+		merchant_no = #{merchantNo},
+		product_category_id = #{productCategory.id},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE specification_group SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="querySpecificationGroupsByProductId" parameterType="java.lang.String"
+		resultType="SpecificationGroup">
+		SELECT
+		<include refid="specificationGroupColumns" />
+		FROM specification_group a
+		<where>
+			a.id IN (SELECT DISTINCT(p.specification_group_id) FROM
+			product_specification p LEFT JOIN product_specification_ref ON
+			p.id=product_specification_ref.specification_id
+			<where>
+				product_specification_ref.product_id=#{productId}
+			</where>
+			)
+		</where>
+		ORDER BY a.orders ASC
+	</select>
+
+	<select id="querySpecificationGroupByMap" parameterType="Map"
+		resultMap="specificationGroupMap">
+		SELECT
+		<if test="goodsId!=null and goodsId!=''">
+		CASE WHEN a.id IN (SELECT DISTINCT(psgr.specification_group_id) AS sg_id
+		FROM product_specification_group_ref AS psgr
+		WHERE psgr.product_id IN
+		(SELECT p.id
+		FROM product p
+		WHERE p.goods = #{goodsId}
+		AND p.del_flag = '0')) THEN true ELSE false END AS 'selected',
+		</if>
+		<include refid="specificationGroupColumns4ResultMap" />
+		,
+		<include refid="productSpecificationColumns4ResultMap" />
+		FROM specification_group a RIGHT JOIN product_specification b ON a.id
+		= b.specification_group_id, (SELECT id AS p_id ,orders,p.grade
+		FROM product_category p
+		WHERE p.id = #{productCategoryId}
+		OR p.id IN (SELECT id
+		FROM product_category pp
+		WHERE LOCATE(pp.id, (SELECT ppp.parent_ids
+		FROM product_category ppp
+		WHERE ppp.id = #{productCategoryId}
+		)) > 1) AND p.del_flag='0'    
+		) p_ids 
+		WHERE a.product_category_id = p_ids.p_id ORDER BY p_ids.grade,p_ids.orders,a.orders,a.id,b.orders,b.id 
+	</select>
+	
+	<update id="batchDeleteByProductCategoryId" parameterType="String">
+		UPDATE specification_group AS a,product_specification AS b SET
+		a.del_flag = '1',b.del_flag = '1'
+		<where>
+			a.product_category_id=#{productCategoryId} AND a.id=b.specification_group_id
+		</where>
+	</update>
+
+	<resultMap type="SpecificationGroup" id="specificationGroupMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="groupNo" column="groupNo" />
+		<result property="contentType" column="contentType" />
+		<result property="orders" column="orders" />
+		<result property="productCategory.categoryNo" column="productCategoryNo" />
+		<result property="merchantNo" column="merchantNo" />
+		<result property="productCategory.id" column="productCategoryId" />
+		<result property="selected" column="selected"/>
+		<result property="createBy.id" column="createBy" />
+		<result property="createDate" column="createDate" />
+		<result property="updateBy.id" column="updateBy" />
+		<result property="updateDate" column="updateDate" />
+		<result property="remarks" column="remarks" />
+		<result property="delFlag" column="delFlag" />
+		<collection property="productSpecificationList" javaType="ArrayList"
+			ofType="com.uib.ecmanager.modules.product.entity.ProductSpecification">
+			<id property="id" column="bId"/>
+			<result property="specificationNo" column="bSpecificationNo"/>
+			<result property="orders" column="bOrders"/>
+			<result property="name" column="bName"/>
+			<result property="filePath" column="bFilePath"/>
+			<result property="specificationGroupNo" column="bSpecificationGroupNo"/>
+			<result property="merchantNo" column="bMerchantNo"/>
+			<result property="SpecificationGroup.id" column="bSpecificationGroupId"/>
+			<result property="createBy.id" column="bCreateById"/>
+			<result property="createDate" column="bCreateDate"/>
+			<result property="updateBy.id" column="bUpdateById"/>
+			<result property="updateDate" column="bUpdateDate"/>
+			<result property="remarks" column="bRemarks"/>
+		</collection>
+	</resultMap>
+</mapper>

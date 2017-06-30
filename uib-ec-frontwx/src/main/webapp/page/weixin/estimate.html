@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>用户口碑</title>
+<link href="css/public.css" rel="stylesheet" type="text/css">
+<!-- 去除loading字样 -->
+<style type="text/css">
+	.ui-loader-default{ display:none}
+	.ui-mobile-viewport{ border:none;}
+	.ui-page {padding: 0; margin: 0; outline: 0} 
+</style>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/estimate.js"></script>
+</head>
+
+<body>
+<!-- 内容区域 -->
+<div class="detail-wrapper">
+    <!-- 评分 -->
+    <div class="com-score" id="score-div">
+    </div>
+    <div class="tab">
+    	<input id="menu-index" type="hidden" value="0"/>
+        <ul class="tab-bar" id="tags">
+            <li class="tab-bar-group">
+            	<span class="tab-bar-item hover"><a href="javascript:void(0)" id="hp-href"></a></span>
+           		<span class="tab-bar-item"><a href="javascript:void(0)" id="zp-href"></a></span>
+                <span class="tab-bar-item"><a href="javascript:void(0)" id="cp-href"></a></span>
+            </li>
+        </ul>
+        <div id="tagContent"> 
+        	<!-- 好评 -->
+            <div class="tab-group" style="display:block" id="hp-div">
+            	<input id="hp-page" type="hidden" value="1"/>
+            </div>
+            <!-- 中评 -->
+            <div class="tab-group" id="zp-div">
+            	<input id="zp-page" type="hidden" value="1"/>
+            </div>
+            <!-- 差评 -->
+            <div class="tab-group" id="cp-div">
+            	<input id="cp-page" type="hidden" value="1"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+if exists (select name from sysindexes where name = 'act_idx_exec_buskey') drop index act_ru_execution.act_idx_exec_buskey;
+if exists (select name from sysindexes where name = 'act_idx_task_create') drop index act_ru_task.act_idx_task_create;
+if exists (select name from sysindexes where name = 'act_idx_ident_lnk_user') drop index act_ru_identitylink.act_idx_ident_lnk_user;
+if exists (select name from sysindexes where name = 'act_idx_ident_lnk_group') drop index act_ru_identitylink.act_idx_ident_lnk_group;
+if exists (select name from sysindexes where name = 'act_idx_variable_task_id') drop index act_ru_variable.act_idx_variable_task_id;
+if exists (select name from sysindexes where name = 'act_idx_event_subscr_config_') drop index act_ru_event_subscr.act_idx_event_subscr_config_;
+
+if exists (select table_name from information_schema.tables where table_name = 'act_ge_bytearray') alter table act_ge_bytearray drop constraint act_fk_bytearr_depl;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_procdef') alter table act_re_procdef drop constraint act_uniq_procdef;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_execution') alter table act_ru_execution drop constraint act_fk_exe_procdef;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_execution') alter table act_ru_execution drop constraint act_fk_exe_parent;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_execution') alter table act_ru_execution drop constraint act_fk_exe_super;  
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_identitylink') alter table act_ru_identitylink drop constraint act_fk_tskass_task;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_identitylink') alter table act_ru_identitylink drop constraint act_fk_athrz_procedef;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_task') alter table act_ru_task drop constraint act_fk_task_exe;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_task') alter table act_ru_task drop constraint act_fk_task_procinst;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_task') alter table act_ru_task drop constraint act_fk_task_procdef;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_variable') alter table act_ru_variable drop constraint act_fk_var_exe;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_variable') alter table act_ru_variable drop constraint act_fk_var_procinst;    
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_variable') alter table act_ru_variable drop constraint act_fk_var_bytearray;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_job') alter table act_ru_job drop constraint act_fk_job_exception;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_event_subscr') alter table act_ru_event_subscr drop constraint act_fk_event_exec;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_model') alter table act_re_model drop constraint act_fk_model_source;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_model') alter table act_re_model drop constraint act_fk_model_source_extra;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_model') alter table act_re_model drop constraint act_fk_model_deployment;
+
+if exists (select name from sysindexes where name = 'act_idx_athrz_procedef') drop index act_ru_identitylink.act_idx_athrz_procedef;
+    
+if exists (select table_name from information_schema.tables where table_name = 'act_ge_property') drop table act_ge_property;
+if exists (select table_name from information_schema.tables where table_name = 'act_ge_bytearray') drop table act_ge_bytearray;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_procdef') drop table act_re_procdef;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_deployment') drop table act_re_deployment;
+if exists (select table_name from information_schema.tables where table_name = 'act_re_model') drop table act_re_model;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_identitylink') drop table act_ru_identitylink;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_task') drop table act_ru_task;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_variable') drop table act_ru_variable;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_execution') drop table act_ru_execution;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_event_subscr') drop table act_ru_event_subscr;
+if exists (select table_name from information_schema.tables where table_name = 'act_ru_job') drop table act_ru_job;

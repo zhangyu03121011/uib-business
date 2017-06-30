@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>添加店铺商品</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" type="text/css" href="js/lib/swiper-3.3.1.change.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 头部导航开始 -->
+    <header>
+        <div class="top-bar-container">
+            <a class=" iconfont icon-back top-bar-back" href="javascript:history.go(-1)"></a>
+            <div class="title">全部商品</div>
+            <div class="right-text"><a href="#">完成</a></div>
+        </div>
+    </header>
+    
+    <!-- 头部导航结束 -->
+    <!-- 分类搜索开始 -->
+    <div class="body-content">
+    	<div class="form pro-add">
+            <form class="iconfont icon-sousuo" action="#">
+                <input type="text" name="search" id="searchProduct" placeholder="搜索商品" />
+            </form>
+            <i class="iconfont icon-icon-search pro-search"></i>
+        </div>
+        <div class="category">
+            <div class="category-title" id="product-title">
+            	<div class="category-all" >
+            		<a class="" id="product" href='javascript:void(0)' onclick="findProductList('','','',0,6,'')" id="allcategory">全部</a>
+            	</div>
+            	<div class="slide-category swiper-catogory">
+            	 	<div class="swiper-wrapper" id="category-title"> 
+<!--                 <div class="category-all"><a class="hover">全部</a></div> -->
+                	</div>
+                </div>
+                <i class="iconfont icon-arrow-down category-icon" id="categoryShow"></i>
+            </div>
+           <div class="category-list">
+                <div class="pure pure-g" id="product-list">
+                    <div class="pure pure-u-1-4" id="category-list"><a href='javascript:void(0)' id="allCategoryList">全部</a></div>
+                </div>
+            </div>
+            
+            <!-- 分类搜索结束 -->
+            <!-- 产品列表介绍开始 -->
+            <div class="products">
+                <div class="pure pure-g" id="productList">
+
+                </div>
+            </div>
+             <li class='endli' style="display:none;"><p calss='name' align='center'>没有更多数据</p></li>
+            <li class='scrimg' style="display:none;"><p calss='name' align='center'>正在努力加载数据...</p></li>
+            <!-- 产品列表介绍结束 -->
+             <div class="no-data" id="no-data" style="display:none">
+                <div class="no-data-logo">
+                    <span class="iconfont icon-sousuo"></span></div>
+                <p class="no-data-title">没有搜索结果</p>
+                <p class="no-data-title-s">没有找到相关的宝贝</p>
+            </div>
+        </div>
+        <!-- 底部导航开始 -->
+   
+        <!-- 底部导航结束 -->
+        <script src="./js/jquery.js"></script>
+        <script src="./js/touch.js"></script>
+        <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="js/lib/swiper-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/lib/fixed.js"></script>
+		<script type="text/javascript" src="js/alert.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/encode.js"></script>
+		<script type="text/javascript" src="js/product_add.js"></script>
+        <script>
+        $(function() {
+            // home
+//             touch.on('#categoryShow', 'touchstart', function(event) {
+//                 if ($(this).hasClass('icon-arrow-down')) {
+//                     $(".category-list").show();
+//                     $(this).removeClass("icon-arrow-down").addClass("icon-arrow-up");
+//                 } else {
+//                     $(".category-list").hide();
+//                     $(this).removeClass("icon-arrow-up").addClass("icon-arrow-down");
+//                 }
+//             });
+           
+        });
+        </script>
+</body>
+
+</html>

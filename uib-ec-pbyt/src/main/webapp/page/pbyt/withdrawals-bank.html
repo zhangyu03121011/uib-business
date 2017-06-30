@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/popover.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/personal.css">
+	<title></title>
+</head>
+<body class="main-bg">
+<header>
+  <div class="top-bar-container">
+    <a class=" iconfont icon-back top-bar-back" href="javascript:history.back(1)"></a>
+    <div class="title">提现</div>
+  </div>
+</header>
+<section class="app-body no-menu">
+	<div class="withdrawals-bank" id="select_bank"><span id="bank_name"></span>(尾号<span id="cardNo"></span>)<i class="iconfont icon-right"></i></div>
+	<div class="withdrawals-money">
+		<h2>本次最多提现<span id="balance"></span>元</h2>
+		<div class="money-enter"><span>金额（元）</span><input id="applyAmount" name="applyAmount" type="text" placeholder="请填写提现金额"></div>
+	</div>
+	<p class="withdrawals-exp"><a href="#" id="withdrawExp">提现说明</a></p>
+	<button class="new-address-btn" id="withdrawBtn">提现</button>
+</section>
+<script src="js/uib.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/withdrawals-bank.js"></script>
+<script type="text/javascript" src="./js/lib/frozen.js"></script>
+<script type="text/javascript" src="./js/touch.min.js"></script>
+<script>
+        touch.on('#withdrawExp', 'tap', function(event) {
+             var dia=$.dialog({
+                title: '提现说明',
+                content: '<div style="text-align:left"><p>1、您每次提现申请额度最低为100元，最高不超过1000元，每月提现次数不超过5次。</p><p>2、我们每个工作日都会集中处理代理商的提现申请，转账后将会发送短信到您登记的手机。</p><p>3、请您认真如实的填写银行卡账户信息，方便我们尽快为您办理提现；当您的信息确认无误，款项将于3-5个工作日退至您所填写的储蓄卡账户中，请耐心等待。</p><p>4、您申请提现后，账户中对应的款项将暂时冻结，直至提现处理完成。</P></div>',
+                button: ["确认"]
+            });
+
+           
+        });
+</script>
+</body>
+</html>

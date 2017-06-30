@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.cart.entity.CartItem">
+    
+	<sql id="cartItemColumns">
+		a.id AS "id",
+		a.cart_id AS "cartId",
+		a.product_id AS "productId",
+		a.specification_id AS "specificationId",
+		a.quantity AS "quantity",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate",
+		a.price AS "productPrice"
+	</sql>
+	
+	<sql id="productColumns">
+		p.id AS "pid",
+		p.product_no AS "productNo",
+		p.allocated_stock AS "allocatedStock",
+		p.cost AS "cost",
+		p.full_name AS "fullName",
+		p.hits AS "hits",
+		p.image AS "image",
+		p.introduction AS "introduction",
+		p.is_gift AS "isGift",
+		p.is_list AS "isList",
+		<!-- p.is_marketable AS "isMarketable", -->
+		p.pc_is_marketable AS "pcIsMarketable",
+		p.app_is_marketable as "appIsMarketable",
+		p.wx_is_marketable as "wxIsMarketable",
+		p.is_top AS "isTop",
+		p.is_member_price AS "isMemberPrice",
+		p.hot_sell AS "hotSell",
+		p.newest AS "newest",
+		p.promotion AS "promotion",
+		p.keyword AS "keyword",
+		p.market_price AS "marketPrice",
+		p.memo AS "memo",
+		p.month_hits AS "monthHits",
+		p.month_hits_date AS "monthHitsDate",
+		p.month_sales AS "monthSales",
+		p.month_sales_date AS "monthSalesDate",
+		p.name AS "name",
+		p.point AS "point",
+		p.price AS "price",
+		p.sales AS "sales",
+		p.score AS "score",
+		p.score_count AS "scoreCount",
+		p.seo_description AS "seoDescription",
+		p.seo_keywords AS "seoKeywords",
+		p.seo_title AS "seoTitle",
+		p.stock AS "stock",
+		p.stock_memo AS "stockMemo",
+		p.total_score AS "totalScore",
+		p.unit AS "unit",
+		p.week_hits AS "weekHits",
+		p.week_hits_date AS "weekHitsDate",
+		p.week_sales AS "weekSales",
+		p.week_sales_date AS "weekSalesDate",
+		p.weight AS "weight",
+		p.goods AS "goods",
+		p.product_category_no AS "productCategoryNo",
+		p.proprietary AS "proprietary",
+		p.mechant_no AS "merchantNo",
+		p.product_category_id AS "productCategoryId",
+		p.create_by AS "createBy",
+		p.brand_id AS "brandId",
+		p.create_date AS "pCreateDate",
+		p.update_by AS "pUpdateBy",
+		p.update_date AS "pUpdateDate",
+		p.remarks AS "pRemarks",
+		p.del_flag AS "pDelFlag"
+	</sql>
+	
+	<sql id="cartItemJoins">
+	</sql>
+    
+	<select id="get" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		WHERE a.id = #{id} AND a.del_flag = '0'
+	</select>
+	
+	<select id="findList" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		<where>
+			a.del_flag = '0'
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		<where>
+			a.del_flag = '0'
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cart_item(
+			id,
+			cart_id,
+			product_id,
+			specification_id,
+			quantity,
+			create_date,
+			modify_date
+		) VALUES (
+			#{id},
+			#{cartId},
+			#{productId},
+			#{specificationId},
+			#{quantity},
+			#{createDate},
+			#{modifyDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cart_item SET 
+			<if test="cartId!=null and cartId!=''">	
+				cart_id = #{cartId},
+			</if>
+			<if test="specificationId!=null and specificationId!=''">
+				specification_id = #{specificationId},
+			</if>
+			<if test="quantity!=null and quantity!=0 and quantity!=''">
+				quantity = #{quantity},
+			</if>
+			<if test="productPrice !=null and productPrice !=0 and productPrice !=''">
+				price = #{productPrice},
+			</if>
+			modify_date = #{modifyDate}
+		WHERE
+			1 = 1
+			<choose>
+				<when test="id!=null and id!=''">
+					AND id = #{id}
+				</when>
+				<when test="productId!=null and productId!=''">
+			 		AND product_id = #{productId}
+				</when>
+				<otherwise>
+					AND 1 = 0
+				</otherwise>
+			</choose>
+	</update>
+	
+	<update id="delete">
+		UPDATE 
+			cart_item 
+		SET
+			del_flag = '1'
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByRelativeId" parameterType="map" >
+		DELETE FROM 
+			cart_item
+		WHERE
+			<choose>
+				<when test="productId!=null and productId!='' and cartId!=null and cartId!=''">
+					product_id = #{productId} AND cart_id=#{cartId}
+				</when>
+				<when test="productId!=null and productId!=''">
+					product_id = #{productId}
+				</when>
+				<when test="cartId!=null and cartId!=''">
+					cart_id=#{cartId}
+				</when>
+				<otherwise>
+					1 = 0
+				</otherwise>
+			</choose>
+	</update>
+	
+	<update id="deleteById" parameterType="java.lang.String">
+		DELETE FROM 
+			cart_item
+		WHERE
+			id = #{id}
+	</update>
+	
+	<select id="getByProductId" resultType="CartItem">
+		SELECT 
+			<include refid="cartItemColumns"/>
+		FROM cart_item a
+		<include refid="cartItemJoins"/>
+		WHERE a.product_id = #{productId} AND a.del_flag = '0'
+	</select>
+	
+	<select id="getById" resultMap="cartItemMap">
+		SELECT 
+			<include refid="cartItemColumns"/>,
+			<include refid="productColumns"/>
+		FROM cart_item a LEFT JOIN product p ON a.product_id=p.id
+			<include refid="cartItemJoins"/>
+		WHERE a.id = #{id} AND a.del_flag = '0'
+	</select>
+	
+	<resultMap type="com.uib.cart.entity.CartItem" id="cartItemMap">
+		<id property="id" column="id"/>
+		<result property="cartId" column="cartId"/>
+		<result property="productId" column="productId"/>
+		<result property="specificationId" column="specificationId"/>
+		<result property="quantity" column="quantity"/>
+		<result property="createDate" column="createDate"/>
+		<result property="modifyDate" column="modifyDate"/>
+		<association property="product" javaType="com.uib.product.entity.Product" resultMap="productMap">
+		</association>
+	</resultMap>
+	
+	<resultMap type="Product" id="productMap">
+		<id property="id" column="pid"/>
+		<result property="productNo" column="productNo"/>
+		<result property="allocatedStock" column="allocatedStock"/>
+		<result property="cost" column="cost"/>
+		<result property="fullName" column="fullName"/>
+		<result property="hits" column="hits"/>
+		<result property="image" column="image"/>
+		<result property="introduction" column="introduction"/>
+		<result property="isGift" column="isGift"/>
+		<result property="isList" column="isList"/>
+		<result property="isMarketable" column="isMarketable"/>
+		<result property="isTop" column="isTop"/>
+		<result property="isMemberPrice" column="isMemberPrice"/>
+		<result property="hotSell" column="hotSell"/>
+		<result property="newest" column="newest"/>
+		<result property="promotion" column="promotion"/>
+		<result property="keyword" column="keyword"/>
+		<result property="marketPrice" column="marketPrice"/>
+		<result property="memo" column="memo"/>
+		<result property="monthHits" column="monthHits"/>
+		<result property="monthHitsDate" column="monthHitsDate"/>
+		<result property="monthSales" column="monthSales"/>
+		<result property="monthSalesDate" column="monthSalesDate"/>
+		<result property="name" column="name"/>
+		<result property="point" column="point"/>
+		<result property="price" column="price"/>
+		<result property="sales" column="sales"/>
+		<result property="score" column="score"/>
+		<result property="scoreCount" column="scoreCount"/>
+		<result property="seoDescription" column="seoDescription"/>
+		<result property="seoKeywords" column="seoKeywords"/>
+		<result property="seoTitle" column="seoTitle"/>
+		<result property="stock" column="stock"/>
+		<result property="stockMemo" column="stockMemo"/>
+		<result property="totalScore" column="totalScore"/>
+		<result property="unit" column="unit"/>
+		<result property="weekHits" column="weekHits"/>
+		<result property="weekHitsDate" column="weekHitsDate"/>
+		<result property="weekSales" column="weekSales"/>
+		<result property="weekSalesDate" column="weekSalesDate"/>
+		<result property="weight" column="weight"/>
+		<result property="goods" column="goods"/>
+		<result property="productCategoryNo" column="productCategoryNo"/>
+		<result property="proprietary" column="proprietary"/>
+		<result property="merchantNo" column="merchantNo"/>
+		<result property="productCategoryId" column="productCategoryId"/>
+		<result property="createBy" column="createBy"/>
+		<result property="brandId" column="brandId"/>
+		<result property="createDate" column="pCreateDate"/>
+		<result property="updateBy" column="pUpdateBy"/>
+		<result property="updateDate" column="pUpdateDate"/>
+		<result property="remarks" column="pRemarks"/>
+		<result property="delFlag" column="pDelFlag"/>
+	</resultMap>
+	
+</mapper>

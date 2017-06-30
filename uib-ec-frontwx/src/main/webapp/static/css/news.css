@@ -1,0 +1,9 @@
+@charset "utf-8";
+/* 新闻 */
+.news_title{width:100%;line-height:24px}
+.news_box{width:1158px;border:solid 1px #eee;margin-top:10px;padding:20px;}
+.news_hd{padding-bottom:20px;border-bottom:solid 1px #eee}
+.news_hd_tit{font-size:18px;text-align:center;}
+.news_hd_info{color:#999999;text-align:center;margin-top:2px;}
+.news_con{width:100%;padding-top:20px;font-size:14px;min-height:400px}
+.news_con p{text-indent:2em;padding-bottom:10px}

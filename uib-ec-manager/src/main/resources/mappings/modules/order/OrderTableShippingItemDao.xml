@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableShippingItemDao">
+    
+	<sql id="orderTableShippingItemColumns">
+		a.id AS "id",
+		a.order_table_shipping_id AS "orderTableShipping.id",
+		a.product_no AS "productNo",
+		a.name AS "name",
+		a.quantity AS "quantity",
+		a.shipping_no AS "shippingNo",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTableShippingItemJoins">
+		LEFT JOIN order_table_shipping b ON b.id = a.order_table_shipping_id
+	</sql>
+    
+	<select id="get" resultType="OrderTableShippingItem">
+		SELECT 
+			<include refid="orderTableShippingItemColumns"/>
+		FROM order_table_shipping_item a
+		<include refid="orderTableShippingItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTableShippingItem">
+		SELECT 
+			<include refid="orderTableShippingItemColumns"/>
+		FROM order_table_shipping_item a
+		<include refid="orderTableShippingItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderTableShipping != null and orderTableShipping.id != null and orderTableShipping.id != ''">
+				AND a.order_table_shipping_id = #{orderTableShipping.id}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTableShippingItem">
+		SELECT 
+			<include refid="orderTableShippingItemColumns"/>
+		FROM order_table_shipping_item a
+		<include refid="orderTableShippingItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findShippingItemByShippingId" resultType="OrderTableShippingItem">
+		SELECT
+			<include refid="orderTableShippingItemColumns"/>
+		FROM order_table_shipping_item a
+		WHERE a.order_table_shipping_id = #{shippingId}
+	</select>
+	<insert id="insert">
+		INSERT INTO order_table_shipping_item(
+			id,
+			order_table_shipping_id,
+			product_no,
+			name,
+			quantity,
+			shipping_no,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderTableShipping.id},
+			#{productNo},
+			#{name},
+			#{quantity},
+			#{shippingNo},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table_shipping_item SET 	
+			order_table_shipping_id = #{orderTableShipping.id},
+			product_no = #{productNo},
+			name = #{name},
+			quantity = #{quantity},
+			shipping_no = #{shippingNo},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table_shipping_item SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_shipping_id = #{orderTableShipping.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

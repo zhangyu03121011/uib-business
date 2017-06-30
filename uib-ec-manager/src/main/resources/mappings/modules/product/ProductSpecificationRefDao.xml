@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.uib.ecmanager.modules.product.dao.ProductSpecificationRefDao">
+
+	<sql id="productSpecificationRefColumns">
+		a.id AS "id",
+		a.specification_id AS "specificationId",
+		a.product_id AS "productId"
+	</sql>
+
+	<sql id="productSpecificationRefJoins">
+	</sql>
+
+	<select id="get" resultType="ProductSpecificationRef">
+		SELECT
+		<include refid="productSpecificationRefColumns" />
+		FROM product_specification_ref a
+		<include refid="productSpecificationRefJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="ProductSpecificationRef">
+		SELECT
+		<include refid="productSpecificationRefColumns" />
+		FROM product_specification_ref a
+		<include refid="productSpecificationRefJoins" />
+		<where>
+
+			<if test="specificationId != null and specificationId != ''">
+				AND a.specification_id = #{specificationId}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ProductSpecificationRef">
+		SELECT
+		<include refid="productSpecificationRefColumns" />
+		FROM product_specification_ref a
+		<include refid="productSpecificationRefJoins" />
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO product_specification_ref(
+		id,
+		specification_id,
+		product_id
+		) VALUES (
+		#{id},
+		#{specificationId},
+		#{productId}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE product_specification_ref SET
+		specification_id
+		= #{specificationId},
+		product_id = #{productId}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM product_specification_ref
+		WHERE id = #{id}
+	</update>
+
+	<select id="querySpecificationIdsByProductId" resultType="string">
+		SELECT a.specification_id FROM product_specification_ref a
+		<where>a.product_id=#{productId}</where>
+	</select>
+
+	<!--方法有问题  -->
+	<insert id="insertBatch">
+		<selectKey resultType="java.lang.String" keyProperty="id">
+			select
+			UUID()
+		</selectKey>
+		INSERT INTO product_specification_ref(specification_id,product_id)
+		VALUES
+		<foreach collection="specificationIds" item="specificationId" index="index"
+			separator=",">
+			(#{productId},#{specificationId})
+		</foreach>
+	</insert>
+
+	<insert id="insertRefsBatch" parameterType="java.util.List">
+		INSERT INTO product_specification_ref(id,specification_id,product_id)
+		VALUES
+		<foreach collection="productSpecificationRefs" item="item"
+			index="index" separator=",">
+			(#{item.id},#{item.specificationId},#{item.productId})
+		</foreach>
+	</insert>
+
+	<delete id="deleteBatch">
+		DELETE FROM product_specification_ref
+		<where>
+			product_id=#{productId}
+			<if test="specificationIds!=null and specificationIds.size>0">
+				AND specification_id IN
+				<foreach collection="specificationIds" item="specificationId"
+					index="index" open="(" separator="," close=")">
+					#{specificationId}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+	
+	<update id="updateSpecificationIdsRef" parameterType="List">
+		INSERT INTO product_specification_ref(id,product_id,specification_id)
+		VALUES
+		<foreach collection="params" item="param" index="index" separator=",">
+			<foreach collection="param.paramValue" item="specificationId" separator=",">
+				((SELECT REPLACE(UUID(),'-','')),#{param.paramKey},#{specificationId})
+			</foreach>
+		</foreach>
+		ON DUPLICATE KEY UPDATE specification_id=VALUES(specification_id)
+	</update>
+	
+	<delete id="batchDeleteByPids" parameterType="List">
+		DELETE FROM product_specification_ref
+		<where>
+			<choose>
+				<when test="pids!=null and pids.size()>0">
+					product_id IN
+					<foreach collection="pids" item="pid" open="(" separator="," close=")">
+						#{pid}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+</mapper>

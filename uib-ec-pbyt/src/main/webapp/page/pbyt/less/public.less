@@ -1,0 +1,45 @@
+@px : 0.01388888rem;
+//全局颜色设定
+@cl-f:#fff;
+@cl-3:#333;
+@cl-6:#666;
+@cl-9:#999;
+@main-cl:#f02b2b; //主色调
+@header-bg-cl:#f2f2f2; //抬台背景颜色
+@bottom-bg-cl:#f9f9f9; //底部内容背景颜色
+@dividing-line:#e3e3e3; //分隔线颜色
+
+@body-bg-cl : #f2f2f2;// 主体背景色 
+@body-padding : @px*30; // 两边留白值
+@border-light : #e3e3e3; //白色背景边框色
+@border-dark : #ccc; //灰色背景边框色
+
+@normal-z : 10;//普通定位z-index 
+@menu-z : 100;//menud等菜单 z-index
+@popover-z : 1000;//弹框类 z-index
+
+
+@header-bar-height:150*@px;
+@menu-bar-height: 140*@px;
+//全局字体大小设定
+.font(@size){font-size:@size*@px;}
+//菜单默认字体大小颜色
+.menu-cl(){.font(30);color:@cl-9;}
+//菜单当前字体大小颜色
+.menu-hover-cl(){.font(30);color:#e8410d;}
+//出售价格颜色
+.price-cl(){.font(52);color:@main-cl;}
+//原价价格颜色
+.market-cl(){.font(36);color:@cl-9;}
+//购物车标题大小及颜色
+.cart-pro-tit(){.font(36);color:@cl-3;}
+//产品列表标题大小及颜色
+.list-pro-tit(){.font(42);color:@cl-3;}
+//产品详情标题大小及颜色
+.detail-pro-tit(){.font(48);color:@cl-3;}
+// 红色按钮背景色及文字大小
+.red-button(){.font(42);color:#fff;background:@main-cl;}
+//全局背景
+.main-bg(){
+	background-color: @body-bg-cl;
+}

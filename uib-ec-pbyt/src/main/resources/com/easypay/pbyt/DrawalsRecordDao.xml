@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ptyt.dao.DrawalsRecordDao">
+    
+	<sql id="drawalsRecordColumns">
+		a.id AS "id",
+		a.apply_userName AS "applyUserName",
+		a.apply_phone AS "applyPhone",
+		a.card_person_name AS "cardPersonName",
+		a.card_no AS "cardNo",
+		a.apply_amount AS "applyAmount",
+		a.apply_status AS "applyStatus",
+		a.apply_date AS "applyDate",
+		a.province_city AS "provinceCity",
+		a.bank_name AS "bankName",
+		a.branch_bank_name AS "branchBankName",
+		a.bank_trade_no AS "bankTradeNo",
+		a.dispose_date AS "disposeDate",
+		a.remark AS "remark",
+		a.operator AS "operator",
+		a.member_id AS "memberId",
+		a.is_default AS "isDefault",
+		a.flag AS "flag"
+	</sql>
+	
+	<sql id="drawalsRecordJoins">
+	</sql>
+    
+    <select id="queryDrawalsRecord" parameterType="Map" resultType="com.uib.ptyt.entity.DrawalsRecordDto">
+        select 
+			<include refid="drawalsRecordColumns"></include>
+		from 
+			withdrawal_apply_for a
+		where	
+			1=1 
+		<if test="applyStatus !=null  and applyStatus !='' ">
+		    and a.apply_status=#{applyStatus}
+		</if>
+		<if test="memberId !=null  and memberId !='' ">
+		    and a.member_id=#{memberId}
+		</if>
+		<if test="cardNo !=null  and cardNo !='' ">
+		    and a.card_no=#{cardNo}
+		</if>
+		<if test="isDefault !=null  and isDefault !='' ">
+		    and a.is_default=#{isDefault}
+		</if>
+		<if test="flag !=null  and flag !='' ">
+		    and a.flag=#{flag}
+		</if>
+		order by a.apply_date DESC
+		<if test="startSize !=null  and pageSize !=null ">
+		  LIMIT #{startSize},#{pageSize}
+		</if>
+    </select>
+    
+    <insert id="insert">
+        insert into withdrawal_apply_for
+        (
+         id,
+         apply_userName,
+         apply_phone,
+         card_person_name,
+         card_no,
+         apply_amount,
+         apply_status,
+         apply_date,
+         province_city,
+         bank_name,
+         branch_bank_name,
+         member_id,
+         is_default,
+         flag
+        )value(
+         #{id},
+         #{applyUserName},
+         #{applyPhone},
+         #{cardPersonName},
+         #{cardNo},
+         #{applyAmount},
+         #{applyStatus},
+         #{applyDate},
+         #{provinceCity},
+         #{bankName},
+         #{branchBankName},
+         #{memberId},
+         #{isDefault},
+         #{flag}
+        )
+    </insert>
+    
+    <select id="queryAlerayDra" parameterType="String" resultType="com.uib.ptyt.entity.DrawalsRecordDto">
+        select 
+          <include refid="drawalsRecordColumns"></include>
+        from 
+          withdrawal_apply_for a
+        where
+          a.member_id=#{memberId} and a.flag="0"
+          and
+          a.apply_status in ('0','2')
+          order by a.apply_date DESC
+    </select>
+    
+    <update id="update" parameterType="map">
+        update withdrawal_apply_for a
+        set
+           is_default=#{isDefault}
+        where 1=1 and flag="1"
+        <if test="memberId !=null  and memberId !='' ">
+		    and a.member_id=#{memberId}
+		</if>
+		<if test="cardNo !=null  and cardNo !='' ">
+		    and a.card_no=#{cardNo}
+		</if>
+    </update>
+</mapper>

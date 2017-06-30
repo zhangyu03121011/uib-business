@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uib.union.payment.pojo.RefundOrder">
+
+	
+	<resultMap type="refundOrder" id="refundOrderMap">
+		<result property="id" column="id"  />
+		<result property="refundNo" column="refund_no"  />
+		<result property="paymentNo" column="payment_no" />
+		<result property="refundState" column="refund_state" />
+		<result property="remark" column="remark" />
+		<result property="refundAmt" column="refund_amt" />
+		<result property="orderNo" column="order_no" />
+		<result property="notifyUrl" column="notify_url" />
+		<result property="threePaymentNo" column="three_payment_no" />
+		<result property="payType" column="pay_type" />
+		<result property="refundDate" column="refund_date" />
+		<result property="queryId" column="query_id" />
+		<result property="merchantCode" column="merchant_code" />
+		
+	</resultMap>
+	
+	
+	
+	<sql id="RefundOrder_Column_List">
+	  id,refund_no, payment_no,refund_state,remark,refund_amt,order_no,notify_url,three_payment_no,pay_type,refund_date,query_id,merchant_code
+	</sql>
+
+	<select id="getRefundOrderByPaymentNo" parameterType="String" resultMap="refundOrderMap" >
+	    select <include refid="RefundOrder_Column_List"/> 
+	    from refund_order refund where refund.payment_no = #{paymentNo} 
+	</select>
+	
+	
+	<select id="getRefundOrderByRefundNo" parameterType="String" resultMap="refundOrderMap" >
+	    select <include refid="RefundOrder_Column_List"/> 
+	    from refund_order refund where refund.refund_no = #{refundNo} 
+	</select>
+	
+	
+	
+	<update id="updateRefundOrder" parameterType="map">
+	    update refund_order refund 
+	    <set>
+	        <if test="threePaymentNo != null and threePaymentNo != ''">
+	            refund.three_payment_no = #{threePaymentNo, jdbcType=VARCHAR}, 
+	        </if>
+	        <if test="refundState != null and refundState != ''">
+	            refund.refund_state = #{refundState, jdbcType=VARCHAR}, 
+	        </if>
+	        <if test="queryId != null and queryId != ''">
+	            refund.query_id = #{queryId, jdbcType=VARCHAR}, 
+	        </if>
+	    </set>
+	    where refund.refund_no = #{refundNo}
+	</update>
+	
+
+		
+	<insert id="saveRefundOrder" parameterType="refundOrder"
+		statementType="CALLABLE">
+		<![CDATA[
+		insert into refund_order
+		  (
+		  	  refund_no,
+	          payment_no,
+	          refund_state,
+	          remark,
+	          refund_amt,
+	          order_no,
+	          notify_url,
+	          three_payment_no,
+	          pay_type,
+	          refund_date,
+	          merchant_code
+         )
+		values(#{refundNo,jdbcType=VARCHAR},#{paymentNo,jdbcType=VARCHAR},
+		#{refundState,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
+		#{refundAmt,jdbcType=NUMERIC},#{orderNo,jdbcType=VARCHAR},
+		#{notifyUrl,jdbcType=VARCHAR},#{threePaymentNo,jdbcType=VARCHAR},
+		#{payType,jdbcType=VARCHAR},#{refundDate,jdbcType=TIMESTAMP},#{merchantCode,jdbcType=VARCHAR})
+		 ]]>
+	</insert>
+	
+</mapper>

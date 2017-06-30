@@ -1,0 +1,95 @@
+@charset "utf-8";
+/* 闪购样式 */
+.flash_box{width:1200px;clear:both;margin:0 auto}
+.flash_box .title{width:1200px;height:40px;padding:10px 0;clear:both}
+.flash_box .flash_left_box{width:900px;float:left;}
+.flash_box .flash_left{width:900px;height:328px;box-shadow:0px 0px 5px #eee;-moz-box-shadow:0px 0px 5px #eee;-webkit-box-shadow:0px 0px 5px #eee;float:left;margin-bottom:30px}
+.flash_box .flash_left .info_box{width:240px;float:left}
+.flash_box .flash_left .photo_box{width:660px;float:left}
+.flash_left .info_box .brand_logo{width:150px;height:35px;margin:0 auto;padding:20px 0}
+.flash_left .info_box .brand_name{width:200px;padding:0 20px;line-height:24px;text-align:center;font-size:16px;display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.flash_left .info_box .discount_box{width:240px;height:90px;padding:30px 0;position:relative}
+.info_box .discount_box .discount{width:90px;height:90px;-moz-border-radius:45px;-webkit-border-radius:45px;border-radius:45px;background:#ec3e7d;text-align:center;color:#fff; position:absolute;top:30px;left:75px}
+.info_box .discount_box .discount_line{width:240px;height:1px; border-bottom:dotted 1px #ccc;position:absolute;top:75px}
+.info_box .discount_box .discount .en_discount{font-size:24px;font-family:Arial, Helvetica, sans-serif;padding-top:20px}
+.info_box .discount_box .discount .cn_discount{font-size:16px}
+.flash_left .info_box .timing_box{line-height:30px;font-size:14px;position:relative;padding-left:50px;margin-top:30px}
+.flash_left .info_box .timing_box s{width:19px;height:19px;background:url(../images/shangou_icq.png) no-repeat;display:block;position:absolute;top:5px;left:20px}
+.flash_box .flash_right_box{width:282px;float:right}
+.flash_box .flash_right_box .tab_a{background:#F7F7F7;height:35px}
+.flash_box .flash_right_box .tab_a li{width:94px;line-height:35px;cursor:pointer;float:left;font-size:16px;text-align:center}
+.flash_box .flash_right_box .tab_a li.cut{background:#ec3e7d}
+.flash_box .flash_right_box .tab_a li.cut a{color:#fff}
+.flash_box .flash_right_box .tab_a li span{ display:block;width:94px;border-right:1px solid #eee}
+.flash_box .flash_right_box .tab_a li.cut span{color: #fff;border-right-color:transparent;_border-right-color:#eee;}
+.flash_box .flash_right_box .tab_a li.last span{border-right-color: transparent;_border-right-color: #F7F7F7;}
+.flash_box .flash_right_box .trailer_box{width:280px;border:solid 1px #eee;margin-top:16px;overflow:auto}
+.flash_box .flash_right_box .trailer_box a{ text-decoration:none;color:#666}
+.flash_box .flash_right_box .trailer_box .trailer_title{height:40px;border-bottom:solid 1px #eee;line-height:40px;text-align:center;font-size:16px}
+.flash_box .flash_right_box .trailer_box .logo_box{width:120px;float:left;padding:10px}
+.flash_box .flash_right_box .trailer_box .logo_box:hover{border:solid 2px #eee;padding:8px}
+.flash_box .flash_right_box .trailer_box .logo_box img{width:80px;height:40px;padding:0 20px}
+.flash_box .flash_right_box .trailer_box .font_box{width:120px;text-align:center}
+
+/* 超值热卖 */
+.before_box{width:1200px}
+.before_box .products_box{width:580px;height:320px;float:left;box-shadow:0px 0px 5px #eee;-moz-box-shadow:0px 0px 5px #eee;-webkit-box-shadow:0px 0px 5px #eee;margin:0px 10px 30px 10px}
+.before_box .products_box .photo_box{width:580px;height:230px;}
+.before_box .products_box .info_box{width:300px;height:90px;float:left}
+.before_box .products_box .info_box .discount_box{width:280px;line-height:30px;padding:15px 0 0 20px}
+.before_box .products_box .info_box .discount_box font{font-family:Arial, Helvetica, sans-serif;font-size:30px;color:#F00}
+.before_box .products_box .info_box .timing_box{line-height:30px;font-size:14px;position:relative;padding-left:50px}
+.before_box .products_box .info_box .timing_box s{width:19px;height:19px;background:url(../images/shangou_icq.png) no-repeat;display:block;position:absolute;top:5px;left:20px}
+.before_box .products_box .brand_logo{width:150px;height:35px;margin:0 auto;padding:30px 20px 0 0;float:right}
+
+/* 闪购品牌页banner */
+.flash_banner_wrap{position:relative;overflow:hidden;height:420px;width:100%}
+.flash_banner{left:50%;width:2000px;margin-left:-1000px;height:420px;position:absolute;min-width:1200px;top:0;z-index:-1}
+.flash_banner_wrap .brand_int_box{width:1200px;margin:0 auto;background-color:rgba(0,0,0,0);}
+.flash_banner_wrap .brand_int{position:relative;width:300px;height:420px;background:#fff}
+.flash_banner_wrap .brand_int .brand_logo{width:150px;height:35px;margin:0 auto;padding:30px 0 10px 0}
+.flash_banner_wrap .brand_int .brand_name{width:260px;line-height:40px;text-align:center;padding:0 20px;font-size:16px}
+.flash_banner_wrap .brand_int .brand_brief{width:240px;padding:10px 30px;line-height:24px}
+.flash_banner_wrap .brand_int .brand_time{width:240px;line-height:50px;font-size:16px;position:absolute;padding-left:60px;margin-top:30px;background:#ec3e7d;bottom:0;color:#fff}
+.flash_banner_wrap .brand_int .brand_time s{width:19px;height:19px;background:url(../images/shangou_icq.png) no-repeat 0 -29px;display:block;position:absolute;bottom:15px;left:30px}
+.flash_banner_wrap .brand_int  .discount_box{width:300px;height:90px;padding:20px 0;position:relative}
+.flash_banner_wrap .brand_int .discount{width:90px;height:90px;-moz-border-radius:45px;-webkit-border-radius:45px;border-radius:45px;background:#ec3e7d;text-align:center;color:#fff; position:absolute;top:20px;left:105px}
+.flash_banner_wrap .brand_int .discount .en_discount{font-size:24px;font-family:Arial, Helvetica, sans-serif;padding-top:20px}
+.flash_banner_wrap .brand_int .discount .cn_discount{font-size:16px}
+
+/* 闪购品牌页产品区 */
+.flash_pro_box{width:1156px;margin:30px auto 0 auto;border:solid 2px #eee;padding:10px 20px;overflow:auto}
+.flash_pro_box .fore1{position:relative;overflow:hidden;width:1050px;height:30px;padding-top:5px;margin-bottom:15px;}
+.flash_pro_box .fore1 .tabs{width:1050px;height:30px;}
+.flash_pro_box .fore1 .tabs li{float:left;margin-right:20px;margin-bottom:8px;cursor:pointer;padding:5px}
+.flash_pro_box .fore1 .tabs .curr{border:solid 1px #ca1566;background:#ec3e7d}
+.flash_pro_box .fore1 .tabs .curr a{color:#fff}
+.flash_pro_box .fore1 .extra{position:absolute;right:0;top:10px;}
+.flash_pro_box .fore1 .extra a{display:block;position:relative;padding-right:13px;line-height:18px;text-decoration:none;color:#666;}
+.flash_pro_box .fore1 .extra a b{width:12px;height:6px;background: url(../images/user_icq.png) no-repeat;display:block;float:right;margin:6px 0 0 2px}
+.flash_pro_box .fore1 .extra .down b{ background-position:0 -249px}
+.flash_pro_box .fore1 .extra .up b{ background-position:0 -265px}
+.flash_pro_box .fore2 {padding:11px 20px;background:#f9f9f9;line-height:18px;overflow:auto}
+.flash_pro_box .fore2  li{float:left;margin-right:20px;}
+.flash_pro_box .fore2 li a{position:relative;display:block;padding-right:12px;text-decoration:none;cursor:pointer;}
+.flash_pro_box .fore2 li a b {display:block;position:absolute;right:0;top:7px;width:7px;height:4px; background:url(../images/flash_arrow.png) no-repeat}
+.flash_pro_box .fore2 li .up b{ background-position:0 0}
+.flash_pro_box .fore2 li .down b{ background-position:0 -5px}
+.flash_pro_box .fore3{width:1156px;margin-top:10px}
+.flash_pro_box .fore3 .am-list{width: 1156px;}
+.flash_pro_box .fore3 li{padding:11px 11px 0;border:1px solid #eee;margin:0 22px 20px 22px;cursor:pointer;position:relative;height:323px;width:220px;float:left}
+.flash_pro_box .fore3 .brand-item .p-img{position:relative;overflow:hidden;width:220px;margin-bottom:12px;}
+.flash_pro_box .fore3 .p-name{padding:0px 4px;width:212px;margin-bottom:12px}
+.flash_pro_box .fore3 .p-price{padding:0px 4px;width:212px}
+.flash_pro_box .fore3 .p-price strong{margin-right:5px;font:700 20px/1em verdana,'\5fae\8f6f\96c5\9ed1';color:#cd0205;}
+.flash_pro_box .fore3 .p-price del{margin-right:5px;font-family:verdana;color:#c6c6c6;}
+.flash_pro_box .fore3 .p-price span{padding:1px 3px;background:#d53435;font-family:verdana;color:#fff;}
+
+/* 品牌介绍 */
+.brand_pro_box{width:1156px;margin:30px auto 0 auto;border:solid 2px #eee;padding:10px 20px;overflow:auto;}
+.brand_pro_box .brand_title{width:1156px;height:40px;line-height:40px;border-bottom: solid 1px #eee;font-size:16px;position:relative}
+.brand_pro_box .brand_title font{border-bottom:solid 2px #ec3e7d;height:39px; position:absolute;left:0;top:0}
+.brand_pro_box .brand_pro_con{padding:20px 0}
+.brand_pro_box .brand_pro_con .font_con{width:566px;float:left;padding-right:30px}
+.brand_pro_box .brand_pro_con .font_con p{ text-indent:2em;line-height:24px;padding-bottom:5px}
+.brand_pro_box .brand_pro_con .brand_img{width:560px;height:340px;float:left}

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.order.dao.OrderTableItemDao">
+    
+	<sql id="orderTableItemColumns">
+		a.id AS "id",
+		a.order_table_id AS "orderTable.id",
+		a.full_name AS "fullName",
+		a.is_gift AS "isGift",
+		a.name AS "name",
+		a.price AS "price",
+		a.quantity AS "quantity",
+		a.return_quantity AS "returnQuantity",
+		a.shipped_quantity AS "shippedQuantity",
+		a.goods_no AS "product.id",
+		a.thumbnail AS "thumbnail",
+		a.weight AS "weight",
+		a.order_no AS "orderNo",
+		a.order_type AS "productType",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTableItemJoins">
+		LEFT JOIN order_table b ON b.id = a.order_table_id
+	</sql>
+    
+	<select id="get" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderTable != null and orderTable.id != null and orderTable.id != ''">
+				AND a.order_table_id = #{orderTable.id}
+			</if>
+			<if test="isGift != null and isGift != ''">
+				AND a.is_gift = #{isGift}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTableItem">
+		SELECT 
+			<include refid="orderTableItemColumns"/>
+		FROM order_table_item a
+		<include refid="orderTableItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table_item(
+			id,
+			order_table_id,
+			full_name,
+			is_gift,
+			name,
+			price,
+			quantity,
+			return_quantity,
+			shipped_quantity,
+			goods_no,
+			thumbnail,
+			weight,
+			order_no,
+			user_type,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderTable.id},
+			#{fullName},
+			#{isGift},
+			#{name},
+			#{price},
+			#{quantity},
+			#{returnQuantity},
+			#{shippedQuantity},
+			#{product.id},
+			#{thumbnail},
+			#{weight},
+			#{OrderNo},
+			#{userType},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table_item SET 	
+			order_table_id = #{orderTable.id},
+			full_name = #{fullName},
+			is_gift = #{isGift},
+			name = #{name},
+			price = #{price},
+			quantity = #{quantity},
+			return_quantity = #{returnQuantity},
+			shipped_quantity = #{shippedQuantity},
+			goods_no = #{product.id},
+			thumbnail = #{thumbnail},
+			weight = #{weight},
+			order_no = #{orderNo},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE order_table_item SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE order_table_id = #{orderTable.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

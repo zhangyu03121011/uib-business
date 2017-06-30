@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.order.entity.OrderTable">
+	<sql id="orderTableColumns"  >
+		a.id AS "id",
+		a.order_no AS "orderNo",
+		a.address AS "address",
+		a.amount_paid AS "amountPaid",
+		a.area_name AS "areaName",
+		a.consignee AS "consignee",
+		a.coupon_discount AS "couponDiscount",
+		a.expire AS "expire",
+		a.fee AS "fee",
+		a.invoice_title AS "invoiceTitle",
+		a.is_allocated_stock AS "isAllocatedStock",
+		a.is_invoice AS "isInvoice",
+		a.lock_expire AS "lockExpire",
+		a.memo AS "memo",
+		a.offset_amount AS "offsetAmount",
+		a.order_status AS "orderStatus",
+		a.payment_method_name AS "paymentMethodName",
+		a.payment_status AS "paymentStatus",
+		a.phone AS "phone",
+		a.point AS "point",
+		a.promotion AS "promotion",
+		a.promotion_discount AS "promotionDiscount",
+		a.shipping_method_name AS "shippingMethodName",
+		a.shipping_status AS "shippingStatus",
+		a.tax AS "tax",
+		a.zip_code AS "zipCode",
+		a.area AS "area",
+		a.coupon_code AS "couponCode",
+		a.payment_method AS "paymentMethod",
+		a.shipping_method AS "shippingMethod",
+		a.user_name AS "userName",
+		a.freight AS "freight",
+		a.create_by AS "createBy",
+		DATE_FORMAT(a.create_date,'%Y-%m-%d %T') AS "createDate",
+		a.update_by AS "updateBy",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderTableItemColumns">
+		b.id AS "bid",
+		b.order_table_id AS "orderTableId",
+		b.full_name AS "bFullName",
+		b.is_gift AS "isGift",
+		b.name AS "name",
+		b.price AS "price",
+		b.quantity AS "quantity",
+		b.return_quantity AS "returnQuantity",
+		b.shipped_quantity AS "shippedQuantity",
+		b.goods_no AS "goodsNo",
+		b.thumbnail AS "thumbnail",
+		b.weight AS "weight",
+		b.order_no AS "bOrderNo",
+		b.create_by AS "bCreateBy",
+		b.create_date AS "bCreateDate",
+		b.update_by AS "bUpdateBy",
+		b.update_date AS "bUpdateDate",
+		b.remarks AS "bRemarks",
+		b.del_flag AS "bDelFlag",
+		b.is_comment AS "bIsComment"
+	</sql>
+	
+	<sql id="orderTableJoins">
+	</sql>
+	<select id="getOrderByOrderNo" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		WHERE a.order_no = #{orderNo} AND a.del_flag='0'
+	</select>
+	<select id="findIdByOrderStatus" resultType="String" parameterType="String">
+    SELECT  ot.id FROM  order_table   ot 
+	LEFT JOIN  order_table_shipping  ots   ON   ot.order_no=ots.order_no 
+	WHERE  ot.del_flag='0'   AND  ots.create_date   <![CDATA[ < ]]> DATE_ADD(NOW() ,INTERVAL -15 DAY)       AND  ot.order_status  =  #{orderStatus}
+   </select>
+   
+   <select id="getOrderWaitPayStatusTimeout" resultType="OrderTable" >
+  		SELECT  <include refid="orderTableColumns"/>
+  		 FROM  order_table a where  a.del_flag='0'   AND 
+   	 	a.create_date <![CDATA[ < ]]> DATE_ADD(NOW() ,INTERVAL -30 MINUTE) and a.order_status='4'
+   </select>
+    <update id="updateOrderStatusList" parameterType="list"  >
+    UPDATE   order_table SET order_status=  7 WHERE  id  in
+    <foreach item="item" collection="list" separator="," open="(" 	close=")" index="">
+			#{item}
+		</foreach>
+    </update> 
+    
+    
+    <update id="updateOrderStatusByOrderStatusAndIds" parameterType="map"  >
+   		UPDATE   order_table SET order_status= #{orderStatus} WHERE  id  in
+    	<foreach item="items" collection="list" separator="," open="(" 	close=")" index="">
+			#{items.id}
+		</foreach>
+    </update>
+	
+	
+	<select id="getOrderTableByOrderNo" resultType="OrderTable" parameterType="map">
+		SELECT 
+			<include refid="orderTableColumns"/>,sp.tracking_no AS trackingNo , sp.delivery_corp AS deliveryCorp 
+		FROM order_table a left join order_table_shipping sp on a.order_no = sp.order_no 
+		<include refid="orderTableJoins"/>
+		WHERE a.order_no = #{orderNo} AND a.user_name=#{userName}
+	</select>
+	
+	
+	<select id="get" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderTable">
+		SELECT 
+			<include refid="orderTableColumns"/>
+		FROM order_table a
+		<include refid="orderTableJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_table(
+			id,
+			order_no,
+			address,
+			amount_paid,
+			area_name,
+			consignee,
+			coupon_discount,
+			expire,
+			fee,
+			invoice_title,
+			is_allocated_stock,
+			is_invoice,
+			lock_expire,
+			memo,
+			offset_amount,
+			order_status,
+			payment_method_name,
+			payment_status,
+			phone,
+			point,
+			promotion,
+			promotion_discount,
+			shipping_method_name,
+			shipping_status,
+			tax,
+			zip_code,
+			area,
+			coupon_code,
+			payment_method,
+			shipping_method,
+			user_name,
+			freight,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			order_source
+		) VALUES (
+			#{id},
+			#{orderNo},
+			#{address},
+			#{amountPaid},
+			#{areaName},
+			#{consignee},
+			#{couponDiscount},
+			#{expire},
+			#{fee},
+			#{invoiceTitle},
+			#{isAllocatedStock},
+			#{isInvoice},
+			#{lockExpire},
+			#{memo},
+			#{offsetAmount},
+			#{orderStatus},
+			#{paymentMethodName},
+			#{paymentStatus},
+			#{phone},
+			#{point},
+			#{promotion},
+			#{promotionDiscount},
+			#{shippingMethodName},
+			#{shippingStatus},
+			#{tax},
+			#{zipCode},
+			#{area},
+			#{couponCode},
+			#{paymentMethod},
+			#{shippingMethod},
+			#{userName},
+			#{freight},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{delFlag},
+			#{orderSource}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_table SET 	
+			order_no = #{orderNo},
+			address = #{address},
+			amount_paid = #{amountPaid},
+			area_name = #{areaName},
+			consignee = #{consignee},
+			coupon_discount = #{couponDiscount},
+			expire = #{expire},
+			fee = #{fee},
+			invoice_title = #{invoiceTitle},
+			is_allocated_stock = #{isAllocatedStock},
+			is_invoice = #{isInvoice},
+			lock_expire = #{lockExpire},
+			memo = #{memo},
+			offset_amount = #{offsetAmount},
+			order_status = #{orderStatus},
+			payment_method_name = #{paymentMethodName},
+			payment_status = #{paymentStatus},
+			phone = #{phone},
+			point = #{point},
+			promotion = #{promotion},
+			promotion_discount = #{promotionDiscount},
+			shipping_method_name = #{shippingMethodName},
+			shipping_status = #{shippingStatus},
+			tax = #{tax},
+			zip_code = #{zipCode},
+			area = #{area},
+			coupon_code = #{couponCode},
+			payment_method = #{paymentMethod},
+			shipping_method = #{shippingMethod},
+			user_name = #{userName},
+			freight = #{freight},
+			create_by = #{createBy},
+			create_date = #{createDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<select id="getOrderTableByUserName" parameterType="Object" resultType="orderTable">
+		select 
+		<include refid="orderTableColumns"></include>
+		from order_table as a 
+		where a.user_name= #{username} and del_flag='0'
+		<if test="orderStatusType!=null and orderStatusType!=''">
+			and a.order_status=#{orderStatusType}
+		</if>
+		<if test="FindOrder!=null and FindOrder!=''">
+			and a.id  in (SELECT DISTINCT o.order_table_id from order_table_item as o 
+			where o.order_no like CONCAT('%',#{FindOrder},'%' ) or o.full_name like CONCAT('%',#{FindOrder},'%' ) or o.goods_no like CONCAT('%',#{FindOrder},'%' ))
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<update id="updateOrderStatus" parameterType="java.util.HashMap">
+		update order_table set order_status=#{orderStatus},update_date =NOW()
+		<where>
+			id=#{id} AND user_name=#{userName}
+		</where>
+	</update>
+	
+	
+	<update id="updateOrderStatusAndPayStatus" parameterType="java.util.HashMap">
+		update order_table
+		<set> 
+			update_date =NOW()  
+			<if test="orderStatus != null and orderStatus!=''">
+				 ,order_status=#{orderStatus} 
+			</if>
+			<if test="paymentStatus != null and paymentStatus!=''">
+				 ,payment_status=#{paymentStatus} 
+			</if>
+		</set>
+		where order_no=#{orderNo}
+	</update>
+	
+	
+	<update id="updateByOrderNO" parameterType="java.util.HashMap">
+		update order_table set order_status=#{orderStatus},update_date =NOW() where order_no=#{orderNo}
+	</update>
+	
+	<update id="delete" parameterType="Object">
+		update order_table set del_flag='1',update_date =NOW() where id=#{id}
+	</update>
+	
+	<update id="deleteByOrderNo" parameterType="Object">
+		update order_table set del_flag='1',update_date =NOW() where order_no=#{orderNo}
+	</update>
+	
+	<select id="selectByOrderStatus" resultType="OrderTable">
+		select 
+		<include refid="orderTableColumns"></include>
+		from order_table as a 
+		where a.del_flag='0'
+		<if test="userName!=null and userName!=''">
+			AND a.user_name = #{userName}
+		</if>
+		<choose>
+			<when test="orderStatus!=null and orderStatus!=''">
+			AND a.order_status = #{orderStatus}
+			</when>
+			<otherwise>
+			AND a.order_status IN('2','3')
+			</otherwise>
+		</choose>
+		ORDER BY create_date DESC
+	</select>
+	
+	
+	<select id="select4MobileByOrderStatus2" resultType="OrderTable">
+		select 
+		<include refid="orderTableColumns"></include>
+		from order_table as a 
+		where a.del_flag='0'
+		<if test="userName!=null and userName!=''">
+			AND a.user_name = #{userName}
+		</if>
+		<choose>
+			<when test="orderStatus!=null and orderStatus!=''">
+				 <choose>
+					<when test="orderStatus==5 or orderStatus==6">
+						AND a.order_status IN('5','6')
+					</when>
+					<otherwise>
+						AND a.order_status = #{orderStatus}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+			AND a.order_status IN('2','3')
+			</otherwise>
+		</choose>
+		ORDER BY update_date DESC
+	</select>
+	
+	<select id="select4MobileByOrderStatus" resultType="OrderTable">
+		select 
+		<include refid="orderTableColumns"></include>
+		from order_table as a 
+		where a.del_flag='0'
+		<if test="userName!=null and userName!=''">
+			AND a.user_name = #{userName}
+		</if>
+		<choose>
+			<when test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status = #{orderStatus}
+				<!-- <choose>
+					<when test="orderStatus==5 or orderStatus==6">
+						AND a.order_status IN('5','6')
+					</when>
+					<otherwise>
+						AND a.order_status = #{orderStatus}
+					</otherwise>
+				</choose> -->
+			</when>
+			<otherwise>
+			AND a.order_status IN('2','3')
+			</otherwise>
+		</choose>
+		ORDER BY update_date DESC
+	</select>
+	
+	<select id="queryOrderDeliveryCount" resultType="int">
+		SELECT 
+			count(1)
+		FROM 
+			order_table as a 
+		WHERE 
+			a.del_flag='0'
+		<if test="userName!=null and userName!=''">
+			AND a.user_name = #{userName}
+		</if>
+		<choose>
+			<when test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status = #{orderStatus}
+				<!-- <choose>
+					<when test="orderStatus==5 or orderStatus==6">
+						AND a.order_status IN('5','6')
+					</when>
+					<otherwise>
+						AND a.order_status = #{orderStatus}
+					</otherwise>
+				</choose> -->
+			</when>
+			<otherwise>
+			AND a.order_status IN('2','3')
+			</otherwise>
+		</choose>
+		ORDER BY update_date DESC
+	</select>
+	
+	<select id="queryOrderTablesByParams" parameterType="map" resultMap="OrderResultMap">
+		SELECT 
+			<include refid="orderTableColumns"></include>,
+			<include refid="orderTableItemColumns"></include>
+		FROM
+			order_table AS a RIGHT JOIN order_table_item AS b ON a.order_no=b.order_no
+		<where>
+			a.del_flag='0'
+			<if test="orderNo!=null and orderNo!=''">
+				AND a.order_no=#{orderNo}
+			</if>
+			<if test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status=#{orderStatus}
+			</if>
+			<if test="payStatus!=null and payStatus!=''">
+				AND a.payment_status=#{payStatus}
+			</if>
+			<if test="userName!=null and userName!=''">
+				AND a.user_name=#{userName}
+			</if>
+			<if test="productId!=null and productId!=''">
+				AND b.goods_no=#{productId}
+			</if>
+			<if test="productName!=null and productName!=''">
+				AND b.goods_no IN 
+					(SELECT id FROM product AS p WHERE p.`name` LIKE CONCAT('%',#{productName},'%') OR p.full_name LIKE CONCAT('%',#{productName},'%'))
+			</if>
+		</where>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="selectSatisticsByStatus" parameterType="map" resultType="Map">
+		
+	</select>
+	
+	<select id="queryOrderStatus" parameterType="Map" resultType="Map">
+		SELECT
+			a.id,
+			a.order_no AS 'orderNo',
+			a.order_status AS 'orderStatus',
+			a.user_name AS 'userName'
+		FROM
+			order_table a
+		WHERE
+			a.user_name = #{userName}
+		AND a.order_no = #{orderNo}
+	</select>
+	
+	<select id="queryOrderCount" parameterType="Map" resultType="Integer">
+		select count(a.id) from order_table a
+		<where>
+			a.user_name=#{userName}
+			<if test="orderStatus!=null and orderStatus!=''">
+				AND a.order_status=#{orderStatus}
+			</if>
+			<if test="payStatus!=null and payStatus!=''">
+				AND a.payment_status=#{payStatus}
+			</if>
+		</where>
+	</select>
+	
+	<resultMap type="com.uib.order.entity.OrderTable" id="OrderResultMap">
+		<id property="id" column="id" />
+		<result property="orderNo" column="orderNo" />
+		<result property="address" column="address" />
+		<result property="amountPaid" column="amountPaid" />
+		<result property="areaName" column="areaName" />
+		<result property="consignee" column="consignee" />
+		<result property="couponDiscount" column="couponDiscount" />
+		<result property="expire" column="expire" />
+		<result property="fee" column="fee" />
+		<result property="invoiceTitle" column="invoiceTitle" />
+		<result property="isAllocatedStock" column="isAllocatedStock" />
+		<result property="isInvoice" column="isInvoice" />
+		<result property="lockExpire" column="lockExpire" />
+		<result property="memo" column="presentType" />
+		<result property="offsetAmount" column="offsetAmount" />
+		<result property="orderStatus" column="orderStatus" />
+		<result property="paymentMethodName" column="paymentMethodName" />
+		<result property="paymentStatus" column="paymentStatus" />
+		<result property="phone" column="phone" />
+		<result property="point" column="point" />
+		<result property="promotion" column="promotion" />
+		<result property="promotionDiscount" column="promotionDiscount" />
+		<result property="shippingMethodName" column="shippingMethodName" />
+		<result property="shippingStatus" column="shippingStatus" />
+		<result property="tax" column="tax" />
+		<result property="zipCode" column="zipCode" />
+		<result property="area" column="area" />
+		<result property="couponCode" column="couponCode" />
+		<result property="paymentMethod" column="paymentMethod" />
+		<result property="shippingMethod" column="shippingMethod" />
+		<result property="userName" column="userName" />
+		<result property="freight" column="freight" />
+		<result property="createBy" column="createBy"/>
+		<result property="createDate" column="createDate" />
+		<result property="updateBy" column="updateBy" />
+		<result property="updateDate" column="updateDate" />
+		<result property="remarks" column="remarks" />
+		<result property="delFlag" column="delFlag" />
+		<result property="trackingNo" column="trackingNo" />
+		<collection property="list_ordertable_item" ofType="com.uib.order.entity.OrderTableItem"
+			javaType="ArrayList">
+			<id property="id" column="bId" />
+			<result property="orderTable.id" column="orderTableId" />
+			<result property="fullName" column="bFullName" />
+			<result property="isGift" column="isGift" />
+			<result property="name" column="name" />
+			<result property="price" column="price" />
+			<result property="quantity" column="quantity" />
+			<result property="returnQuantity" column="returnQuantity" />
+			<result property="shippedQuantity" column="shippedQuantity" />
+			<result property="goodsNo" column="goodsNo" />
+			<result property="thumbnail" column="thumbnail" />
+			<result property="weight" column="weight" />
+			<result property="orderNo" column="bOrderNo" />
+			<result property="createBy" column="bCreateBy" />
+			<result property="createDate" column="bCreateDate" />
+			<result property="updateBy" column="bUpdateBy" />
+			<result property="updateDate" column="bUpdateDate" />
+			<result property="remarks" column="bRemarks" />
+			<result property="delFlag" column="bDelFlag" />
+			<result property="isComment" column="bIsComment" />
+		</collection>
+		
+	</resultMap>
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uib.ecmanager.modules.coupon.dao.CouponDao">
+    
+	<sql id="couponColumns">
+		a.id AS "id",
+		a.begin_date AS "beginDate",
+		a.end_date AS "endDate",
+		a.introduction AS "introduction",
+		a.is_exchange AS "isExchange",
+		a.maximum_price AS "maximumPrice",
+		a.maximum_quantity AS "maximumQuantity",
+		a.minimum_price AS "minimumPrice",
+		a.minimum_quantity AS "minimumQuantity",
+		a.name AS "name",
+		a.point AS "point",
+		a.prefix AS "prefix",
+		a.sum AS "sum",
+		a.present_sum AS "presentSum",
+		a.present_type AS "presentType",
+		a.price_expression AS "priceExpression",
+		a.face_price AS "facePrice",
+		a.need_consume_balance AS "needConsumeBalance",
+		a.coupon_source AS "couponSource",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="couponJoins">
+	</sql>
+    
+	<select id="get" resultType="Coupon">
+		SELECT 
+			<include refid="couponColumns"/>
+		FROM coupon a
+		<include refid="couponJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Coupon">
+		SELECT 
+			<include refid="couponColumns"/>
+		FROM coupon a
+		<include refid="couponJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="beginDate != null and beginDate != ''">
+				AND a.begin_date = #{beginDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND a.end_date = #{endDate}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Coupon">
+		SELECT 
+			<include refid="couponColumns"/>
+		FROM coupon a
+		<include refid="couponJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO coupon(
+			id,
+			begin_date,
+			end_date,
+			introduction,
+			is_exchange,
+			maximum_price,
+			maximum_quantity,
+			minimum_price,
+			minimum_quantity,
+			name,
+			point,
+			prefix,
+			sum,
+			present_sum,
+			present_type,
+			price_expression,
+			face_price,
+			need_consume_balance,
+			coupon_source,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{beginDate},
+			#{endDate},
+			#{introduction},
+			#{isExchange},
+			#{maximumPrice},
+			#{maximumQuantity},
+			#{minimumPrice},
+			#{minimumQuantity},
+			#{name},
+			#{point},
+			#{prefix},
+			#{sum},
+			#{presentSum},
+			#{presentType},
+			#{priceExpression},
+			#{facePrice},
+			#{needConsumeBalance},
+			#{couponSource},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE coupon SET 	
+			begin_date = #{beginDate},
+			end_date = #{endDate},
+			introduction = #{introduction},
+			is_exchange = #{isExchange},
+			maximum_price = #{maximumPrice},
+			maximum_quantity = #{maximumQuantity},
+			minimum_price = #{minimumPrice},
+			minimum_quantity = #{minimumQuantity},
+			name = #{name},
+			point = #{point},
+			prefix = #{prefix},
+			sum = #{sum},
+			present_sum = #{presentSum},
+			present_type = #{presentType},
+			price_expression = #{priceExpression},
+			face_price = #{facePrice},
+			need_consume_balance = #{needConsumeBalance},
+			coupon_source = #{couponSource},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE coupon SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
