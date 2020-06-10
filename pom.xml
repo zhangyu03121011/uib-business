@@ -45,7 +45,7 @@
 		<jstl.version>1.2</jstl.version>
 		<annotation.version>1.0</annotation.version>
 		<com.sun.tools.version>1.7</com.sun.tools.version>
-		<commons-beanutils.version>1.8.3</commons-beanutils.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
 		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
 		<mockito-all.version>1.9.5</mockito-all.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
