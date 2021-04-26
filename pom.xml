@@ -29,7 +29,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<commons-logging.version>1.1.2</commons-logging.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
-		<commons-io.version>1.4</commons-io.version>
+		<commons-io.version>2.7</commons-io.version>
 		<commons-dbcp.version>1.2.2</commons-dbcp.version>
 		<com.whalin.version>3.0.1</com.whalin.version>
 		<org.apache.commons.version>3.1</org.apache.commons.version>
